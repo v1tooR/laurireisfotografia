@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wireframe · Lauri Reis Fotografia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Wireframe Token System ────────────────────────── */
+    :root {
+      --w-bg:        #F7F7F7;
+      --w-surface:   #EFEFEF;
+      --w-img:       #DCDCDC;
+      --w-border:    #C4C4C4;
+      --w-border-dk: #999999;
+      --w-muted:     #AAAAAA;
+      --w-sub:       #777777;
+      --w-text:      #333333;
+      --w-dark:      #1A1A1A;
+      --w-white:     #FFFFFF;
+      --w-annot:     #0070F3;   /* only blue = annotation marks */
+
+      --mono: 'IBM Plex Mono', monospace;
+      --sans: 'IBM Plex Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--w-bg);
+      font-family: var(--sans);
+      color: var(--w-text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Wireframe Annotations ─────────────────────────── */
+    .annot {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--w-annot);
+      background: rgba(0,112,243,0.07);
+      border: 1px solid rgba(0,112,243,0.2);
+      padding: 2px 6px;
+      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      user-select: none;
+    }
+    .annot::before { content: '↳'; font-size: 0.65rem; }
+
+    .section-annot {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--w-annot);
+      padding: 3px 8px;
+      border-left: 2px solid var(--w-annot);
+      margin-bottom: 1rem;
+      display: block;
+      opacity: 0.7;
+    }
+
+    /* ─── Image Placeholder ─────────────────────────────── */
+    .img-box {
+      background: var(--w-img);
+      border: 1px solid var(--w-border);
+      position: relative;
+      overflow: hidden;
+      display: block;
+    }
+    .img-box svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .img-box .img-label {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--w-sub);
+      white-space: nowrap;
+      background: rgba(255,255,255,0.75);
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+
+    /* ─── Text Placeholder Bars ─────────────────────────── */
+    .text-bar {
+      height: 10px;
+      background: var(--w-border);
+      border-radius: 2px;
+      margin-bottom: 8px;
+    }
+    .text-bar.short  { width: 55%; }
+    .text-bar.medium { width: 78%; }
+    .text-bar.full   { width: 100%; }
+    .text-bar.lg     { height: 14px; }
+    .text-bar.sm     { height: 8px; }
+
+    /* ─── Utilities ─────────────────────────────────────── */
+    .wf-section {
+      border-top: 1px solid var(--w-border);
+      padding: 3.5rem 0;
+    }
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+    }
+    .wf-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--w-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 0.875rem;
+    }
+    .wf-label::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background: var(--w-border-dk);
+    }
+    .wf-heading {
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--w-dark);
+      margin-bottom: 1rem;
+    }
+    .wf-body {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      color: var(--w-sub);
+      line-height: 1.6;
+    }
+
+    /* ─── Buttons (wireframe style) ─────────────────────── */
+    .wf-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.6rem 1.4rem;
+      border: 1.5px solid var(--w-dark);
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--w-dark);
+      cursor: default;
+      background: var(--w-white);
+    }
+    .wf-btn.filled {
+      background: var(--w-dark);
+      color: var(--w-white);
+    }
+    .wf-btn.ghost {
+      background: transparent;
+      border-color: rgba(255,255,255,0.5);
+      color: var(--w-white);
+    }
+    .wf-btn.muted {
+      border-color: var(--w-border-dk);
+      color: var(--w-sub);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════════════════════ */
+    .wf-nav {
+      background: var(--w-white);
+      border-bottom: 1.5px solid var(--w-dark);
+      padding: 1rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .wf-nav-logo {
+      font-family: var(--mono);
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--w-dark);
+      border: 1.5px solid var(--w-dark);
+      padding: 4px 12px;
+    }
+    .wf-nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .wf-nav-links a {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--w-sub);
+      text-decoration: none;
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+    }
+    .wf-nav-links a:hover { border-bottom-color: var(--w-sub); }
+
+    /* ═══════════════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════════════ */
+    .hero-wf {
+      position: relative;
+      height: 92vh;
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .hero-bg-box {
+      position: absolute;
+      inset: 0;
+      background: var(--w-img);
+      border-bottom: 1.5px solid var(--w-dark);
+    }
+    .hero-bg-box svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .hero-overlay-wf {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 10px,
+        rgba(0,0,0,0.025) 10px,
+        rgba(0,0,0,0.025) 11px
+      );
+    }
+    .hero-content-wf {
+      position: relative;
+      z-index: 2;
+      padding: 0 2.5rem 3.5rem;
+      max-width: 700px;
+    }
+    .hero-eyebrow-wf {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 1rem;
+    }
+    .hero-h1-wf {
+      font-family: var(--sans);
+      font-size: clamp(2rem, 5vw, 3.75rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--w-white);
+      margin-bottom: 1.25rem;
+    }
+    .hero-h1-wf em {
+      font-style: italic;
+      border-bottom: 1px dashed rgba(255,255,255,0.4);
+    }
+    .hero-sub-wf {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 2rem;
+      max-width: 460px;
+      line-height: 1.65;
+    }
+    .hero-actions-wf { display: flex; gap: 0.875rem; }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      right: 2.5rem;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .hero-scroll-hint span {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+    .scroll-arrow {
+      width: 16px;
+      height: 24px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      padding-top: 5px;
+    }
+    .scroll-dot {
+      width: 3px;
+      height: 6px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 2px;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       SOBRE
+    ═══════════════════════════════════════════════════════ */
+    .sobre-grid {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .sobre-img-wrap { position: relative; }
+    .sobre-img-box {
+      width: 100%;
+      aspect-ratio: 3/4;
+    }
+    /* decorative offset border */
+    .sobre-img-wrap::before {
+      content: '';
+      position: absolute;
+      top: -16px; left: -16px; right: 16px; bottom: 16px;
+      border: 1px dashed var(--w-border-dk);
+      pointer-events: none;
+    }
+    .sobre-badge-wf {
+      position: absolute;
+      bottom: -1.25rem;
+      right: -1.25rem;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: var(--w-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--w-white);
+      font-family: var(--mono);
+      text-align: center;
+      z-index: 2;
+      border: 3px solid var(--w-bg);
+    }
+    .sobre-badge-wf strong {
+      font-size: 1.4rem;
+      font-weight: 500;
+      line-height: 1;
+    }
+    .sobre-badge-wf small {
+      font-size: 0.45rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      line-height: 1.3;
+    }
+    .sobre-text { padding-top: 0.5rem; }
+    .sobre-text .wf-heading { font-size: clamp(1.75rem, 3.5vw, 2.75rem); }
+    .sobre-text p { color: var(--w-sub); font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.7; }
+    .sobre-sig {
+      font-family: var(--sans);
+      font-style: italic;
+      font-size: 1.35rem;
+      font-weight: 300;
+      color: var(--w-border-dk);
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--w-border);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       PORTFOLIO
+    ═══════════════════════════════════════════════════════ */
+    .portfolio-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: end;
+      margin-bottom: 2.5rem;
+    }
+    .portfolio-header .wf-heading { font-size: clamp(1.75rem, 3vw, 2.5rem); }
+
+    /* Tabs */
+    .wf-tabs {
+      display: flex;
+      border-bottom: 1.5px solid var(--w-dark);
+      margin-bottom: 2rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .wf-tabs::-webkit-scrollbar { display: none; }
+    .wf-tab {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--w-muted);
+      padding: 0.625rem 1.25rem;
+      white-space: nowrap;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1.5px;
+      border-top: 1px solid transparent;
+      border-left: 1px solid transparent;
+      border-right: 1px solid transparent;
+      background: transparent;
+      transition: color 0.15s;
+    }
+    .wf-tab:hover { color: var(--w-text); }
+    .wf-tab.active {
+      color: var(--w-dark);
+      border-color: var(--w-dark) var(--w-dark) var(--w-bg) var(--w-dark);
+      background: var(--w-bg);
+    }
+
+    .tab-panel   { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Masonry grid */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 180px;
+      gap: 6px;
+    }
+    .photo-cell { position: relative; overflow: hidden; }
+    .photo-cell .img-box { width: 100%; height: 100%; }
+
+    /* hover overlay on photo cells */
+    .photo-hover {
+      position: absolute;
+      inset: 0;
+      border: 2px solid var(--w-dark);
+      opacity: 0;
+      transition: opacity 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.08);
+      pointer-events: none;
+    }
+    .photo-cell:hover .photo-hover { opacity: 1; }
+    .photo-hover span {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--w-dark);
+      color: var(--w-white);
+      padding: 3px 8px;
+    }
+
+    .span-tall { grid-row: span 2; }
+    .span-wide { grid-column: span 2; }
+
+    .grid-cta {
+      display: flex;
+      justify-content: center;
+      margin-top: 1.75rem;
+      padding-top: 1.75rem;
+      border-top: 1px dashed var(--w-border);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       DIFERENCIAIS
+    ═══════════════════════════════════════════════════════ */
+    .dif-section {
+      background: var(--w-dark);
+      border-top: 1.5px solid var(--w-dark);
+      border-bottom: 1.5px solid var(--w-dark);
+      padding: 3.5rem 0;
+    }
+    .dif-section .wf-label { color: rgba(255,255,255,0.35); }
+    .dif-section .wf-label::before { background: rgba(255,255,255,0.2); }
+    .dif-section .wf-heading { color: var(--w-white); font-size: clamp(1.5rem, 2.5vw, 2.25rem); max-width: 560px; margin-bottom: 2.5rem; }
+
+    .dif-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .dif-card {
+      padding: 2rem 1.75rem;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .dif-icon-box {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255,255,255,0.2);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .dif-icon-box svg { width: 18px; height: 18px; color: rgba(255,255,255,0.5); }
+    .dif-card-title {
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 0.5rem;
+    }
+    .dif-card-desc {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.6;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       PROCESSO
+    ═══════════════════════════════════════════════════════ */
+    .processo-header {
+      text-align: center;
+      max-width: 480px;
+      margin: 0 auto 3.5rem;
+    }
+    .processo-header .wf-heading { font-size: clamp(1.6rem, 3vw, 2.5rem); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 24px;
+      left: 12.5%;
+      right: 12.5%;
+      height: 1px;
+      background: var(--w-border-dk);
+      z-index: 0;
+    }
+    /* dashed line segments */
+    .steps::after {
+      content: '';
+      position: absolute;
+      top: 24px;
+      left: 12.5%;
+      right: 12.5%;
+      height: 1px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--w-border-dk) 0, var(--w-border-dk) 6px,
+        transparent 6px, transparent 12px
+      );
+      z-index: 0;
+    }
+
+    .step {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 0 1.25rem;
+    }
+    .step-num {
+      width: 48px;
+      height: 48px;
+      border: 1.5px solid var(--w-dark);
+      border-radius: 50%;
+      background: var(--w-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--w-dark);
+    }
+    .step-title {
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--w-dark);
+      margin-bottom: 0.6rem;
+    }
+    .step-desc {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      color: var(--w-sub);
+      line-height: 1.6;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       QUOTE
+    ═══════════════════════════════════════════════════════ */
+    .quote-section {
+      background: var(--w-surface);
+      border-top: 1.5px solid var(--w-dark);
+      border-bottom: 1.5px solid var(--w-dark);
+      padding: 5rem 2.5rem;
+      text-align: center;
+      position: relative;
+    }
+    .quote-pattern {
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 24px, var(--w-border) 24px, var(--w-border) 25px),
+        repeating-linear-gradient(90deg, transparent, transparent 24px, var(--w-border) 24px, var(--w-border) 25px);
+      opacity: 0.3;
+    }
+    .quote-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+    .quote-mark-wf {
+      font-family: var(--sans);
+      font-size: 5rem;
+      font-weight: 300;
+      color: var(--w-border-dk);
+      line-height: 0.6;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    .quote-text-wf {
+      font-family: var(--sans);
+      font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--w-dark);
+      line-height: 1.55;
+      margin-bottom: 1.5rem;
+    }
+    .quote-author-wf {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--w-sub);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       CTA FINAL
+    ═══════════════════════════════════════════════════════ */
+    .cta-section {
+      background: var(--w-white);
+      padding: 5rem 2.5rem;
+      text-align: center;
+    }
+    .cta-section .wf-heading { font-size: clamp(1.75rem, 3.5vw, 3rem); margin-bottom: 1rem; }
+    .cta-section .wf-body { max-width: 440px; margin: 0 auto 2.25rem; }
+    .cta-info-row {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 1.75rem;
+    }
+    .cta-info-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      color: var(--w-muted);
+    }
+    .cta-info-item::before {
+      content: '—';
+      font-size: 0.55rem;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════════ */
+    .wf-footer {
+      background: var(--w-dark);
+      color: rgba(255,255,255,0.5);
+      padding: 3rem 2.5rem 1.5rem;
+    }
+    .footer-grid {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr 1fr;
+      gap: 2.5rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer-logo {
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--w-white);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 4px 10px;
+      display: inline-block;
+      margin-bottom: 0.875rem;
+    }
+    .footer-desc {
+      font-size: 0.78rem;
+      line-height: 1.65;
+      margin-bottom: 1.25rem;
+    }
+    .footer-social { display: flex; gap: 8px; }
+    .footer-social-btn {
+      width: 30px;
+      height: 30px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.35);
+    }
+    .footer-social-btn svg { width: 12px; height: 12px; }
+    .footer-col-label {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .footer-col ul li {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.35);
+      font-family: var(--sans);
+    }
+    .footer-address {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.3);
+      line-height: 1.8;
+      font-style: normal;
+    }
+    .footer-bottom {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding-top: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .footer-bottom span {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       MARQUEE / FILMSTRIP
+    ══════════════════════════════════════════════════════ */
+    .marquee-section {
+      border-top: 1.5px solid var(--w-dark);
+      border-bottom: 1.5px solid var(--w-dark);
+      overflow: hidden;
+      position: relative;
+      background: var(--w-surface);
+    }
+    .marquee-label {
+      position: absolute;
+      top: 50%;
+      left: 1.5rem;
+      transform: translateY(-50%);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .marquee-track {
+      display: flex;
+      gap: 6px;
+      padding: 6px 0;
+      width: max-content;
+      animation: marqueeScroll 28s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .marquee-thumb {
+      flex-shrink: 0;
+      width: 220px;
+      height: 148px;
+      position: relative;
+    }
+    .marquee-thumb .img-box { width: 100%; height: 100%; border-radius: 0; }
+    /* fade edges */
+    .marquee-section::before,
+    .marquee-section::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 100px;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .marquee-section::before {
+      left: 0;
+      background: linear-gradient(to right, var(--w-surface), transparent);
+    }
+    .marquee-section::after {
+      right: 0;
+      background: linear-gradient(to left, var(--w-surface), transparent);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       FULL-BLEED DIVIDER
+    ══════════════════════════════════════════════════════ */
+    .fullbleed-section {
+      position: relative;
+      height: 60vh;
+      min-height: 360px;
+      border-top: 1.5px solid var(--w-dark);
+      border-bottom: 1.5px solid var(--w-dark);
+      overflow: hidden;
+    }
+    .fullbleed-section .img-box {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 0;
+    }
+    .fullbleed-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(0,0,0,0.6) 0%,
+        rgba(0,0,0,0.25) 55%,
+        rgba(0,0,0,0.05) 100%
+      );
+      z-index: 1;
+    }
+    .fullbleed-content {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem;
+      max-width: 560px;
+    }
+    .fullbleed-content .wf-label { color: rgba(255,255,255,0.5); }
+    .fullbleed-content .wf-label::before { background: rgba(255,255,255,0.3); }
+    .fullbleed-content .wf-heading {
+      color: var(--w-white);
+      font-size: clamp(1.6rem, 3vw, 2.5rem);
+      margin-bottom: 1.25rem;
+    }
+    .fullbleed-content .wf-body { color: rgba(255,255,255,0.65); margin-bottom: 1.75rem; }
+    .fullbleed-annot {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      z-index: 3;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       STICKY SPLIT (imagem fixa + texto que rola)
+    ══════════════════════════════════════════════════════ */
+    .sticky-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1.5px solid var(--w-dark);
+    }
+    .sticky-split-img {
+      position: sticky;
+      top: 56px; /* nav height */
+      height: calc(100vh - 56px);
+      border-right: 1.5px solid var(--w-dark);
+    }
+    .sticky-split-img .img-box {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 0;
+    }
+    .sticky-split-img .img-label { bottom: 1rem; }
+    .sticky-split-scroll {
+      padding: 0;
+    }
+    .sticky-split-item {
+      padding: 3rem 2.5rem;
+      border-bottom: 1px solid var(--w-border);
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .sticky-split-item:last-child { border-bottom: none; }
+    .sticky-split-item .step-num {
+      margin: 0 0 1.25rem 0;
+    }
+    .sticky-split-annot {
+      position: sticky;
+      top: 60px;
+      z-index: 2;
+      padding: 0.5rem 2.5rem;
+      background: var(--w-bg);
+      border-bottom: 1px dashed var(--w-border);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       BENTO GRID
+    ══════════════════════════════════════════════════════ */
+    .bento-section { border-top: 1.5px solid var(--w-dark); padding: 3.5rem 0; }
+    .bento-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 1.75rem;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: 220px 220px 180px;
+      gap: 6px;
+    }
+    /* Cell definitions */
+    .bc-1  { grid-column: 1 / 6;  grid-row: 1; }   /* wide-left top */
+    .bc-2  { grid-column: 6 / 9;  grid-row: 1; }   /* medium center */
+    .bc-3  { grid-column: 9 / 13; grid-row: 1 / 3; } /* tall-right */
+    .bc-4  { grid-column: 1 / 4;  grid-row: 2 / 4; } /* tall-left */
+    .bc-5  { grid-column: 4 / 7;  grid-row: 2; }   /* medium */
+    .bc-6  { grid-column: 7 / 9;  grid-row: 2; }   /* small */
+    .bc-7  { grid-column: 4 / 7;  grid-row: 3; }   /* medium bottom */
+    .bc-8  { grid-column: 7 / 10; grid-row: 3; }   /* medium bottom */
+    .bc-9  { grid-column: 10/ 13; grid-row: 3; }   /* medium bottom */
+
+    .bento-cell {
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+    }
+    .bento-cell .img-box {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+    }
+    .bento-cell .photo-hover {
+      position: absolute;
+      inset: 0;
+      border: 2px solid var(--w-dark);
+      opacity: 0;
+      transition: opacity 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.08);
+      pointer-events: none;
+    }
+    .bento-cell:hover .photo-hover { opacity: 1; }
+    .bento-cell .photo-hover span {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--w-dark);
+      color: var(--w-white);
+      padding: 3px 8px;
+    }
+    /* size badge on bento cells */
+    .bento-size {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-family: var(--mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.08em;
+      color: var(--w-sub);
+      background: rgba(255,255,255,0.8);
+      padding: 2px 6px;
+      z-index: 2;
+    }
+
+    /* ─── Responsive ─────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .sobre-grid { grid-template-columns: 1fr; }
+      .sobre-img-wrap { max-width: 340px; }
+      .dif-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+      .steps::before, .steps::after { display: none; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .sticky-split { grid-template-columns: 1fr; }
+      .sticky-split-img { position: relative; height: 55vw; min-height: 280px; top: 0; border-right: none; border-bottom: 1.5px solid var(--w-dark); }
+      .bento-grid { grid-template-columns: repeat(6, 1fr); grid-template-rows: 180px 180px 180px 160px; }
+      .bc-1 { grid-column: 1/4; grid-row:1; }
+      .bc-2 { grid-column: 4/7; grid-row:1; }
+      .bc-3 { grid-column: 1/4; grid-row:2; }
+      .bc-4 { grid-column: 4/7; grid-row:2; }
+      .bc-5 { grid-column: 1/3; grid-row:3; }
+      .bc-6 { grid-column: 3/5; grid-row:3; }
+      .bc-7 { grid-column: 5/7; grid-row:3; }
+      .bc-8 { grid-column: 1/4; grid-row:4; }
+      .bc-9 { grid-column: 4/7; grid-row:4; }
+    }
+    @media (max-width: 640px) {
+      .wf-nav-links { display: none; }
+      .photo-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 140px; }
+      .span-wide { grid-column: span 1; }
+      .portfolio-header { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .dif-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .bento-grid { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, 160px); }
+      .bc-1,.bc-2,.bc-3,.bc-4,.bc-5,.bc-6,.bc-7,.bc-8,.bc-9 { grid-column: span 1; grid-row: span 1; }
+      .marquee-thumb { width: 160px; height: 110px; }
+    }
+    @media (max-width: 420px) {
+      .photo-grid { grid-template-columns: 1fr; grid-auto-rows: 200px; }
+      .span-tall { grid-row: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════
+       NAV
+  ══════════════════════════════════════════════════════ -->
+  <nav class="wf-nav" aria-label="Navegação">
+    <div class="wf-nav-logo">Lauri Reis Fotografia</div>
+
+    <ul class="wf-nav-links" role="list">
+      <li><a href="#portfolio">Portfólio</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#diferenciais">Diferenciais</a></li>
+      <li><a href="#processo">Como Funciona</a></li>
+    </ul>
+
+    <a href="#contato" class="wf-btn">Agendar sessão</a>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════════════ -->
+  <section class="hero-wf" id="hero" aria-label="Hero">
+    <!-- bg placeholder -->
+    <div class="hero-bg-box" aria-hidden="true">
+      <svg preserveAspectRatio="none" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="0" x2="100" y2="100" stroke="#BBBBBB" stroke-width="0.15" vector-effect="non-scaling-stroke"/>
+        <line x1="100" y1="0" x2="0" y2="100" stroke="#BBBBBB" stroke-width="0.15" vector-effect="non-scaling-stroke"/>
+      </svg>
+      <div class="hero-overlay-wf"></div>
+      <!-- dark overlay for readability -->
+      <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.38) 60%,rgba(0,0,0,0.1) 100%)"></div>
+    </div>
+
+    <div class="hero-content-wf">
+      <span class="annot" style="margin-bottom:1rem;display:inline-flex">eyebrow · localização</span><br><br>
+      <p class="hero-eyebrow-wf">Fotógrafa em Caçapava, SP</p>
+
+      <h1 class="hero-h1-wf">
+        Momentos simples que,<br>
+        registrados, se tornam<br>
+        <em>extraordinários.</em>
+      </h1>
+
+      <p class="hero-sub-wf">
+        Mais de 6 anos de histórias fotografadas — ensaios, eventos e coberturas
+        com olhar sensível para cada detalhe. Role para baixo e veja cada uma delas.
+      </p>
+
+      <div class="hero-actions-wf">
+        <span class="wf-btn filled">Explorar o portfólio</span>
+        <span class="wf-btn ghost">Agendar sessão</span>
+      </div>
+    </div>
+
+    <!-- scroll hint -->
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <span>Role</span>
+      <div class="scroll-arrow"><div class="scroll-dot"></div></div>
+    </div>
+
+    <!-- annotation -->
+    <div style="position:absolute;top:1rem;right:1rem;z-index:3">
+      <span class="annot">foto de fundo · placeholder</span>
+    </div>
+    <div style="position:absolute;bottom:1rem;left:1rem;z-index:3">
+      <span class="annot">hero · 100vh</span>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       MARQUEE / FILMSTRIP
+       ↳ faixa horizontal autoscroll entre hero e sobre
+  ══════════════════════════════════════════════════════ -->
+  <div class="marquee-section" aria-label="Galeria em movimento" aria-hidden="true">
+    <div class="marquee-track" id="marqueeTrack">
+      <!-- 10 thumbs × 2 (duplicados para loop infinito) -->
+      <div class="marquee-thumb"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">casamento</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%;background:#D0D0D0"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#AAAAAA" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#AAAAAA" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">15 anos</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%;background:#E4E4E4"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#C0C0C0" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#C0C0C0" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">newborn</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">infantil</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%;background:#C8C8C8"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#AAAAAA" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#AAAAAA" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">externo</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%;background:#E8E8E8"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#CCCCCC" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#CCCCCC" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">estúdio</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">chá bebê</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%;background:#D8D8D8"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#B0B0B0" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#B0B0B0" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">bodas</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%;background:#E0E0E0"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BEBEBE" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BEBEBE" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">retrato</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">família</span></div></div>
+      <!-- duplicatas para loop contínuo -->
+      <div class="marquee-thumb"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">casamento</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%;background:#D0D0D0"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#AAAAAA" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#AAAAAA" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">15 anos</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%;background:#E4E4E4"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#C0C0C0" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#C0C0C0" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">newborn</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">infantil</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%;background:#C8C8C8"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#AAAAAA" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#AAAAAA" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">externo</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%;background:#E8E8E8"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#CCCCCC" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#CCCCCC" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">estúdio</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">chá bebê</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%;background:#D8D8D8"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#B0B0B0" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#B0B0B0" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">bodas</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%;background:#E0E0E0"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BEBEBE" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BEBEBE" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">retrato</span></div></div>
+      <div class="marquee-thumb"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.06" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.06" vector-effect="non-scaling-stroke"/></svg><span class="img-label">família</span></div></div>
+    </div>
+    <div class="marquee-label">
+      <span class="annot">marquee · autoscroll</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SOBRE
+  ══════════════════════════════════════════════════════ -->
+  <section class="wf-section" id="sobre" aria-labelledby="sobre-h">
+    <div class="container">
+      <span class="section-annot">seção 02 · sobre</span>
+      <div class="sobre-grid">
+
+        <!-- Foto -->
+        <div class="sobre-img-wrap" style="position:relative;z-index:1">
+          <div class="sobre-img-box img-box" role="img" aria-label="Foto da fotógrafa Lauriane Reis">
+            <svg viewBox="0 0 100 130" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="0" y1="0" x2="100" y2="130" stroke="#BBBBBB" stroke-width="0.5" vector-effect="non-scaling-stroke"/>
+              <line x1="100" y1="0" x2="0" y2="130" stroke="#BBBBBB" stroke-width="0.5" vector-effect="non-scaling-stroke"/>
+            </svg>
+            <span class="img-label">foto · lauriane reis</span>
+          </div>
+          <div class="sobre-badge-wf" aria-label="Mais de 6 anos de experiência">
+            <strong>6+</strong>
+            <small>anos de<br>histórias</small>
+          </div>
+        </div>
+
+        <!-- Texto -->
+        <div class="sobre-text">
+          <p class="wf-label">Quem fotografa</p>
+          <h2 class="wf-heading" id="sobre-h">Sou uma contadora<br>de histórias.</h2>
+          <p>Meu nome é Lauriane Reis. Há anos venho descobrindo que a fotografia não é sobre a câmera — é sobre o que acontece antes do clique: a confiança que se constrói, o ambiente que se cria, o momento que se deixa viver.</p>
+          <p>Sou casada há 11 anos e mãe do Miguel. Isso me fez entender de perto o valor de cada fase — do primeiro sorriso ao primeiro aniversário, dos 15 anos ao casamento. Nenhum momento volta. Mas a foto, essa fica.</p>
+          <p>Sou paciente, brincalhona e me preocupo com cada detalhe da experiência. Por isso até as pessoas mais tímidas chegam receosas e saem com sorrisos que elas mesmas não esperavam dar.</p>
+          <p class="sobre-sig">— Lauriane Reis</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       PORTFOLIO
+  ══════════════════════════════════════════════════════ -->
+  <section class="wf-section" id="portfolio" aria-labelledby="portfolio-h">
+    <div class="container">
+      <span class="section-annot">seção 03 · portfólio com tabs</span>
+
+      <div class="portfolio-header">
+        <div>
+          <p class="wf-label">Portfólio</p>
+          <h2 class="wf-heading" id="portfolio-h">Cada história tem<br>o seu enquadramento.</h2>
+        </div>
+        <p class="wf-body" style="align-self:end">
+          Centenas de sessões realizadas em Caçapava e Vale do Paraíba. Escolha uma
+          categoria e mergulhe nas fotos.
+        </p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="wf-tabs" role="tablist" aria-label="Categorias do portfólio">
+        <button class="wf-tab active"  role="tab" data-tab="t1" aria-selected="true"  aria-controls="panel-t1">15 Anos</button>
+        <button class="wf-tab"         role="tab" data-tab="t2" aria-selected="false" aria-controls="panel-t2">Aniversário Infantil</button>
+        <button class="wf-tab"         role="tab" data-tab="t3" aria-selected="false" aria-controls="panel-t3">Chá de Bebê</button>
+        <button class="wf-tab"         role="tab" data-tab="t4" aria-selected="false" aria-controls="panel-t4">Ensaio Externo</button>
+        <button class="wf-tab"         role="tab" data-tab="t5" aria-selected="false" aria-controls="panel-t5">Estúdio</button>
+        <button class="wf-tab"         role="tab" data-tab="t6" aria-selected="false" aria-controls="panel-t6">Newborn Lifestyle</button>
+        <button class="wf-tab"         role="tab" data-tab="t7" aria-selected="false" aria-controls="panel-t7">Casamento &amp; Bodas</button>
+      </div>
+
+      <!-- Tab panels — all use the same grid structure -->
+
+      <!-- 15 Anos -->
+      <div class="tab-panel active" id="panel-t1" role="tabpanel">
+        <div class="photo-grid">
+          <!-- col 1: tall -->
+          <div class="photo-cell span-tall">
+            <div class="img-box" style="height:100%">
+              <svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg>
+              <span class="img-label">debutante · retrato</span>
+            </div>
+            <div class="photo-hover"><span>hover overlay</span></div>
+          </div>
+          <!-- col 2-3 -->
+          <div class="photo-cell">
+            <div class="img-box" style="height:100%">
+              <svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg>
+              <span class="img-label">festa · salão</span>
+            </div>
+            <div class="photo-hover"><span>hover overlay</span></div>
+          </div>
+          <div class="photo-cell">
+            <div class="img-box" style="height:100%">
+              <svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg>
+              <span class="img-label">detalhe · buquê</span>
+            </div>
+            <div class="photo-hover"><span>hover overlay</span></div>
+          </div>
+          <!-- wide -->
+          <div class="photo-cell span-wide">
+            <div class="img-box" style="height:100%">
+              <svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg>
+              <span class="img-label">valsa · momento</span>
+            </div>
+            <div class="photo-hover"><span>hover overlay</span></div>
+          </div>
+          <div class="photo-cell">
+            <div class="img-box" style="height:100%">
+              <svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg>
+              <span class="img-label">família</span>
+            </div>
+            <div class="photo-hover"><span>hover overlay</span></div>
+          </div>
+        </div>
+        <div class="grid-cta">
+          <span class="wf-btn muted">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Agendar sessão de 15 Anos
+          </span>
+        </div>
+      </div>
+
+      <!-- Infantil -->
+      <div class="tab-panel" id="panel-t2" role="tabpanel">
+        <div class="photo-grid">
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">smash cake</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell span-tall"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">criança · retrato</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">decoração</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell span-wide"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">família · parabéns</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">detalhe bolo</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+        </div>
+        <div class="grid-cta"><span class="wf-btn muted"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Agendar sessão Infantil</span></div>
+      </div>
+
+      <!-- Chá -->
+      <div class="tab-panel" id="panel-t3" role="tabpanel">
+        <div class="photo-grid">
+          <div class="photo-cell span-tall"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">mamãe · barriga</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">decoração · mesa</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">revelação gênero</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell span-wide"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">casal · expectativa</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">chá revelação</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+        </div>
+        <div class="grid-cta"><span class="wf-btn muted"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Agendar sessão Chá de Bebê</span></div>
+      </div>
+
+      <!-- Externo -->
+      <div class="tab-panel" id="panel-t4" role="tabpanel">
+        <div class="photo-grid">
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">natureza · luz natural</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">casal · campo</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell span-tall"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">retrato · golden hour</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell span-wide"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">família · vale do paraíba</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">ensaio externo</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+        </div>
+        <div class="grid-cta"><span class="wf-btn muted"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Agendar Ensaio Externo</span></div>
+      </div>
+
+      <!-- Estúdio -->
+      <div class="tab-panel" id="panel-t5" role="tabpanel">
+        <div class="photo-grid">
+          <div class="photo-cell span-tall"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">luz contínua</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">fundo branco</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">retrato profissional</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell span-wide"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">família · estúdio</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">produto</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+        </div>
+        <div class="grid-cta"><span class="wf-btn muted"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Agendar sessão de Estúdio</span></div>
+      </div>
+
+      <!-- Newborn -->
+      <div class="tab-panel" id="panel-t6" role="tabpanel">
+        <div class="photo-grid">
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">recém-nascido · lar</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell span-tall"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">mãe e bebê</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">mãozinha · close</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell span-wide"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">família · primeiros dias</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">sono · detalhe</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+        </div>
+        <div class="grid-cta"><span class="wf-btn muted"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Agendar sessão Newborn</span></div>
+      </div>
+
+      <!-- Casamento -->
+      <div class="tab-panel" id="panel-t7" role="tabpanel">
+        <div class="photo-grid">
+          <div class="photo-cell span-tall"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">cerimônia · altar</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">pre-wedding</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">troca de alianças</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">getting ready · noiva</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell span-tall"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">primeira dança</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+          <div class="photo-cell"><div class="img-box" style="height:100%"><svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BBBBBB" stroke-width="0.02" vector-effect="non-scaling-stroke"/></svg><span class="img-label">detalhes · buquê</span></div><div class="photo-hover"><span>hover overlay</span></div></div>
+        </div>
+        <div class="grid-cta"><span class="wf-btn muted"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Agendar sessão de Casamento</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       BENTO GRID
+       ↳ grade assimétrica de fotos — mais visual que masonry
+  ══════════════════════════════════════════════════════ -->
+  <section class="bento-section" aria-labelledby="bento-h">
+    <div class="container">
+      <span class="section-annot">padrão alternativo · bento grid</span>
+      <div class="bento-header">
+        <div>
+          <p class="wf-label">Destaques</p>
+          <h2 class="wf-heading" id="bento-h" style="font-size:clamp(1.4rem,2.5vw,2rem)">
+            Algumas das histórias<br>que mais ficaram.
+          </h2>
+        </div>
+        <span class="annot">grade 12 colunas · células variadas</span>
+      </div>
+
+      <div class="bento-grid">
+        <div class="bento-cell bc-1">
+          <div class="img-box" style="height:100%;background:#D4D4D4">
+            <svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#AAAAAA" stroke-width="0.04" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#AAAAAA" stroke-width="0.04" vector-effect="non-scaling-stroke"/></svg>
+            <span class="img-label">casamento · cerimônia</span>
+          </div>
+          <div class="photo-hover"><span>hover overlay</span></div>
+          <span class="bento-size">5 col · 1 row</span>
+        </div>
+
+        <div class="bento-cell bc-2">
+          <div class="img-box" style="height:100%;background:#E0E0E0">
+            <svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BEBEBE" stroke-width="0.04" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BEBEBE" stroke-width="0.04" vector-effect="non-scaling-stroke"/></svg>
+            <span class="img-label">debutante</span>
+          </div>
+          <div class="photo-hover"><span>hover overlay</span></div>
+          <span class="bento-size">3 col · 1 row</span>
+        </div>
+
+        <div class="bento-cell bc-3">
+          <div class="img-box" style="height:100%;background:#C8C8C8">
+            <svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#A0A0A0" stroke-width="0.04" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#A0A0A0" stroke-width="0.04" vector-effect="non-scaling-stroke"/></svg>
+            <span class="img-label">retrato · externo</span>
+          </div>
+          <div class="photo-hover"><span>hover overlay</span></div>
+          <span class="bento-size">4 col · 2 rows (tall)</span>
+        </div>
+
+        <div class="bento-cell bc-4">
+          <div class="img-box" style="height:100%;background:#CACACA">
+            <svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#A8A8A8" stroke-width="0.04" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#A8A8A8" stroke-width="0.04" vector-effect="non-scaling-stroke"/></svg>
+            <span class="img-label">família</span>
+          </div>
+          <div class="photo-hover"><span>hover overlay</span></div>
+          <span class="bento-size">3 col · 2 rows (tall)</span>
+        </div>
+
+        <div class="bento-cell bc-5">
+          <div class="img-box" style="height:100%;background:#DCDCDC">
+            <svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#BABABA" stroke-width="0.04" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#BABABA" stroke-width="0.04" vector-effect="non-scaling-stroke"/></svg>
+            <span class="img-label">newborn</span>
+          </div>
+          <div class="photo-hover"><span>hover overlay</span></div>
+          <span class="bento-size">3 col · 1 row</span>
+        </div>
+
+        <div class="bento-cell bc-6">
+          <div class="img-box" style="height:100%;background:#E8E8E8">
+            <svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#C4C4C4" stroke-width="0.04" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#C4C4C4" stroke-width="0.04" vector-effect="non-scaling-stroke"/></svg>
+            <span class="img-label">infantil</span>
+          </div>
+          <div class="photo-hover"><span>hover overlay</span></div>
+          <span class="bento-size">2 col · 1 row</span>
+        </div>
+
+        <div class="bento-cell bc-7">
+          <div class="img-box" style="height:100%;background:#D6D6D6">
+            <svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#B4B4B4" stroke-width="0.04" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#B4B4B4" stroke-width="0.04" vector-effect="non-scaling-stroke"/></svg>
+            <span class="img-label">estúdio</span>
+          </div>
+          <div class="photo-hover"><span>hover overlay</span></div>
+          <span class="bento-size">3 col · 1 row</span>
+        </div>
+
+        <div class="bento-cell bc-8">
+          <div class="img-box" style="height:100%;background:#E2E2E2">
+            <svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#C0C0C0" stroke-width="0.04" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#C0C0C0" stroke-width="0.04" vector-effect="non-scaling-stroke"/></svg>
+            <span class="img-label">chá bebê</span>
+          </div>
+          <div class="photo-hover"><span>hover overlay</span></div>
+          <span class="bento-size">3 col · 1 row</span>
+        </div>
+
+        <div class="bento-cell bc-9">
+          <div class="img-box" style="height:100%;background:#D0D0D0">
+            <svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1="0" y1="0" x2="1" y2="1" stroke="#AEAEAE" stroke-width="0.04" vector-effect="non-scaling-stroke"/><line x1="1" y1="0" x2="0" y2="1" stroke="#AEAEAE" stroke-width="0.04" vector-effect="non-scaling-stroke"/></svg>
+            <span class="img-label">bodas</span>
+          </div>
+          <div class="photo-hover"><span>hover overlay</span></div>
+          <span class="bento-size">3 col · 1 row</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       FULL-BLEED DIVIDER
+       ↳ imagem de largura total, 60vh, com texto sobre
+  ══════════════════════════════════════════════════════ -->
+  <div class="fullbleed-section" aria-label="Imagem de destaque full-bleed">
+    <div class="img-box" style="position:absolute;inset:0;border:none;background:#BEBEBE">
+      <svg viewBox="0 0 1 1" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">
+        <line x1="0" y1="0" x2="1" y2="1" stroke="#999" stroke-width="0.01" vector-effect="non-scaling-stroke"/>
+        <line x1="1" y1="0" x2="0" y2="1" stroke="#999" stroke-width="0.01" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </div>
+    <div class="fullbleed-overlay"></div>
+    <div class="fullbleed-content">
+      <p class="wf-label">Ensaio externo</p>
+      <h2 class="wf-heading">Luz natural,<br>cenário aberto,<br>você sendo você.</h2>
+      <p class="wf-body">Uma linha de subtítulo descrevendo a categoria de ensaio.</p>
+      <span class="wf-btn ghost">Ver ensaios externos</span>
+    </div>
+    <div class="fullbleed-annot">
+      <span class="annot">full-bleed · 60vh · texto sobre imagem</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       DIFERENCIAIS
+  ══════════════════════════════════════════════════════ -->
+  <section class="dif-section" id="diferenciais" aria-labelledby="dif-h">
+    <div class="container">
+      <span class="section-annot" style="color:rgba(255,255,255,0.3);border-color:rgba(255,255,255,0.2)">seção 04 · diferenciais</span>
+      <p class="wf-label">Por que a Lauri</p>
+      <h2 class="wf-heading" id="dif-h">A foto bonita qualquer câmera tira.<br>A experiência, só eu ofereço.</h2>
+
+      <div class="dif-grid">
+
+        <div class="dif-card">
+          <div class="dif-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          </div>
+          <p class="dif-card-title">Especialista com crianças</p>
+          <p class="dif-card-desc">Paciente, brincalhona e com jogo de cintura — as crianças mais agitadas relaxam e sorriem de verdade.</p>
+        </div>
+
+        <div class="dif-card">
+          <div class="dif-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <p class="dif-card-title">Newborn no seu lar</p>
+          <p class="dif-card-desc">Nada de estúdio frio para recém-nascidos. A sessão acontece em casa, no ritmo do bebê e da família.</p>
+        </div>
+
+        <div class="dif-card">
+          <div class="dif-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <p class="dif-card-title">Caçapava e região</p>
+          <p class="dif-card-desc">Atendo em estúdio e em locações externas em toda a região do Vale do Paraíba.</p>
+        </div>
+
+        <div class="dif-card">
+          <div class="dif-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <p class="dif-card-title">Experiência pensada</p>
+          <p class="dif-card-desc">Do agendamento à entrega, cada etapa é cuidada para que você só precise aparecer e aproveitar.</p>
+        </div>
+
+        <div class="dif-card">
+          <div class="dif-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+          </div>
+          <p class="dif-card-title">Galeria online exclusiva</p>
+          <p class="dif-card-desc">As fotos editadas são entregues em galeria privada, prontas para salvar, imprimir e guardar para sempre.</p>
+        </div>
+
+        <div class="dif-card">
+          <div class="dif-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          </div>
+          <p class="dif-card-title">Atendimento próximo</p>
+          <p class="dif-card-desc">Tudo começa por uma conversa no WhatsApp — sem formulários, sem burocracia.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       STICKY SPLIT — Como Funciona
+       ↳ imagem fixa à esquerda enquanto etapas rolam à direita
+  ══════════════════════════════════════════════════════ -->
+  <section class="sticky-split" id="processo" aria-labelledby="processo-h">
+
+    <!-- Coluna esquerda: imagem fixa -->
+    <div class="sticky-split-img" aria-hidden="true">
+      <div class="img-box" style="height:100%;background:#CDCDCD">
+        <svg viewBox="0 0 1 1" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">
+          <line x1="0" y1="0" x2="1" y2="1" stroke="#AAAAAA" stroke-width="0.03" vector-effect="non-scaling-stroke"/>
+          <line x1="1" y1="0" x2="0" y2="1" stroke="#AAAAAA" stroke-width="0.03" vector-effect="non-scaling-stroke"/>
+        </svg>
+        <span class="img-label">sessão · foto de processo</span>
+      </div>
+      <!-- Annotation sobre a imagem sticky -->
+      <div style="position:absolute;top:1rem;left:1rem;z-index:2">
+        <span class="annot">sticky · fica fixo no scroll</span>
+      </div>
+    </div>
+
+    <!-- Coluna direita: etapas que rolam -->
+    <div class="sticky-split-scroll">
+      <!-- Header fixo no topo da coluna -->
+      <div class="sticky-split-annot">
+        <span class="section-annot" style="margin:0">seção 05 · como funciona · sticky split</span>
+      </div>
+
+      <div class="sticky-split-item" style="padding-top:2.5rem">
+        <p class="wf-label">O processo</p>
+        <h2 class="wf-heading" id="processo-h" style="font-size:clamp(1.5rem,2.8vw,2.25rem)">
+          Da conversa à lembrança, com cuidado em cada etapa.
+        </h2>
+      </div>
+
+      <div class="sticky-split-item">
+        <div class="step-num" style="margin:0 0 1rem 0">01</div>
+        <h3 class="step-title">Conversa inicial</h3>
+        <p class="step-desc">Tudo começa pelo WhatsApp. Você conta o que imagina, eu conto o que posso criar — e juntos encontramos o melhor caminho para a sua sessão.</p>
+      </div>
+
+      <div class="sticky-split-item">
+        <div class="step-num" style="margin:0 0 1rem 0">02</div>
+        <h3 class="step-title">Planejamento</h3>
+        <p class="step-desc">Data, local, look, clima. Cuido de cada detalhe com você antes do dia — para que na hora da sessão o único trabalho seja aparecer e aproveitar.</p>
+      </div>
+
+      <div class="sticky-split-item">
+        <div class="step-num" style="margin:0 0 1rem 0">03</div>
+        <h3 class="step-title">A sessão</h3>
+        <p class="step-desc">Ambiente leve, sem pressa e com muita cumplicidade. Você não vai sentir que está "posando" — vai sentir que está vivendo um momento bonito.</p>
+      </div>
+
+      <div class="sticky-split-item">
+        <div class="step-num" style="margin:0 0 1rem 0">04</div>
+        <h3 class="step-title">Entrega</h3>
+        <p class="step-desc">Fotos editadas em galeria online exclusiva. Prontas para salvar, imprimir e passar de geração em geração.</p>
+        <div style="margin-top:1.5rem">
+          <span class="wf-btn">Agendar minha sessão</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       QUOTE
+  ══════════════════════════════════════════════════════ -->
+  <section class="quote-section" aria-label="Frase de impacto">
+    <div class="quote-pattern" aria-hidden="true"></div>
+    <span class="section-annot" style="position:absolute;top:1.5rem;left:2.5rem;z-index:1">seção 06 · frase de impacto</span>
+    <div class="quote-inner">
+      <span class="quote-mark-wf" aria-hidden="true">"</span>
+      <p class="quote-text-wf">
+        Momentos simples que, registrados, se tornam extraordinários.
+        Para mim, a fotografia é a forma mais bela de contar uma história —
+        ela exige que momentos sejam vividos.
+      </p>
+      <p class="quote-author-wf">— Lauriane Reis</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       CTA FINAL
+  ══════════════════════════════════════════════════════ -->
+  <section class="cta-section" id="contato" aria-labelledby="cta-h">
+    <span class="section-annot" style="justify-content:center;display:flex">seção 07 · cta final</span>
+    <p class="wf-label" style="justify-content:center;margin-top:0.5rem">Vamos conversar?</p>
+    <h2 class="wf-heading" id="cta-h">Pronta para criar<br>a sua lembrança?</h2>
+    <p class="wf-body">
+      Entre em contato pelo WhatsApp e vamos conversar sobre a sua sessão.
+      Sem compromisso — só uma boa conversa.
+    </p>
+    <span class="wf-btn filled" style="margin-top:0.25rem">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Falar no WhatsApp
+    </span>
+    <div class="cta-info-row">
+      <span class="cta-info-item">(12) 99114-5743</span>
+      <span class="cta-info-item">Caçapava, SP</span>
+      <span class="cta-info-item">Seg–Sex 08h–18h / Sáb 08h–11h</span>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════════ -->
+  <footer class="wf-footer" aria-label="Rodapé">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">Lauri Reis Fotografia</div>
+        <p class="footer-desc">Fotógrafa em Caçapava, SP. Mais de 6 anos registrando histórias com sensibilidade e cuidado.</p>
+        <div class="footer-social">
+          <div class="footer-social-btn" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <div class="footer-social-btn" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <span class="footer-col-label">Navegação</span>
+        <ul>
+          <li>Portfólio</li>
+          <li>Sobre</li>
+          <li>Diferenciais</li>
+          <li>Como Funciona</li>
+          <li>Contato</li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <span class="footer-col-label">Categorias</span>
+        <ul>
+          <li>15 Anos</li>
+          <li>Aniversário Infantil</li>
+          <li>Newborn Lifestyle</li>
+          <li>Casamento &amp; Bodas</li>
+          <li>Ensaio Externo</li>
+          <li>Estúdio</li>
+          <li>Chá de Bebê</li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <span class="footer-col-label">Endereço</span>
+        <address class="footer-address">
+          R. Dom Pedro II, 170 Sala 6<br>
+          Vila Resende<br>
+          Caçapava – SP<br><br>
+          (12) 99114-5743
+        </address>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Lauri Reis Fotografia · Todos os direitos reservados</span>
+      <span class="annot">seção 08 · footer</span>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Tab switching ── */
+    document.querySelectorAll('.wf-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.tab;
+        document.querySelectorAll('.wf-tab').forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        document.getElementById('panel-' + id).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

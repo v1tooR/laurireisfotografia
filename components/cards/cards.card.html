@@ -1,0 +1,33 @@
+<!-- @dsCard group="Components" viewport="700x460" name="Service Card" subtitle="Signature photo card — hover to reveal" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-body); background: var(--lr-paper); padding: 24px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+</style>
+</head>
+<body>
+  <div class="grid" id="grid"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+  function lrNS(test){for(const k of Object.getOwnPropertyNames(window)){let v;try{v=window[k];}catch(e){continue;}if(v&&typeof v==="object"&&test(v))return v;}return {};}
+  const NS = lrNS(v => v.ServiceCard);
+  const { ServiceCard } = NS;
+  const e = React.createElement;
+  const data = [
+    { image:"../../assets/imagery/15-anos.jpg", eyebrow:"Debutante", title:"15 Anos", description:"A festa, o vestido, o brilho — do ensaio à pista." },
+    { image:"../../assets/imagery/newborn.jpg", eyebrow:"Lifestyle", title:"Newborn", description:"Os primeiros dias em casa, com calma e afeto." },
+    { image:"../../assets/imagery/ensaio-externo.jpg", eyebrow:"Ensaio", title:"Externo", description:"Luz natural e cenários ao ar livre." },
+  ];
+  ReactDOM.createRoot(document.getElementById("grid")).render(
+    data.map((d,i)=>e(ServiceCard,{key:i,...d}))
+  );
+</script>
+</body>
+</html>

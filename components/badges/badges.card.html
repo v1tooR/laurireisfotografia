@@ -1,0 +1,41 @@
+<!-- @dsCard group="Components" viewport="700x150" name="Badges" subtitle="Category & status pills" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-body); background: var(--lr-paper); }
+  .panel { padding: 24px 30px; display:flex; flex-direction:column; gap:16px; }
+  .row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+  .dark { background: var(--lr-navy-deep); padding: 18px 30px; }
+</style>
+</head>
+<body>
+  <div class="panel">
+    <div class="row" id="r1"></div>
+  </div>
+  <div class="dark"><div class="row" id="r2"></div></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+  function lrNS(test){for(const k of Object.getOwnPropertyNames(window)){let v;try{v=window[k];}catch(e){continue;}if(v&&typeof v==="object"&&test(v))return v;}return {};}
+  const NS = lrNS(v => v.Badge);
+  const { Badge } = NS;
+  const e = React.createElement;
+  ReactDOM.createRoot(document.getElementById("r1")).render([
+    e(Badge,{key:1,variant:"gold"},"15 Anos"),
+    e(Badge,{key:2,variant:"soft"},"Estúdio"),
+    e(Badge,{key:3,variant:"rose"},"Newborn"),
+    e(Badge,{key:4,variant:"slate"},"Cha de Bebê"),
+    e(Badge,{key:5,variant:"navy"},"Premium"),
+  ]);
+  ReactDOM.createRoot(document.getElementById("r2")).render([
+    e(Badge,{key:1,variant:"gold"},"Ensaio Externo"),
+    e(Badge,{key:2,variant:"gold-outline"},"Aniversário"),
+  ]);
+</script>
+</body>
+</html>

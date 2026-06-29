@@ -1,0 +1,36 @@
+/* Typography — Lauri Reis Fotografia
+   Centaur (→ EB Garamond) for display/titles/badges.
+   Montserrat for body, descriptions, UI. */
+:root {
+  --font-display: "EB Garamond", "Centaur", "Cormorant Garamond", Georgia, serif;
+  --font-body: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+
+  /* Weights */
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* Display scale (serif) */
+  --t-display-xl: 72px;
+  --t-display-lg: 54px;
+  --t-display-md: 40px;
+  --t-display-sm: 30px;
+
+  /* Body scale (sans) */
+  --t-lead: 20px;
+  --t-body: 16px;
+  --t-small: 14px;
+  --t-caption: 12px;
+
+  /* Letter-spacing — wide tracking on sans labels is a brand signature */
+  --ls-label: 0.22em;     /* uppercase eyebrows, badges, nav */
+  --ls-label-tight: 0.14em;
+  --ls-display: 0.01em;
+
+  /* Line height */
+  --lh-display: 1.08;
+  --lh-body: 1.65;
+  --lh-tight: 1.2;
+}

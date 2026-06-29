@@ -1,0 +1,24 @@
+/* Spacing & layout — Lauri Reis Fotografia
+   8px base grid; generous, editorial whitespace. */
+:root {
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+  --sp-9: 96px;
+  --sp-10: 128px;
+
+  --container-max: 1200px;
+  --gutter: 32px;
+  --section-y: 96px;
+
+  /* Corner radii — restrained; the brand reads classic, not bubbly */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-pill: 999px;
+}

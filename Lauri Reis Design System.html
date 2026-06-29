@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lauri Reis Fotografia — Design System</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font-family: var(--font-body); color: var(--lr-navy-deep); background: var(--lr-paper); }
+  img { display: block; }
+  ::selection { background: var(--lr-gold); color: var(--lr-navy-deep); }
+
+  /* ---- Shell / tabs ---- */
+  .topbar { position: sticky; top: 0; z-index: 60; background: rgba(15,32,48,0.94);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(200,168,75,0.18); }
+  .topbar-in { max-width: 1200px; margin: 0 auto; padding: 0 48px; height: 72px; display: flex; align-items: center; justify-content: space-between; }
+  .topbar img { height: 24px; }
+  .tabs { display: flex; gap: 8px; }
+  .tab { background: transparent; color: rgba(255,255,255,0.8); border: none; cursor: pointer; font-size: 12px;
+    font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; padding: 9px 18px; border-radius: 999px; transition: all .2s var(--ease-out); }
+  .tab:hover { color: #fff; }
+  .tab.active { background: var(--lr-gold); color: var(--lr-navy-deep); }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ---- Buttons ---- */
+  .btn { font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; border-radius: var(--radius-sm); cursor: pointer;
+    border: 1px solid transparent; display: inline-flex; align-items: center; justify-content: center; gap: 10px; line-height: 1;
+    text-decoration: none; white-space: nowrap; padding: 13px 28px; font-size: 12px; font-family: var(--font-body);
+    transition: background .28s var(--ease-out), color .28s var(--ease-out), border-color .28s var(--ease-out); }
+  .btn.sm { padding: 9px 18px; font-size: 11px; }
+  .btn.lg { padding: 17px 38px; font-size: 13px; }
+  .btn-gold { background: var(--lr-gold); color: var(--lr-navy-deep); }
+  .btn-gold:hover { background: var(--lr-gold-deep); color: #fff; }
+  .btn-outline { background: transparent; color: var(--lr-gold); border-color: var(--hairline-gold); }
+  .btn-outline:hover { background: var(--lr-gold); color: var(--lr-navy-deep); }
+  .btn-outline-light { background: transparent; color: #fff; border-color: rgba(255,255,255,0.4); }
+  .btn-outline-light:hover { background: #fff; color: var(--lr-navy-deep); }
+  .btn-dark { background: var(--lr-navy-deep); color: #fff; }
+  .btn-dark:hover { background: var(--lr-navy); }
+  .btn-ghost { background: transparent; color: var(--lr-navy-deep); border-color: var(--border-on-light); }
+  .btn-ghost:hover { background: var(--lr-navy-deep); color: #fff; }
+
+  /* ---- Badge ---- */
+  .badge { display: inline-flex; align-items: center; gap: 7px; font-weight: 600; font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; padding: 6px 13px; border-radius: 999px; line-height: 1; white-space: nowrap; }
+  .badge-gold { background: var(--lr-gold); color: var(--lr-navy-deep); }
+  .badge-gold-outline { background: transparent; color: var(--lr-gold); border: 1px solid var(--hairline-gold); }
+  .badge-navy { background: var(--lr-navy-deep); color: #fff; }
+  .badge-rose { background: var(--lr-rose); color: var(--lr-navy-deep); }
+  .badge-slate { background: var(--lr-slate); color: var(--lr-navy-deep); }
+  .badge-soft { background: rgba(200,168,75,0.14); color: var(--lr-gold-deep); }
+
+  /* ---- Service card ---- */
+  .scard { position: relative; display: block; aspect-ratio: 3 / 4; border-radius: var(--radius-md); overflow: hidden;
+    text-decoration: none; box-shadow: var(--shadow-md); transition: transform .28s var(--ease-out), box-shadow .28s var(--ease-out); cursor: pointer; }
+  .scard:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .scard .img { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform .52s var(--ease-out); }
+  .scard:hover .img { transform: scale(1.05); }
+  .scard .scrim { position: absolute; inset: 0; background: var(--scrim-bottom); }
+  .scard .frame { position: absolute; inset: 12px; border: 1px solid rgba(255,255,255,0.28); border-radius: 2px; pointer-events: none; opacity: .55; transition: opacity .28s var(--ease-out); }
+  .scard:hover .frame { opacity: 1; }
+  .scard .cap { position: absolute; left: 24px; right: 24px; bottom: 22px; }
+  .scard .eb { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--lr-gold); margin-bottom: 8px; }
+  .scard .ti { font-family: var(--font-display); font-size: 28px; font-weight: 500; line-height: 1.1; color: #fff; }
+  .scard .de { font-weight: 300; font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.82); margin-top: 8px; max-height: 0; opacity: 0; overflow: hidden; transition: max-height .28s var(--ease-out), opacity .28s var(--ease-out); }
+  .scard:hover .de { max-height: 90px; opacity: 1; }
+
+  /* ---- Field ---- */
+  .field label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--lr-ink-400); margin-bottom: 4px; }
+  .field .req { color: var(--lr-gold); }
+  .field input, .field textarea { width: 100%; font-family: var(--font-body); font-size: 15px; color: var(--lr-navy-deep);
+    background: transparent; border: none; border-bottom: 1px solid var(--border-on-light); padding: 10px 2px; outline: none; transition: border-color .28s var(--ease-out); }
+  .field input:focus, .field textarea:focus { border-color: var(--lr-gold); }
+  .field textarea { resize: vertical; min-height: 96px; }
+
+  /* ---- Layout helpers ---- */
+  .sec { padding: 88px 48px; }
+  .in { max-width: 1200px; margin: 0 auto; }
+  .in-narrow { max-width: 1100px; margin: 0 auto; }
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--lr-gold); margin-bottom: 12px; }
+  .eyebrow.deep { color: var(--lr-gold-deep); }
+  .h2 { font-family: var(--font-display); font-size: 44px; font-weight: 500; line-height: 1.08; margin: 0; }
+  .sub { font-weight: 300; font-size: 16px; line-height: 1.65; color: var(--lr-ink-600); margin-top: 16px; max-width: 560px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 48px; }
+  .gallery button { border: none; padding: 0; cursor: pointer; aspect-ratio: 3/4; border-radius: var(--radius-md); overflow: hidden; background: #000; }
+  .gallery button:nth-child(5n+1) { aspect-ratio: 1/1; }
+  .gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform .52s var(--ease-out); }
+  .gallery button:hover img { transform: scale(1.06); }
+
+  /* ---- Foundations ---- */
+  .swatches { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
+  .sw .chip { height: 96px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+  .sw .nm { font-size: 13px; font-weight: 600; margin-top: 10px; }
+  .sw .hx { font-size: 12px; color: var(--lr-ink-400); }
+  .logo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .logo-cell { height: 150px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md); }
+  .logo-cell.dark { background: var(--lr-navy-deep); }
+  .logo-cell.light { background: var(--lr-paper-card); border: 1px solid var(--border-on-light); }
+  .comp-block { margin-bottom: 48px; }
+  .comp-title { font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--lr-gold-deep);
+    margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--border-on-light); }
+  .row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+
+  /* ---- Lightbox ---- */
+  .lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(8,16,24,0.92); display: none; align-items: center; justify-content: center; padding: 40px; cursor: zoom-out; }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 90%; max-height: 90%; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); }
+
+  @media (max-width: 860px) {
+    .topbar-in, .sec { padding-left: 22px; padding-right: 22px; }
+    .grid3, .gallery, .swatches { grid-template-columns: repeat(2, 1fr); }
+    .about-grid, .contact-grid, .type-grid, .logo-grid { grid-template-columns: 1fr !important; }
+    .h1 { font-size: 40px !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <img src="assets/logo/lr-logo-white.svg" alt="Lauri Reis Fotografia">
+    <nav class="tabs">
+      <button class="tab active" data-tab="site">Site</button>
+      <button class="tab" data-tab="foundations">Fundações</button>
+      <button class="tab" data-tab="components">Componentes</button>
+    </nav>
+  </div>
+</div>
+
+<!-- ============================ SITE ============================ -->
+<div class="panel active" id="panel-site">
+  <!-- hero -->
+  <section style="position:relative; min-height:600px; display:flex; align-items:center; overflow:hidden;">
+    <div style="position:absolute; inset:0; background-image:url('assets/imagery/15-anos.jpg'); background-size:cover; background-position:center 30%;"></div>
+    <div style="position:absolute; inset:0; background:linear-gradient(105deg, rgba(15,32,48,0.92) 0%, rgba(15,32,48,0.66) 45%, rgba(15,32,48,0.25) 100%);"></div>
+    <div style="position:relative; max-width:1200px; margin:0 auto; padding:0 48px; width:100%;">
+      <div style="max-width:560px;">
+        <span class="badge badge-gold-outline">Fotografia de afeto</span>
+        <h1 class="h1" style="font-family:var(--font-display); font-size:60px; font-weight:500; line-height:1.04; color:#fff; margin:22px 0 0;">Momentos que <em style="color:var(--lr-gold);">ficam</em> para sempre</h1>
+        <p style="font-weight:300; font-size:18px; line-height:1.65; color:rgba(255,255,255,0.86); margin:24px 0 36px; max-width:470px;">Ensaios e coberturas com olhar autoral — do newborn aos 15 anos, cada história contada com luz, tempo e sensibilidade.</p>
+        <div class="row">
+          <a class="btn btn-gold lg" href="#" data-goto="contato">Agendar ensaio</a>
+          <a class="btn btn-outline-light lg" href="#" data-goto="portfolio">Ver portfólio</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- services -->
+  <section class="sec" style="background:var(--lr-paper);">
+    <div class="in">
+      <div class="eyebrow">O que registramos</div>
+      <h2 class="h2">Serviços para cada capítulo</h2>
+      <p class="sub">Da chegada do bebê às grandes comemorações — pacotes pensados para o seu momento.</p>
+      <div class="grid3" id="services"></div>
+    </div>
+  </section>
+
+  <!-- portfolio -->
+  <section class="sec" id="portfolio" style="background:var(--lr-navy-deep);">
+    <div class="in">
+      <div class="eyebrow">Portfólio</div>
+      <h2 class="h2" style="color:#fff;">Histórias recentes</h2>
+      <p class="sub" style="color:rgba(255,255,255,0.74);">Uma seleção de ensaios e coberturas. Clique para ampliar.</p>
+      <div class="gallery" id="gallery"></div>
+    </div>
+  </section>
+
+  <!-- about -->
+  <section class="sec" style="background:var(--lr-paper);">
+    <div class="in about-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;">
+      <div style="position:relative; aspect-ratio:4/5; border-radius:var(--radius-md); overflow:hidden; box-shadow:var(--shadow-lg);">
+        <img src="assets/imagery/estudio-2.jpg" alt="" style="width:100%; height:100%; object-fit:cover;">
+        <div style="position:absolute; inset:14px; border:1px solid rgba(255,255,255,0.4); border-radius:2px;"></div>
+      </div>
+      <div>
+        <span class="badge badge-soft">Sobre</span>
+        <h2 class="h2" style="font-size:42px; margin-top:18px;">Olhar autoral, conforto de verdade</h2>
+        <p style="font-size:16px; line-height:1.7; color:var(--lr-ink-600); margin:22px 0;">Cada ensaio começa com uma conversa — entender quem você é antes de apontar a câmera. O resultado são imagens naturais, quentes e atemporais, que parecem você no seu melhor dia.</p>
+        <div style="display:flex; gap:48px; margin:32px 0 36px;">
+          <div><div style="font-family:var(--font-display); font-size:38px; font-weight:500; color:var(--lr-gold-deep); line-height:1;">+8</div><div style="font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--lr-ink-400); margin-top:8px;">anos de estrada</div></div>
+          <div><div style="font-family:var(--font-display); font-size:38px; font-weight:500; color:var(--lr-gold-deep); line-height:1;">+600</div><div style="font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--lr-ink-400); margin-top:8px;">famílias atendidas</div></div>
+          <div><div style="font-family:var(--font-display); font-size:38px; font-weight:500; color:var(--lr-gold-deep); line-height:1;">6</div><div style="font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--lr-ink-400); margin-top:8px;">tipos de ensaio</div></div>
+        </div>
+        <a class="btn btn-gold" href="#" data-goto="contato">Vamos conversar</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- contact -->
+  <section class="sec" id="contato" style="background:var(--lr-navy-deep);">
+    <div class="in contact-grid" style="max-width:1000px; display:grid; grid-template-columns:0.8fr 1fr; gap:64px;">
+      <div>
+        <span class="badge badge-gold-outline">Contato</span>
+        <h2 class="h2" style="font-size:40px; color:#fff; margin-top:18px;">Vamos eternizar o seu momento</h2>
+        <p style="font-weight:300; font-size:15px; line-height:1.7; color:rgba(255,255,255,0.78); margin:20px 0 28px;">Conte o que você imagina e retornamos com disponibilidade e pacotes em até 24h.</p>
+        <div style="margin-bottom:18px;"><div style="font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--lr-gold);">E-mail</div><div style="font-family:var(--font-display); font-size:22px; color:#fff; margin-top:4px;">ola@laurireis.com.br</div></div>
+        <div style="margin-bottom:18px;"><div style="font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--lr-gold);">WhatsApp</div><div style="font-family:var(--font-display); font-size:22px; color:#fff; margin-top:4px;">(11) 9 0000-0000</div></div>
+        <div style="margin-bottom:18px;"><div style="font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--lr-gold);">Estúdio</div><div style="font-family:var(--font-display); font-size:22px; color:#fff; margin-top:4px;">São Paulo · SP</div></div>
+      </div>
+      <form id="contactForm" style="background:var(--lr-paper-card); border-radius:var(--radius-md); padding:36px; display:grid; gap:22px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px;">
+          <div class="field"><label>Nome <span class="req">*</span></label><input placeholder="Seu nome completo" required></div>
+          <div class="field"><label>Telefone</label><input placeholder="(00) 0 0000-0000"></div>
+        </div>
+        <div class="field"><label>Tipo de ensaio</label><input placeholder="15 anos, newborn, externo…"></div>
+        <div class="field"><label>Mensagem</label><textarea placeholder="Conte sobre o momento que deseja registrar"></textarea></div>
+        <button type="submit" class="btn btn-gold lg" style="width:100%;">Enviar pedido</button>
+        <div id="sentMsg" style="display:none; font-size:14px; color:var(--lr-gold-deep); font-weight:600; letter-spacing:0.04em;">Recebido! Retornamos em breve ✓</div>
+      </form>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer style="background:#0A1622; padding:40px 48px; border-top:1px solid rgba(200,168,75,0.18);">
+    <div class="in" style="display:flex; align-items:center; justify-content:space-between;">
+      <img src="assets/logo/lr-symbol-gold.svg" alt="LR" style="height:44px;">
+      <span style="font-size:12px; letter-spacing:0.1em; color:rgba(255,255,255,0.5);">© Lauri Reis Fotografia — todos os momentos reservados</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================ FOUNDATIONS ============================ -->
+<div class="panel" id="panel-foundations">
+  <section class="sec" style="background:var(--lr-paper); padding-top:72px;">
+    <div class="in-narrow">
+      <div class="eyebrow deep">Paleta</div>
+      <h2 class="h2" style="font-size:38px;">Cores da marca</h2>
+      <div class="swatches" style="margin-top:32px;">
+        <div class="sw"><div class="chip" style="background:#0F2030;"></div><div class="nm">Navy Deep</div><div class="hx">#0F2030</div></div>
+        <div class="sw"><div class="chip" style="background:#1E3448;"></div><div class="nm">Navy</div><div class="hx">#1E3448</div></div>
+        <div class="sw"><div class="chip" style="background:#C8A84B;"></div><div class="nm">Gold</div><div class="hx">#C8A84B</div></div>
+        <div class="sw"><div class="chip" style="background:#625225;"></div><div class="nm">Gold Deep</div><div class="hx">#625225</div></div>
+        <div class="sw"><div class="chip" style="background:#A8BECE;"></div><div class="nm">Slate</div><div class="hx">#A8BECE</div></div>
+        <div class="sw"><div class="chip" style="background:#DDB8B8;"></div><div class="nm">Rose</div><div class="hx">#DDB8B8</div></div>
+      </div>
+      <div style="margin-top:24px; height:56px; border-radius:var(--radius-md); background:var(--lr-gradient-gold); display:flex; align-items:center; padding-left:20px;">
+        <span style="font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:#fff; font-weight:600;">Gradiente assinatura · #C8A84B → #625225</span>
+      </div>
+
+      <div style="height:72px;"></div>
+      <div class="eyebrow deep">Tipografia</div>
+      <h2 class="h2" style="font-size:38px;">Centaur + Montserrat</h2>
+      <div class="type-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; margin-top:32px;">
+        <div>
+          <div style="font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--lr-ink-400); margin-bottom:12px;">Display — EB Garamond (Centaur)</div>
+          <div style="font-family:var(--font-display); font-size:46px; font-weight:500; line-height:1.05;">Momentos que ficam</div>
+          <div style="font-family:var(--font-display); font-size:26px; font-style:italic; color:var(--lr-ink-600); margin-top:4px;">eternizados em luz</div>
+        </div>
+        <div>
+          <div style="font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--lr-ink-400); margin-bottom:12px;">Texto — Montserrat</div>
+          <p style="font-weight:300; font-size:18px; line-height:1.6; color:var(--lr-ink-600); margin:0;">Cada ensaio começa com uma conversa — entender quem você é antes de apontar a câmera.</p>
+          <div style="display:flex; gap:24px; margin-top:18px;">
+            <span style="font-weight:300; font-size:15px;">Light</span>
+            <span style="font-weight:400; font-size:15px;">Regular</span>
+            <span style="font-weight:600; font-size:15px;">Semibold</span>
+            <span style="font-weight:700; font-size:15px;">Bold</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:72px;"></div>
+      <div class="eyebrow deep">Marca</div>
+      <h2 class="h2" style="font-size:38px;">Logotipo &amp; monograma</h2>
+      <div class="logo-grid" style="margin-top:32px;">
+        <div class="logo-cell dark"><img src="assets/logo/lr-logo-white.svg" alt="Lauri Reis" style="height:34px;"></div>
+        <div class="logo-cell light"><img src="assets/logo/lr-logo-navy.svg" alt="Lauri Reis" style="height:34px;"></div>
+        <div class="logo-cell dark"><img src="assets/logo/lr-symbol-white.svg" alt="LR" style="height:68px;"></div>
+        <div class="logo-cell light"><img src="assets/logo/lr-symbol-gold.svg" alt="LR" style="height:68px;"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================ COMPONENTS ============================ -->
+<div class="panel" id="panel-components">
+  <section class="sec" style="background:var(--lr-paper); padding-top:72px;">
+    <div class="in-narrow">
+      <div class="comp-block">
+        <div class="comp-title">Button</div>
+        <div class="row">
+          <button class="btn btn-gold">Agendar ensaio</button>
+          <button class="btn btn-outline">Ver pacotes</button>
+          <button class="btn btn-ghost">Saiba mais</button>
+          <button class="btn btn-dark">Navy</button>
+          <span style="width:18px;"></span>
+          <button class="btn btn-gold sm">Small</button>
+          <button class="btn btn-gold">Medium</button>
+          <button class="btn btn-gold lg">Large</button>
+        </div>
+      </div>
+      <div class="comp-block">
+        <div class="comp-title">Badge</div>
+        <div class="row">
+          <span class="badge badge-gold">15 Anos</span>
+          <span class="badge badge-soft">Estúdio</span>
+          <span class="badge badge-rose">Newborn</span>
+          <span class="badge badge-slate">Chá de Bebê</span>
+          <span class="badge badge-navy">Premium</span>
+          <span class="badge badge-gold-outline">Ensaio Externo</span>
+        </div>
+      </div>
+      <div class="comp-block">
+        <div class="comp-title">Service Card</div>
+        <div class="grid3" style="margin-top:0;" id="comp-cards"></div>
+      </div>
+      <div class="comp-block">
+        <div class="comp-title">Form Fields</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:26px; max-width:640px; background:var(--lr-paper-card); padding:30px; border-radius:var(--radius-md); border:1px solid var(--border-on-light);">
+          <div class="field"><label>Nome <span class="req">*</span></label><input placeholder="Seu nome completo"></div>
+          <div class="field"><label>Tipo de ensaio</label><input placeholder="15 anos, newborn…"></div>
+          <div class="field" style="grid-column:1 / -1;"><label>Mensagem</label><textarea placeholder="Conte sobre o momento que deseja registrar"></textarea></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="lightbox" id="lightbox"><img src="" alt=""></div>
+
+<script>
+  var A = "assets/imagery/";
+  var services = [
+    { img:A+"15-anos.jpg", eb:"Debutante", ti:"15 Anos", de:"A festa, o vestido, o brilho — do making-of à pista de dança." },
+    { img:A+"newborn.jpg", eb:"Lifestyle", ti:"Newborn", de:"Os primeiros dias em casa, com calma, luz suave e muito afeto." },
+    { img:A+"aniversario-infantil.jpg", eb:"Celebração", ti:"Aniversário Infantil", de:"A alegria genuína das crianças, sem poses forçadas." },
+    { img:A+"cha-de-bebe.jpg", eb:"Família", ti:"Chá de Bebê", de:"A espera registrada entre risos e quem você ama." },
+    { img:A+"ensaio-externo.jpg", eb:"Ensaio", ti:"Ensaio Externo", de:"Luz natural e cenários ao ar livre que combinam com você." },
+    { img:A+"estudio.jpg", eb:"Estúdio", ti:"Estúdio", de:"Controle total de luz e fundo para retratos atemporais." }
+  ];
+  var gallery = [A+"15-anos.jpg",A+"newborn.jpg",A+"ensaio-externo.jpg",A+"aniversario-infantil.jpg",A+"15-anos-2.jpg",A+"cha-de-bebe.jpg",A+"newborn-2.jpg",A+"estudio-2.jpg",A+"aniversario-infantil-2.jpg"];
+
+  function cardHTML(s){
+    return '<a class="scard" href="#" data-lb="'+s.img+'">' +
+      '<div class="img" style="background-image:url(\''+s.img+'\')"></div>' +
+      '<div class="scrim"></div><div class="frame"></div>' +
+      '<div class="cap"><div class="eb">'+s.eb+'</div><div class="ti">'+s.ti+'</div><div class="de">'+s.de+'</div></div></a>';
+  }
+  document.getElementById("services").innerHTML = services.map(cardHTML).join("");
+  document.getElementById("comp-cards").innerHTML = services.slice(0,3).map(cardHTML).join("");
+  document.getElementById("gallery").innerHTML = gallery.map(function(src){
+    return '<button data-lb="'+src+'"><img src="'+src+'" alt=""></button>';
+  }).join("");
+
+  // Tabs
+  var tabs = document.querySelectorAll(".tab");
+  tabs.forEach(function(t){
+    t.addEventListener("click", function(){
+      tabs.forEach(function(x){ x.classList.remove("active"); });
+      t.classList.add("active");
+      document.querySelectorAll(".panel").forEach(function(p){ p.classList.remove("active"); });
+      document.getElementById("panel-"+t.dataset.tab).classList.add("active");
+      window.scrollTo({ top: 0 });
+    });
+  });
+
+  // Lightbox (delegated)
+  var lb = document.getElementById("lightbox");
+  var lbImg = lb.querySelector("img");
+  document.body.addEventListener("click", function(e){
+    var el = e.target.closest("[data-lb]");
+    if (el){ e.preventDefault(); lbImg.src = el.dataset.lb; lb.classList.add("open"); }
+  });
+  lb.addEventListener("click", function(){ lb.classList.remove("open"); });
+
+  // Smooth scroll within site
+  document.querySelectorAll("[data-goto]").forEach(function(a){
+    a.addEventListener("click", function(e){
+      e.preventDefault();
+      var t = document.getElementById(a.dataset.goto);
+      if (t) window.scrollTo({ top: t.offsetTop - 64, behavior: "smooth" });
+    });
+  });
+
+  // Contact form
+  var form = document.getElementById("contactForm");
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    form.querySelector("button[type=submit]").style.display = "none";
+    document.getElementById("sentMsg").style.display = "block";
+  });
+</script>
+</body>
+</html>

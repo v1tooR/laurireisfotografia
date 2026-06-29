@@ -1,0 +1,53 @@
+<!-- @dsCard group="Components" viewport="700x260" name="Buttons" subtitle="Action button — variants & sizes" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-body); }
+  .panel { padding: 26px 30px; display: flex; flex-direction: column; gap: 22px; }
+  .light { background: var(--lr-paper); }
+  .dark { background: var(--lr-navy-deep); padding: 22px 30px; }
+  .row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .cap { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--lr-ink-400); margin-bottom: 2px; width:100%; }
+  .cap.d { color: var(--lr-ink-200); }
+</style>
+</head>
+<body>
+<div class="light panel">
+  <div class="row"><span class="cap">Em fundo claro</span>
+    <div id="r1"></div>
+  </div>
+  <div class="row"><span class="cap">Tamanhos</span><div id="r2"></div></div>
+</div>
+<div class="dark">
+  <div class="row"><span class="cap d">Em fundo navy / sobre foto</span><div id="r3"></div></div>
+</div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+  function lrNS(test){for(const k of Object.getOwnPropertyNames(window)){let v;try{v=window[k];}catch(e){continue;}if(v&&typeof v==="object"&&test(v))return v;}return {};}
+  const NS = lrNS(v => v.Button);
+  const { Button } = NS;
+  const e = React.createElement;
+  const flex = c => e("div", { style: { display:"flex", gap:"14px", alignItems:"center", flexWrap:"wrap" } }, c);
+  ReactDOM.createRoot(document.getElementById("r1")).render(flex([
+    e(Button, { key:1, variant:"gold" }, "Agendar ensaio"),
+    e(Button, { key:2, variant:"outline" }, "Ver pacotes"),
+    e(Button, { key:3, variant:"ghost" }, "Saiba mais"),
+  ]));
+  ReactDOM.createRoot(document.getElementById("r2")).render(flex([
+    e(Button, { key:1, variant:"gold", size:"sm" }, "Small"),
+    e(Button, { key:2, variant:"gold", size:"md" }, "Medium"),
+    e(Button, { key:3, variant:"gold", size:"lg" }, "Large"),
+  ]));
+  ReactDOM.createRoot(document.getElementById("r3")).render(flex([
+    e(Button, { key:1, variant:"gold" }, "Agendar ensaio"),
+    e(Button, { key:2, variant:"outline-light" }, "Ver portfólio"),
+  ]));
+</script>
+</body>
+</html>

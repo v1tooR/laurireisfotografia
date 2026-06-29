@@ -1,0 +1,46 @@
+/* Colors — Lauri Reis Fotografia
+   Derived from the brand Style Guide palette swatches. */
+:root {
+  /* ---- Brand core ---- */
+  --lr-navy-deep: #0F2030;   /* primary brand dark — backgrounds, footer */
+  --lr-navy: #1E3448;        /* raised surface on dark */
+  --lr-gold: #C8A84B;        /* signature accent — matches logo gradient */
+  --lr-gold-deep: #625225;   /* gold gradient tail / pressed gold */
+  --lr-slate: #A8BECE;       /* cool light accent */
+  --lr-rose: #DDB8B8;        /* soft warm accent */
+  --lr-white: #FFFFFF;
+  --lr-black: #000000;
+
+  /* ---- Gold gradient (logo signature) ---- */
+  --lr-gradient-gold: linear-gradient(90deg, #C8A84B 0%, #625225 100%);
+
+  /* ---- Neutral ramp (cool, navy-tinted) ---- */
+  --lr-ink-900: #0F2030;
+  --lr-ink-800: #1E3448;
+  --lr-ink-600: #3C5168;
+  --lr-ink-400: #6B7E91;
+  --lr-ink-200: #A8BECE;
+  --lr-ink-100: #D5DEE5;
+  --lr-paper: #F4F1EA;       /* warm off-white page (light surfaces) */
+  --lr-paper-card: #FCFAF6;
+
+  /* ---- Semantic aliases ---- */
+  --surface-dark: var(--lr-navy-deep);
+  --surface-dark-raised: var(--lr-navy);
+  --surface-light: var(--lr-paper);
+  --surface-card: var(--lr-paper-card);
+
+  --text-on-dark: var(--lr-white);
+  --text-on-dark-muted: var(--lr-ink-200);
+  --text-on-light: var(--lr-navy-deep);
+  --text-on-light-muted: var(--lr-ink-400);
+
+  --accent: var(--lr-gold);
+  --accent-pressed: var(--lr-gold-deep);
+  --accent-cool: var(--lr-slate);
+  --accent-warm: var(--lr-rose);
+
+  --border-on-dark: rgba(200, 168, 75, 0.28);
+  --border-on-light: rgba(15, 32, 48, 0.12);
+  --hairline-gold: rgba(200, 168, 75, 0.45);
+}

@@ -1,0 +1,2199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lauri Reis Fotografia · Caçapava, SP</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--lr-paper);
+      font-family: var(--font-body);
+      color: var(--lr-ink-900);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity var(--dur-slow) var(--ease-out),
+                  transform var(--dur-slow) var(--ease-out);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 100ms; }
+    .reveal-d2 { transition-delay: 200ms; }
+    .reveal-d3 { transition-delay: 300ms; }
+    .reveal-d4 { transition-delay: 420ms; }
+    .reveal-d5 { transition-delay: 540ms; }
+
+    /* Layout */
+    .container { max-width: var(--container-max); margin: 0 auto; padding: 0 var(--gutter); }
+
+    /* Eyebrow label */
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: var(--t-caption);
+      font-weight: var(--fw-semibold);
+      letter-spacing: var(--ls-label);
+      text-transform: uppercase;
+      color: var(--lr-gold);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+      margin-bottom: var(--sp-4);
+    }
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--lr-gold);
+      flex-shrink: 0;
+    }
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+      line-height: var(--lh-display);
+      letter-spacing: -0.022em;
+    }
+
+    /* ── Buttons ─────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+      padding: 13px 28px;
+      font-family: var(--font-body);
+      font-size: var(--t-caption);
+      font-weight: var(--fw-semibold);
+      letter-spacing: var(--ls-label-tight);
+      text-transform: uppercase;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      white-space: nowrap;
+      transition: background var(--dur) var(--ease-out),
+                  color var(--dur) var(--ease-out),
+                  box-shadow var(--dur) var(--ease-out),
+                  transform var(--dur-fast) var(--ease-out),
+                  border-color var(--dur) var(--ease-out);
+    }
+    .btn:hover  { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-gold {
+      background: var(--lr-gradient-gold);
+      color: var(--lr-white);
+      box-shadow: var(--shadow-gold);
+    }
+    .btn-gold:hover { box-shadow: 0 12px 40px rgba(200,168,75,.38); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--lr-navy-deep);
+      border-color: var(--border-on-light);
+    }
+    .btn-outline:hover {
+      border-color: var(--lr-navy-deep);
+      background: var(--lr-navy-deep);
+      color: var(--lr-white);
+    }
+
+    .btn-ghost-light {
+      background: transparent;
+      color: var(--lr-white);
+      border-color: rgba(255,255,255,.45);
+    }
+    .btn-ghost-light:hover {
+      background: rgba(255,255,255,.1);
+      border-color: rgba(255,255,255,.8);
+    }
+
+    .btn-wa {
+      background: transparent;
+      color: var(--lr-gold);
+      border-color: var(--hairline-gold);
+    }
+    .btn-wa:hover { background: rgba(200,168,75,.08); border-color: var(--lr-gold); }
+
+    /* ── Badges ──────────────────────────────────────────── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 14px;
+      font-family: var(--font-body);
+      font-size: var(--t-caption);
+      font-weight: var(--fw-semibold);
+      letter-spacing: var(--ls-label-tight);
+      text-transform: uppercase;
+      border-radius: var(--radius-pill);
+    }
+    .badge-gold { color: var(--lr-gold); border: 1px solid var(--hairline-gold); background: rgba(200,168,75,.06); }
+
+    /* WhatsApp SVG shorthand */
+    .wa-icon { width:16px; height:16px; fill:currentColor; flex-shrink:0; }
+
+    /* ═══════════════════════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════════════════════ */
+    .site-nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 100;
+      height: 72px;
+      padding: 0 var(--gutter);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      /* Always-on gradient so transparent nav is legible over hero */
+      background: linear-gradient(to bottom, rgba(15,32,48,.72) 0%, rgba(15,32,48,0) 100%);
+      transition: background 350ms var(--ease-out),
+                  backdrop-filter 350ms var(--ease-out),
+                  box-shadow 350ms var(--ease-out),
+                  border-color 350ms var(--ease-out);
+    }
+    .site-nav.scrolled {
+      background: rgba(15,32,48,.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(200,168,75,.12);
+      box-shadow: 0 1px 0 rgba(200,168,75,.08), 0 8px 32px rgba(15,32,48,.45);
+    }
+
+    /* Entrance animations */
+    @keyframes navLogoIn {
+      from { opacity:0; transform:translateX(-16px); }
+      to   { opacity:1; transform:translateX(0); }
+    }
+    @keyframes navLinkIn {
+      from { opacity:0; transform:translateY(-6px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes navCTAIn {
+      from { opacity:0; transform:translateY(-6px) scale(.96); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    .nav-logo {
+      animation: navLogoIn .6s var(--ease-out) both;
+      cursor: pointer;
+      display: block;
+    }
+    .nav-logo img {
+      height: 30px; width: auto; display: block;
+      transition: opacity 200ms var(--ease-out);
+    }
+    .nav-logo:hover img { opacity: .82; }
+
+    /* Desktop links */
+    .nav-links { display: flex; gap: var(--sp-7); list-style: none; }
+    .nav-links li { animation: navLinkIn .5s var(--ease-out) both; }
+    .nav-links li:nth-child(1) { animation-delay: .05s; }
+    .nav-links li:nth-child(2) { animation-delay: .10s; }
+    .nav-links li:nth-child(3) { animation-delay: .15s; }
+    .nav-links li:nth-child(4) { animation-delay: .20s; }
+
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: var(--t-caption);
+      font-weight: var(--fw-medium);
+      letter-spacing: var(--ls-label-tight);
+      text-transform: uppercase;
+      color: rgba(255,255,255,.72);
+      position: relative;
+      padding-bottom: 3px;
+      transition: color 200ms var(--ease-out);
+    }
+    /* Animated underline from center */
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 50%;
+      width: 0; height: 1px;
+      background: var(--lr-gold);
+      transform: translateX(-50%);
+      transition: width 240ms var(--ease-out);
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--lr-white); }
+    .nav-links a:hover::after,
+    .nav-links a.active::after { width: 100%; }
+    .nav-links a.active { color: var(--lr-gold); }
+
+    /* Shimmer on the gold CTA */
+    .nav-cta {
+      animation: navCTAIn .55s var(--ease-out) .25s both;
+      position: relative; overflow: hidden;
+    }
+    .nav-cta::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.18) 50%, transparent 60%);
+      transform: translateX(-120%);
+    }
+    .nav-cta:hover::after {
+      animation: ctaShimmer .55s ease forwards;
+    }
+    @keyframes ctaShimmer {
+      to { transform: translateX(120%); }
+    }
+
+    /* Scroll progress bar */
+    .nav-progress {
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 1.5px;
+      width: 0%;
+      background: var(--lr-gradient-gold);
+      transition: width 100ms linear;
+      transform-origin: left;
+      opacity: 0;
+      transition: opacity 300ms ease;
+    }
+    .site-nav.scrolled .nav-progress { opacity: 1; }
+
+    /* Hamburger */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      width: 28px;
+      cursor: pointer;
+      padding: 8px 0;
+      background: none;
+      border: none;
+      outline: none;
+    }
+    .hamburger-line {
+      width: 100%;
+      height: 1.5px;
+      background: var(--lr-white);
+      border-radius: 2px;
+      transition: transform 280ms var(--ease-out), opacity 200ms ease, width 280ms var(--ease-out);
+      transform-origin: center;
+    }
+    .nav-hamburger.open .hamburger-line:nth-child(1) { transform: rotate(45deg) translate(4.5px, 4.5px); }
+    .nav-hamburger.open .hamburger-line:nth-child(2) { opacity: 0; width: 0; }
+    .nav-hamburger.open .hamburger-line:nth-child(3) { transform: rotate(-45deg) translate(4.5px,-4.5px); }
+
+    /* Mobile overlay */
+    .nav-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: var(--lr-navy-deep);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-7);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-12px);
+      transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out);
+    }
+    .nav-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+    .nav-overlay-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--sp-6);
+    }
+    .nav-overlay-links a {
+      font-family: var(--font-display);
+      font-size: var(--t-display-sm);
+      color: var(--lr-white);
+      letter-spacing: .02em;
+      transition: color 200ms ease;
+    }
+    .nav-overlay-links a:hover { color: var(--lr-gold); }
+    .nav-overlay-divider {
+      width: 40px; height: 1px; background: var(--hairline-gold);
+    }
+    .nav-overlay-contact {
+      font-family: var(--font-body);
+      font-size: var(--t-caption);
+      color: var(--text-on-dark-muted);
+      letter-spacing: var(--ls-label-tight);
+      text-align: center;
+      line-height: 2;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    /* ── Hero Slideshow ── */
+    .hero-slides { position:absolute; inset:0; overflow:hidden; }
+    .hero-slide {
+      position:absolute; inset:0;
+      opacity:0;
+      transition: opacity 1.4s var(--ease-out);
+    }
+    .hero-slide.active { opacity:1; }
+    .hero-slide img {
+      width:100%; height:100%;
+      object-fit:cover; object-position:center center;
+      transform:scale(1.08);
+      transition: transform 7s ease-out;
+      will-change: transform;
+    }
+    .hero-slide.active img { transform:scale(1); }
+
+    .hero-scrim {
+      position:absolute; inset:0;
+      background:
+        linear-gradient(to right, rgba(15,32,48,.58) 0%, rgba(15,32,48,.22) 52%, transparent 78%),
+        var(--scrim-full);
+    }
+    /* Extra top gradient so nav remains legible at 0 scroll */
+    .hero::before {
+      content:'';
+      position:absolute;
+      top:0; left:0; right:0; height:220px;
+      background:linear-gradient(to bottom, rgba(15,32,48,.65) 0%, transparent 100%);
+      z-index:1; pointer-events:none;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 var(--gutter) var(--sp-10);
+      max-width: 780px;
+    }
+
+    /* Staggered entrance — each element animates individually */
+    @keyframes heroSlideUp {
+      from { opacity:0; transform:translateY(28px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: var(--t-caption);
+      font-weight: var(--fw-medium);
+      letter-spacing: var(--ls-label);
+      text-transform: uppercase;
+      color: var(--lr-gold);
+      margin-bottom: var(--sp-4);
+      animation: heroSlideUp .55s var(--ease-out) .05s both;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+      font-weight: var(--fw-regular);
+      color: var(--lr-white);
+      line-height: var(--lh-display);
+      margin-bottom: var(--sp-5);
+      animation: heroSlideUp .7s var(--ease-out) .2s both;
+    }
+    .hero h1 em { font-style: italic; color: var(--lr-slate); }
+    .hero-sub {
+      font-size: var(--t-lead);
+      color: rgba(255,255,255,.65);
+      line-height: var(--lh-body);
+      margin-bottom: var(--sp-7);
+      max-width: 520px;
+      font-weight: var(--fw-light);
+      animation: heroSlideUp .65s var(--ease-out) .42s both;
+    }
+    .hero-actions {
+      display:flex; gap:var(--sp-4); flex-wrap:wrap;
+      animation: heroSlideUp .6s var(--ease-out) .6s both;
+    }
+
+    /* ── Category label ── */
+    .hero-cat {
+      position:absolute; left:var(--gutter); bottom:calc(var(--sp-8) + 36px);
+      z-index:3;
+      display:flex; align-items:center; gap:var(--sp-3);
+      font-family:var(--font-body); font-size:10px;
+      font-weight:var(--fw-medium); letter-spacing:var(--ls-label);
+      text-transform:uppercase; color:rgba(255,255,255,.5);
+      opacity:0; transition:opacity .55s var(--ease-out);
+    }
+    .hero-cat.visible { opacity:1; }
+    .hero-cat::before {
+      content:''; display:block; width:20px; height:1px;
+      background:var(--lr-gold); flex-shrink:0; opacity:.8;
+    }
+
+    /* ── Slide counter + progress bar ── */
+    .hero-counter {
+      position:absolute; left:var(--gutter); bottom:var(--sp-8);
+      z-index:3;
+      display:flex; flex-direction:column; gap:8px;
+      animation: heroSlideUp .5s var(--ease-out) .85s both;
+    }
+    .hero-progress-track {
+      width:100px; height:1px;
+      background:rgba(255,255,255,.12);
+      position:relative; overflow:hidden;
+    }
+    .hero-progress-fill {
+      position:absolute; top:0; left:0; bottom:0;
+      width:0%;
+      background: var(--lr-gradient-gold);
+    }
+    .hero-count-label {
+      font-family:var(--font-body); font-size:10px;
+      letter-spacing:0.22em; color:rgba(255,255,255,.38);
+      font-weight:var(--fw-medium);
+    }
+    .hero-count-label span { color:rgba(255,255,255,.75); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: var(--sp-7);
+      right: var(--gutter);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--sp-2);
+      animation: heroSlideUp .6s var(--ease-out) 1s both;
+    }
+    .hero-scroll span {
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: var(--ls-label);
+      text-transform: uppercase;
+      color: rgba(255,255,255,.35);
+    }
+    .scroll-track {
+      width: 18px; height: 28px;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 10px;
+      display: flex; justify-content: center; padding-top: 5px;
+    }
+    .scroll-dot {
+      width:3px; height:7px;
+      background:rgba(255,255,255,.5);
+      border-radius:2px;
+      animation: sdot 1.8s ease-in-out infinite;
+    }
+    @keyframes sdot {
+      0%,100% { transform:translateY(0); opacity:.5; }
+      50%      { transform:translateY(6px); opacity:1; }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       MARQUEE
+    ═══════════════════════════════════════════════════════ */
+    .marquee-section {
+      overflow: hidden;
+      position: relative;
+      background: var(--lr-navy-deep);
+      border-top: var(--border-gold);
+      border-bottom: var(--border-gold);
+    }
+    .marquee-track {
+      display: flex;
+      gap: var(--sp-2);
+      padding: var(--sp-2) 0;
+      width: max-content;
+      animation: mScroll 32s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes mScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .marquee-thumb { flex-shrink:0; width:240px; height:160px; overflow:hidden; }
+    .marquee-thumb img {
+      width:100%; height:100%; object-fit:cover;
+      transition: transform var(--dur-slow) var(--ease-out);
+    }
+    .marquee-thumb:hover img { transform: scale(1.06); }
+    .marquee-section::before,
+    .marquee-section::after {
+      content:''; position:absolute; top:0; bottom:0; width:100px; z-index:5; pointer-events:none;
+    }
+    .marquee-section::before { left:0; background:linear-gradient(to right, var(--lr-navy-deep), transparent); }
+    .marquee-section::after  { right:0; background:linear-gradient(to left, var(--lr-navy-deep), transparent); }
+
+    /* ═══════════════════════════════════════════════════════
+       SOBRE
+    ═══════════════════════════════════════════════════════ */
+    .sobre-section { background:var(--lr-paper); padding:var(--section-y) 0; }
+    .sobre-grid {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: var(--sp-9);
+      align-items: center;
+    }
+    .sobre-img-wrap::before {
+      content:'';
+      position:absolute;
+      top:-16px; left:-16px; right:16px; bottom:16px;
+      border: 1px solid var(--hairline-gold);
+      border-radius: var(--radius-md);
+      pointer-events: none;
+    }
+    .sobre-badge {
+      position: absolute;
+      bottom:-1.25rem; right:-1.25rem;
+      width:104px; height:104px;
+      border-radius:50%;
+      background: var(--lr-gradient-gold);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      color: var(--lr-white); text-align:center;
+      z-index:2;
+      box-shadow: var(--shadow-gold);
+      border: 4px solid var(--lr-paper);
+    }
+    .sobre-badge strong {
+      font-family: var(--font-display);
+      font-size:1.75rem; font-weight:var(--fw-regular); line-height:1;
+    }
+    .sobre-badge small {
+      font-family:var(--font-body); font-size:.5rem;
+      font-weight:var(--fw-semibold); letter-spacing:.1em;
+      text-transform:uppercase; opacity:.85; line-height:1.4;
+    }
+    .sobre-text { padding-top: 0; }
+    .sobre-text h2 {
+      font-size: clamp(2rem, 3.5vw, var(--t-display-md));
+      color: var(--lr-navy-deep);
+      margin-bottom: var(--sp-5);
+      line-height: 1.1;
+    }
+    .sobre-text p {
+      font-size: var(--t-body); color: var(--lr-ink-400);
+      line-height: var(--lh-body); margin-bottom: var(--sp-4);
+    }
+
+    /* Stats strip */
+    .sobre-stats {
+      display: flex; align-items: center; gap: var(--sp-5);
+      padding: var(--sp-5) 0;
+      margin: var(--sp-3) 0 0;
+      border-top: 1px solid rgba(200,168,75,.18);
+    }
+    .sobre-stat {
+      display: flex; flex-direction: column; gap: 3px; flex-shrink: 0;
+    }
+    .sobre-stat strong {
+      font-family: var(--font-display);
+      font-size: 1.65rem; font-weight: var(--fw-regular);
+      color: var(--lr-navy-deep); line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .sobre-stat span {
+      font-family: var(--font-body); font-size: 10px;
+      letter-spacing: var(--ls-label-tight); text-transform: uppercase;
+      color: var(--lr-ink-400); font-weight: var(--fw-medium);
+    }
+    .sobre-stat-sep {
+      width: 1px; height: 28px; flex-shrink: 0;
+      background: rgba(200,168,75,.2);
+    }
+
+    .sobre-sig {
+      font-family: var(--font-display); font-style: italic; font-size: 1.35rem;
+      color: var(--lr-gold); margin-top: var(--sp-4);
+      opacity: .85;
+    }
+
+    /* Image — hover lift */
+    .sobre-img-wrap { position: relative; cursor: default; }
+    .sobre-img {
+      width: 100%; aspect-ratio: 3/4;
+      object-fit: cover; object-position: center 20%;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      display: block;
+      transition: box-shadow 400ms var(--ease-out);
+    }
+    .sobre-img-wrap:hover .sobre-img {
+      box-shadow: 0 24px 56px rgba(15,32,48,.18), 0 4px 16px rgba(15,32,48,.08);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       PORTFOLIO
+    ═══════════════════════════════════════════════════════ */
+    .portfolio-section {
+      background: var(--lr-paper-card);
+      padding: var(--section-y) 0;
+      border-top: var(--border-thin);
+    }
+    .portfolio-header {
+      max-width: 600px;
+      margin-bottom: var(--sp-8);
+    }
+    .portfolio-header h2 {
+      font-size: clamp(2rem, 3.5vw, var(--t-display-md));
+      color: var(--lr-navy-deep);
+      margin-bottom: var(--sp-4);
+    }
+    .portfolio-sub {
+      font-size: var(--t-body);
+      color: var(--lr-ink-400);
+      line-height: var(--lh-body);
+    }
+
+    /* Tabs */
+    .tab-nav {
+      display: flex;
+      position: relative;
+      border-bottom: 1px solid var(--border-on-light);
+      margin-bottom: var(--sp-7);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tab-nav::-webkit-scrollbar { display: none; }
+    .tab-indicator {
+      position: absolute;
+      bottom: -1px;
+      height: 2px;
+      background: var(--lr-gradient-gold);
+      transition: left 320ms var(--ease-out), width 320ms var(--ease-out);
+      pointer-events: none;
+    }
+    .tab-btn {
+      font-family: var(--font-body); font-size: var(--t-caption);
+      font-weight: var(--fw-semibold); letter-spacing: var(--ls-label-tight);
+      text-transform: uppercase; color: var(--lr-ink-400);
+      padding: var(--sp-4) var(--sp-5); white-space: nowrap;
+      cursor: pointer; border: none; border-bottom: 2px solid transparent;
+      margin-bottom: -1px; background: transparent;
+      transition: color 200ms var(--ease-out);
+    }
+    .tab-btn:hover { color: var(--lr-navy-deep); }
+    .tab-btn.active { color: var(--lr-navy-deep); }
+    .tab-panel { display: none; }
+    .tab-panel.active {
+      display: block;
+      animation: panelReveal 0.42s var(--ease-out) both;
+    }
+    @keyframes panelReveal {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Photo grid */
+    .photo-grid { display: grid; gap: 6px; }
+    /* 3 imagens: hero esquerdo + 2 empilhados à direita */
+    .photo-grid.layout-3 {
+      grid-template-columns: 1.2fr 1fr;
+      grid-template-rows: 310px 270px;
+    }
+    .photo-grid.layout-3 .photo-cell:first-child { grid-row: span 2; }
+    /* 2 imagens: par simétrico, alto */
+    .photo-grid.layout-2 {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 480px;
+    }
+    /* 1 imagem: hero full-width */
+    .photo-grid.layout-1 {
+      grid-template-columns: 1fr;
+      grid-template-rows: 560px;
+    }
+    .photo-cell {
+      position: relative; overflow: hidden;
+      border-radius: var(--radius-sm); cursor: pointer;
+    }
+    .photo-cell img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 600ms var(--ease-out);
+    }
+    .photo-cell:hover img { transform: scale(1.04); }
+    .photo-scrim {
+      position: absolute; inset: 0;
+      background: var(--scrim-bottom);
+      opacity: 0; transition: opacity var(--dur) var(--ease-out);
+    }
+    .photo-cell:hover .photo-scrim { opacity: 1; }
+
+    /* Galeria em crescimento */
+    .gallery-note {
+      display: flex; align-items: center; gap: var(--sp-3);
+      margin-top: var(--sp-5);
+      font-family: var(--font-body); font-size: var(--t-small);
+      color: var(--lr-ink-400); letter-spacing: 0.04em;
+    }
+    .gallery-note::before {
+      content: ''; display: block;
+      width: 20px; height: 1px;
+      background: var(--lr-gold); opacity: .6; flex-shrink: 0;
+    }
+
+    .grid-cta {
+      display: flex; justify-content: center;
+      margin-top: var(--sp-6); padding-top: var(--sp-6);
+      border-top: var(--border-gold);
+    }
+
+    .casamento-msg {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center;
+      padding: var(--sp-10) var(--sp-6);
+      background: var(--lr-paper);
+      border-radius: var(--radius-md);
+      border: 1px dashed var(--hairline-gold);
+    }
+    .casamento-msg h3 {
+      font-size: var(--t-display-sm); color: var(--lr-navy-deep);
+      margin: var(--sp-4) 0;
+    }
+    .casamento-msg p {
+      font-size: var(--t-body); color: var(--lr-ink-400);
+      line-height: var(--lh-body); max-width: 400px; margin-bottom: var(--sp-6);
+    }
+
+    /* cursor hint for lightbox-enabled cells */
+    .photo-cell { cursor: zoom-in; }
+    .bento-cell { cursor: zoom-in; }
+
+    /* ═══════════════════════════════════════════════════════
+       LIGHTBOX
+    ═══════════════════════════════════════════════════════ */
+    .lbx-overlay {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(7,11,18,.96);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 300ms var(--ease-out);
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+    }
+    .lbx-overlay.open { opacity: 1; pointer-events: auto; }
+
+    .lbx-stage {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      cursor: zoom-in;
+      overflow: hidden;
+    }
+    .lbx-stage.zoomed { cursor: grab; }
+    .lbx-stage.zoomed:active { cursor: grabbing; }
+
+    .lbx-img {
+      max-width: 88vw; max-height: 84vh;
+      object-fit: contain; display: block;
+      border-radius: 2px;
+      box-shadow: 0 40px 100px rgba(0,0,0,.65), 0 8px 24px rgba(0,0,0,.35);
+      user-select: none; -webkit-user-drag: none;
+      transform-origin: center center;
+      position: relative; z-index: 1;
+    }
+
+    .lbx-close {
+      position: fixed; top: 18px; right: 22px; z-index: 9020;
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 50%; color: rgba(255,255,255,.8);
+      transition: background 200ms, border-color 200ms, color 200ms;
+    }
+    .lbx-close:hover {
+      background: rgba(200,168,75,.18);
+      border-color: rgba(200,168,75,.4);
+      color: var(--lr-gold);
+    }
+    .lbx-close svg { width: 18px; height: 18px; stroke-width: 1.8; }
+
+    .lbx-arrow {
+      position: fixed; top: 50%; z-index: 9020;
+      width: 52px; height: 52px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.11);
+      border-radius: 50%; color: rgba(255,255,255,.75);
+      transition: background 200ms, border-color 200ms, color 200ms, transform 220ms var(--ease-out);
+    }
+    .lbx-arrow:hover {
+      background: rgba(200,168,75,.14);
+      border-color: rgba(200,168,75,.32);
+      color: var(--lr-gold);
+    }
+    .lbx-prev { left: 20px; transform: translateY(-50%); }
+    .lbx-next { right: 20px; transform: translateY(-50%); }
+    .lbx-prev:hover { transform: translateY(-50%) translateX(-3px); }
+    .lbx-next:hover { transform: translateY(-50%) translateX(3px); }
+    .lbx-arrow[hidden] { display: none; }
+    .lbx-arrow svg { width: 20px; height: 20px; }
+
+    .lbx-footer {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 9020;
+      padding: 28px 28px 22px;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
+      background: linear-gradient(to top, rgba(7,11,18,.78) 0%, transparent 100%);
+      pointer-events: none;
+    }
+    .lbx-caption {
+      font-family: var(--font-body); font-size: var(--t-small);
+      color: rgba(255,255,255,.52); letter-spacing: 0.03em;
+      line-height: 1.5; max-width: 55ch;
+    }
+    .lbx-counter {
+      font-family: var(--font-display); font-size: 1.05rem;
+      color: rgba(200,168,75,.55); letter-spacing: 0.1em;
+      white-space: nowrap; flex-shrink: 0;
+    }
+
+    .lbx-zoom-tip {
+      position: fixed; bottom: 74px; left: 50%; transform: translateX(-50%);
+      font-family: var(--font-body); font-size: var(--t-caption);
+      color: rgba(255,255,255,.3); letter-spacing: 0.06em;
+      pointer-events: none; white-space: nowrap;
+      transition: opacity 600ms var(--ease-out);
+    }
+    .lbx-zoom-tip.hide { opacity: 0; }
+
+    @media (max-width: 640px) {
+      .lbx-img    { max-width: 100vw; max-height: 78vh; }
+      .lbx-arrow  { width: 42px; height: 42px; }
+      .lbx-prev   { left: 10px; }
+      .lbx-next   { right: 10px; }
+      .lbx-close  { top: 14px; right: 14px; }
+      .lbx-zoom-tip { display: none; }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       BENTO
+    ═══════════════════════════════════════════════════════ */
+    .bento-section { background:var(--lr-paper); padding:var(--section-y) 0; border-top:var(--border-thin); }
+    .bento-header {
+      display:flex; align-items:flex-end; justify-content:space-between;
+      margin-bottom:var(--sp-6); gap:var(--sp-6); flex-wrap:wrap;
+    }
+    .bento-header h2 { font-size:clamp(1.5rem,2.5vw,var(--t-display-sm)); color:var(--lr-navy-deep); }
+    .bento-grid {
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      grid-template-rows:240px 240px 200px;
+      gap:var(--sp-2);
+    }
+    .bc-1 { grid-column:1/6;  grid-row:1; }
+    .bc-2 { grid-column:6/9;  grid-row:1; }
+    .bc-3 { grid-column:9/13; grid-row:1/3; }
+    .bc-4 { grid-column:1/4;  grid-row:2/4; }
+    .bc-5 { grid-column:4/7;  grid-row:2; }
+    .bc-6 { grid-column:7/9;  grid-row:2; }
+    .bc-7 { grid-column:4/7;  grid-row:3; }
+    .bc-8 { grid-column:7/10; grid-row:3; }
+    .bc-9 { grid-column:10/13;grid-row:3; }
+    .bento-cell { position:relative; overflow:hidden; border-radius:var(--radius-sm); }
+    .bento-cell img {
+      width:100%; height:100%; object-fit:cover; display:block;
+      transition: transform var(--dur-slow) var(--ease-out);
+    }
+    .bento-cell:hover img { transform:scale(1.06); }
+    .bento-scrim {
+      position:absolute; inset:0; background:var(--scrim-bottom);
+      opacity:0; transition:opacity var(--dur) var(--ease-out);
+    }
+    .bento-cell:hover .bento-scrim { opacity:1; }
+    .bento-lbl {
+      position:absolute; bottom:var(--sp-4); left:var(--sp-4); z-index:2;
+      font-family:var(--font-body); font-size:var(--t-caption);
+      font-weight:var(--fw-semibold); letter-spacing:var(--ls-label-tight);
+      text-transform:uppercase; color:var(--lr-white);
+      opacity:0; transform:translateY(8px);
+      transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+    }
+    .bento-cell:hover .bento-lbl { opacity:1; transform:translateY(0); }
+
+    /* ═══════════════════════════════════════════════════════
+       FULL-BLEED
+    ═══════════════════════════════════════════════════════ */
+    .fullbleed { position:relative; height:65vh; min-height:380px; overflow:hidden; }
+    .fullbleed-bg { position:absolute; inset:0; }
+    .fullbleed-bg img { width:100%; height:100%; object-fit:cover; }
+    .fullbleed-ov {
+      position:absolute; inset:0;
+      background:linear-gradient(to right,rgba(15,32,48,.82) 0%,rgba(15,32,48,.5) 50%,rgba(15,32,48,.15) 100%);
+    }
+    .fullbleed-ct {
+      position:absolute; inset:0; z-index:2;
+      display:flex; flex-direction:column; justify-content:center;
+      padding:var(--sp-9) var(--gutter); max-width:620px;
+    }
+    .fullbleed-ct h2 {
+      font-size:clamp(2rem,3.5vw,var(--t-display-md));
+      color:var(--lr-white); margin-bottom:var(--sp-5);
+    }
+    .fullbleed-ct p {
+      font-size:var(--t-lead); color:rgba(255,255,255,.72);
+      line-height:var(--lh-body); margin-bottom:var(--sp-6);
+      font-weight:var(--fw-light);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       DIFERENCIAIS
+    ═══════════════════════════════════════════════════════ */
+    .dif-section { background:var(--lr-navy-deep); padding:var(--section-y) 0; }
+    .dif-section h2 {
+      font-size:clamp(1.75rem,3vw,var(--t-display-sm));
+      color:var(--lr-white); max-width:560px; margin-bottom:var(--sp-8);
+    }
+    .dif-grid {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:1px; background:var(--border-on-dark);
+      border:1px solid var(--border-on-dark); border-radius:var(--radius-md); overflow:hidden;
+    }
+    .dif-card {
+      background:var(--lr-navy-deep);
+      padding:var(--sp-7) var(--sp-6);
+      transition:background var(--dur) var(--ease-out);
+    }
+    .dif-card:hover { background:var(--lr-navy); }
+    .dif-icon {
+      width:44px; height:44px;
+      border:1px solid var(--border-on-dark); border-radius:var(--radius-sm);
+      display:flex; align-items:center; justify-content:center;
+      margin-bottom:var(--sp-5);
+      transition:border-color var(--dur) var(--ease-out);
+    }
+    .dif-card:hover .dif-icon { border-color:var(--lr-gold); }
+    .dif-icon svg { width:20px; height:20px; color:var(--lr-gold); }
+    .dif-card h3 {
+      font-family:var(--font-body); font-size:var(--t-body);
+      font-weight:var(--fw-semibold); color:var(--lr-white); margin-bottom:var(--sp-3);
+    }
+    .dif-card p { font-size:var(--t-small); color:var(--text-on-dark-muted); line-height:var(--lh-body); }
+
+    /* ═══════════════════════════════════════════════════════
+       PROCESSO — sticky split
+    ═══════════════════════════════════════════════════════ */
+    .processo-section { display:grid; grid-template-columns:1fr 1fr; border-top:var(--border-thin); }
+    .proc-img-col { position:sticky; top:68px; height:calc(100vh - 68px); overflow:hidden; }
+    .proc-img-col img { width:100%; height:100%; object-fit:cover; }
+    .proc-img-fade {
+      position:absolute; inset:0;
+      background:linear-gradient(to right, transparent 70%, var(--lr-paper-card));
+    }
+    .proc-scroll-col { background:var(--lr-paper-card); }
+    .proc-sticky-hd {
+      position:sticky; top:68px; z-index:10;
+      background:var(--lr-paper-card);
+      padding:var(--sp-4) var(--sp-7);
+      border-bottom:var(--border-thin);
+    }
+    .proc-step {
+      padding:var(--sp-8) var(--sp-7); border-bottom:var(--border-thin);
+      min-height:280px; display:flex; flex-direction:column; justify-content:center;
+    }
+    .proc-step:last-child { border-bottom:none; }
+    .step-num {
+      width:52px; height:52px;
+      border:1px solid var(--hairline-gold); border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      margin-bottom:var(--sp-5);
+      font-family:var(--font-display); font-size:1.25rem; color:var(--lr-gold);
+    }
+    .proc-step h3 {
+      font-size:var(--t-display-sm); color:var(--lr-navy-deep);
+      margin-bottom:var(--sp-4);
+    }
+    .proc-step p { font-size:var(--t-body); color:var(--lr-ink-400); line-height:var(--lh-body); }
+
+    /* ═══════════════════════════════════════════════════════
+       QUOTE
+    ═══════════════════════════════════════════════════════ */
+    .quote-section {
+      background:var(--lr-navy-deep);
+      padding:calc(var(--section-y)*1.25) var(--gutter);
+      text-align:center; position:relative; overflow:hidden;
+    }
+    .quote-pattern {
+      position:absolute; inset:0;
+      background-image:
+        repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(200,168,75,.04) 40px,rgba(200,168,75,.04) 41px),
+        repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(200,168,75,.04) 40px,rgba(200,168,75,.04) 41px);
+    }
+    .quote-inner { position:relative; z-index:1; max-width:760px; margin:0 auto; }
+    .quote-mark {
+      font-family:var(--font-display); font-size:8rem; line-height:.5;
+      color:var(--lr-gold); opacity:.3; display:block; margin-bottom:var(--sp-6);
+    }
+    .quote-text {
+      font-family:var(--font-display);
+      font-size:clamp(1.25rem,2.5vw,1.875rem);
+      font-style:italic; color:var(--lr-white);
+      line-height:1.6; margin-bottom:var(--sp-6);
+    }
+    .quote-author {
+      font-family:var(--font-body); font-size:var(--t-caption);
+      font-weight:var(--fw-semibold); letter-spacing:var(--ls-label);
+      text-transform:uppercase; color:var(--lr-gold);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       CTA
+    ═══════════════════════════════════════════════════════ */
+    .cta-section {
+      background:var(--lr-paper);
+      padding:calc(var(--section-y)*1.25) var(--gutter);
+      text-align:center;
+    }
+    .cta-inner { max-width:580px; margin:0 auto; }
+    .cta-section h2 {
+      font-size:clamp(2rem,4vw,var(--t-display-md));
+      color:var(--lr-navy-deep); margin-bottom:var(--sp-5);
+    }
+    .cta-section p {
+      font-size:var(--t-lead); color:var(--lr-ink-400);
+      line-height:var(--lh-body); margin-bottom:var(--sp-7);
+      font-weight:var(--fw-light);
+    }
+    .cta-info {
+      display:flex; justify-content:center; gap:var(--sp-6);
+      flex-wrap:wrap; margin-top:var(--sp-6);
+    }
+    .cta-info span {
+      font-family:var(--font-body); font-size:var(--t-small);
+      color:var(--lr-ink-400); font-weight:var(--fw-medium);
+      display:flex; align-items:center; gap:var(--sp-2);
+    }
+    .cta-info span::before { content:'—'; color:var(--lr-gold); }
+
+    /* ═══════════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════════ */
+    .site-footer { background:var(--lr-navy-deep); padding:var(--sp-9) var(--gutter) var(--sp-6); }
+    .footer-grid {
+      max-width:var(--container-max); margin:0 auto;
+      display:grid; grid-template-columns:1.8fr 1fr 1fr 1fr;
+      gap:var(--sp-8); padding-bottom:var(--sp-7);
+      border-bottom:1px solid var(--border-on-dark);
+    }
+    .footer-brand img { height:32px; width:auto; margin-bottom:var(--sp-4); }
+    .footer-desc { font-size:var(--t-small); color:var(--text-on-dark-muted); line-height:var(--lh-body); margin-bottom:var(--sp-5); }
+    .footer-social { display:flex; gap:var(--sp-3); }
+    .footer-social a {
+      width:36px; height:36px; border:1px solid var(--border-on-dark); border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      color:var(--text-on-dark-muted);
+      transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+    }
+    .footer-social a:hover { border-color:var(--lr-gold); color:var(--lr-gold); }
+    .footer-social svg { width:14px; height:14px; }
+    .footer-col-lbl {
+      font-family:var(--font-body); font-size:var(--t-caption);
+      font-weight:var(--fw-semibold); letter-spacing:var(--ls-label);
+      text-transform:uppercase; color:var(--lr-gold);
+      margin-bottom:var(--sp-4); display:block;
+    }
+    .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:var(--sp-3); }
+    .footer-col li { font-size:var(--t-small); color:var(--text-on-dark-muted); }
+    .footer-col a { transition:color var(--dur-fast) var(--ease-out); }
+    .footer-col a:hover { color:var(--lr-white); }
+    .footer-addr { font-size:var(--t-small); color:var(--text-on-dark-muted); line-height:1.9; font-style:normal; }
+    .footer-btm {
+      max-width:var(--container-max); margin:0 auto; padding-top:var(--sp-5);
+      display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:var(--sp-3);
+    }
+    .footer-btm span { font-size:var(--t-caption); color:var(--lr-ink-400); letter-spacing:.05em; }
+
+    /* ── Responsive ──────────────────────────────────────── */
+    @media (max-width:1024px) {
+      .sobre-grid { grid-template-columns:1fr; gap:var(--sp-8); }
+      .sobre-img-wrap { max-width:380px; margin:0 auto; }
+      .dif-grid { grid-template-columns:repeat(2,1fr); }
+      .footer-grid { grid-template-columns:1fr 1fr; gap:var(--sp-6); }
+      .processo-section { grid-template-columns:1fr; }
+      .proc-img-col { position:relative; height:55vw; min-height:300px; top:0; }
+      .proc-img-fade { background:none; }
+      .bento-grid { grid-template-columns:repeat(6,1fr); grid-template-rows:200px 200px 200px 180px; }
+      .bc-1{grid-column:1/4;grid-row:1}.bc-2{grid-column:4/7;grid-row:1}
+      .bc-3{grid-column:1/4;grid-row:2}.bc-4{grid-column:4/7;grid-row:2}
+      .bc-5{grid-column:1/3;grid-row:3}.bc-6{grid-column:3/5;grid-row:3}
+      .bc-7{grid-column:5/7;grid-row:3}.bc-8{grid-column:1/4;grid-row:4}
+      .bc-9{grid-column:4/7;grid-row:4}
+    }
+    @media (max-width:768px) {
+      .nav-links { display:none; }
+      .nav-cta { display:none; }
+      .nav-hamburger { display:flex; }
+      .portfolio-header { grid-template-columns:1fr; }
+      .photo-grid { grid-template-columns:repeat(2,1fr); grid-auto-rows:160px; }
+      .span-wide { grid-column:span 1; }
+      .dif-grid { grid-template-columns:1fr; }
+      .footer-grid { grid-template-columns:1fr; }
+      .bento-grid { grid-template-columns:1fr 1fr; grid-template-rows:repeat(5,160px); }
+      .bc-1,.bc-2,.bc-3,.bc-4,.bc-5,.bc-6,.bc-7,.bc-8,.bc-9 { grid-column:span 1; grid-row:span 1; }
+      .hero h1 { font-size:clamp(2rem,7vw,3rem); }
+      .cta-info { flex-direction:column; align-items:center; gap:var(--sp-3); }
+    }
+    @media (max-width:480px) {
+      .photo-grid { grid-template-columns:1fr; grid-auto-rows:220px; }
+      .span-tall { grid-row:span 1; }
+      .marquee-thumb { width:160px; height:110px; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      .marquee-track { animation:none; }
+      .reveal { opacity:1; transform:none; transition:none; }
+      .hero-eyebrow,.hero h1,.hero-sub,.hero-actions,.hero-counter { animation:none; }
+      .hero-slide img { transition:none; transform:scale(1); }
+      .scroll-dot { animation:none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav class="site-nav" id="siteNav" aria-label="Navegação principal">
+  <!-- Scroll progress bar -->
+  <div class="nav-progress" id="navProgress" aria-hidden="true"></div>
+
+  <a href="#hero" class="nav-logo" aria-label="Lauri Reis Fotografia – início">
+    <img src="assets/logo/lr-logo-white.svg" alt="Lauri Reis Fotografia" />
+  </a>
+
+  <ul class="nav-links" role="list" id="navLinks">
+    <li><a href="#portfolio"    data-section="portfolio">Portfólio</a></li>
+    <li><a href="#sobre"        data-section="sobre">Sobre</a></li>
+    <li><a href="#diferenciais" data-section="diferenciais">Diferenciais</a></li>
+    <li><a href="#processo"     data-section="processo">Como Funciona</a></li>
+  </ul>
+
+  <a href="https://wa.me/5512991145743?text=Olá%2C%20vim%20pelo%20site%20e%20gostaria%20de%20agendar%20uma%20sessão!"
+     class="btn btn-gold nav-cta" target="_blank" rel="noopener"
+     aria-label="Agendar sessão via WhatsApp">
+    Agendar sessão
+  </a>
+
+  <!-- Hamburger (mobile only) -->
+  <button class="nav-hamburger" id="navHamburger" aria-label="Abrir menu" aria-expanded="false" aria-controls="navOverlay">
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+  </button>
+</nav>
+
+<!-- Mobile overlay -->
+<div class="nav-overlay" id="navOverlay" aria-hidden="true" role="dialog" aria-label="Menu de navegação">
+  <ul class="nav-overlay-links" role="list">
+    <li><a href="#portfolio"    class="nav-overlay-link">Portfólio</a></li>
+    <li><a href="#sobre"        class="nav-overlay-link">Sobre</a></li>
+    <li><a href="#diferenciais" class="nav-overlay-link">Diferenciais</a></li>
+    <li><a href="#processo"     class="nav-overlay-link">Como Funciona</a></li>
+  </ul>
+  <div class="nav-overlay-divider" aria-hidden="true"></div>
+  <a href="https://wa.me/5512991145743?text=Olá%2C%20vim%20pelo%20site%20e%20gostaria%20de%20agendar%20uma%20sessão!"
+     class="btn btn-gold" target="_blank" rel="noopener">
+    Agendar sessão
+  </a>
+  <p class="nav-overlay-contact">(12) 99114-5743<br>Caçapava, SP</p>
+</div>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero" id="hero" aria-label="Hero – Lauri Reis Fotografia">
+  <!-- Slideshow background -->
+  <div class="hero-slides" aria-hidden="true">
+    <div class="hero-slide active" data-cat="15 Anos">
+      <img src="assets/imagery/15-anos.jpg" alt="" style="object-position:center 30%" />
+    </div>
+    <div class="hero-slide" data-cat="Aniversário Infantil">
+      <img src="assets/imagery/aniversario-infantil.jpg" alt="" style="object-position:center 40%" />
+    </div>
+    <div class="hero-slide" data-cat="Ensaio Externo">
+      <img src="assets/imagery/ensaio-externo.jpg" alt="" style="object-position:center 25%" />
+    </div>
+    <div class="hero-slide" data-cat="Newborn">
+      <img src="assets/imagery/newborn.jpg" alt="" style="object-position:center 35%" />
+    </div>
+    <div class="hero-slide" data-cat="Chá de Bebê">
+      <img src="assets/imagery/cha-de-bebe.jpg" alt="" style="object-position:center 30%" />
+    </div>
+    <div class="hero-slide" data-cat="Estúdio">
+      <img src="assets/imagery/estudio-2.jpg" alt="" style="object-position:center 20%" />
+    </div>
+  </div>
+
+  <div class="hero-scrim" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Fotógrafa em Caçapava, SP</p>
+    <h1>
+      Momentos simples que,<br>
+      registrados, se tornam<br>
+      <em>extraordinários.</em>
+    </h1>
+    <p class="hero-sub">
+      Mais de 6 anos de histórias fotografadas — ensaios, eventos e coberturas
+      com olhar sensível para cada detalhe.
+    </p>
+    <div class="hero-actions">
+      <a href="#portfolio" class="btn btn-gold">Explorar o portfólio</a>
+      <a href="https://wa.me/5512991145743?text=Olá%2C%20vim%20pelo%20site%20e%20gostaria%20de%20agendar%20uma%20sessão!"
+         class="btn btn-ghost-light" target="_blank" rel="noopener">
+        Agendar sessão
+      </a>
+    </div>
+  </div>
+
+  <!-- Category label (populated by JS) -->
+  <div class="hero-cat" id="heroCat" aria-live="polite" aria-hidden="true"></div>
+
+  <!-- Editorial counter + progress bar -->
+  <div class="hero-counter" aria-hidden="true">
+    <div class="hero-progress-track">
+      <div class="hero-progress-fill" id="heroProgressFill"></div>
+    </div>
+    <span class="hero-count-label" id="heroCountLabel"><span>01</span> / 06</span>
+  </div>
+</section>
+
+<!-- ══════════════ MARQUEE ══════════════ -->
+<div class="marquee-section" aria-hidden="true">
+  <div class="marquee-track">
+    <div class="marquee-thumb"><img src="assets/imagery/15-anos.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/aniversario-infantil.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/cha-de-bebe.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/ensaio-externo.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/estudio.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/newborn.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/15-anos-2.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/estudio-2.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/newborn-2.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/15-anos-3.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/aniversario-infantil-2.jpg" alt="" /></div>
+    <!-- duplicates for seamless loop -->
+    <div class="marquee-thumb"><img src="assets/imagery/15-anos.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/aniversario-infantil.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/cha-de-bebe.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/ensaio-externo.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/estudio.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/newborn.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/15-anos-2.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/estudio-2.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/newborn-2.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/15-anos-3.jpg" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/imagery/aniversario-infantil-2.jpg" alt="" /></div>
+  </div>
+</div>
+
+<!-- ══════════════ SOBRE ══════════════ -->
+<section class="sobre-section" id="sobre" aria-labelledby="sobre-h">
+  <div class="container">
+    <div class="sobre-grid">
+      <div class="sobre-img-wrap reveal">
+        <img class="sobre-img"
+             src="assets/imagery/lauri.jpeg"
+             alt="Lauriane Reis, fotógrafa em Caçapava SP" />
+        <div class="sobre-badge" aria-label="Mais de 6 anos de experiência">
+          <strong>6+</strong>
+          <small>anos de<br>histórias</small>
+        </div>
+      </div>
+      <div class="sobre-text">
+        <p class="eyebrow reveal">Quem fotografa</p>
+        <h2 id="sobre-h" class="reveal reveal-d1">Sou uma contadora<br>de histórias.</h2>
+        <p class="reveal reveal-d2">Meu nome é Lauriane Reis. Há anos venho descobrindo que a fotografia não é sobre a câmera — é sobre o que acontece antes do clique: a confiança que se constrói, o ambiente que se cria, o momento que se deixa viver.</p>
+        <p class="reveal reveal-d3">Sou casada há 11 anos e mãe do Miguel. Isso me fez entender de perto o valor de cada fase — do primeiro sorriso ao primeiro aniversário, dos 15 anos ao casamento. Nenhum momento volta. Mas a foto, essa fica.</p>
+        <p class="reveal reveal-d4">Sou paciente, brincalhona e me preocupo com cada detalhe da experiência. Por isso até as pessoas mais tímidas chegam receosas e saem com sorrisos que elas mesmas não esperavam dar.</p>
+        <div class="sobre-stats reveal reveal-d5" aria-label="Destaques">
+          <div class="sobre-stat">
+            <strong>600+</strong>
+            <span>Sessões</span>
+          </div>
+          <div class="sobre-stat-sep" aria-hidden="true"></div>
+          <div class="sobre-stat">
+            <strong>6+</strong>
+            <span>Anos</span>
+          </div>
+          <div class="sobre-stat-sep" aria-hidden="true"></div>
+          <div class="sobre-stat">
+            <strong>Caçapava</strong>
+            <span>SP · Brasil</span>
+          </div>
+        </div>
+        <p class="sobre-sig reveal reveal-d5">— Lauriane Reis</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ PORTFOLIO ══════════════ -->
+<section class="portfolio-section" id="portfolio" aria-labelledby="portfolio-h">
+  <div class="container">
+    <div class="portfolio-header reveal">
+      <p class="eyebrow">Portfólio</p>
+      <h2 id="portfolio-h">Cada história tem<br>o seu enquadramento.</h2>
+      <p class="portfolio-sub">Centenas de sessões realizadas em Caçapava e Vale do Paraíba. Escolha uma categoria e mergulhe nas fotos.</p>
+    </div>
+
+    <div class="tab-nav" role="tablist" aria-label="Categorias do portfólio">
+      <button class="tab-btn active" role="tab" data-tab="t1" aria-selected="true"  aria-controls="panel-t1">15 Anos</button>
+      <button class="tab-btn"        role="tab" data-tab="t2" aria-selected="false" aria-controls="panel-t2">Aniversário Infantil</button>
+      <button class="tab-btn"        role="tab" data-tab="t3" aria-selected="false" aria-controls="panel-t3">Chá de Bebê</button>
+      <button class="tab-btn"        role="tab" data-tab="t4" aria-selected="false" aria-controls="panel-t4">Ensaio Externo</button>
+      <button class="tab-btn"        role="tab" data-tab="t5" aria-selected="false" aria-controls="panel-t5">Estúdio</button>
+      <button class="tab-btn"        role="tab" data-tab="t6" aria-selected="false" aria-controls="panel-t6">Newborn Lifestyle</button>
+      <button class="tab-btn"        role="tab" data-tab="t7" aria-selected="false" aria-controls="panel-t7">Casamento &amp; Bodas</button>
+      <div class="tab-indicator" aria-hidden="true"></div>
+    </div>
+
+    <!-- 15 Anos — 3 imagens únicas -->
+    <div class="tab-panel active" id="panel-t1" role="tabpanel">
+      <div class="photo-grid layout-3">
+        <div class="photo-cell">
+          <img src="assets/imagery/15-anos.jpg" alt="Ensaio 15 anos – retrato" loading="lazy" />
+          <div class="photo-scrim"></div>
+        </div>
+        <div class="photo-cell">
+          <img src="assets/imagery/15-anos-2.jpg" alt="Ensaio 15 anos – festa" loading="lazy" />
+          <div class="photo-scrim"></div>
+        </div>
+        <div class="photo-cell">
+          <img src="assets/imagery/15-anos-3.jpg" alt="Ensaio 15 anos – detalhes" loading="lazy" />
+          <div class="photo-scrim"></div>
+        </div>
+      </div>
+      <div class="grid-cta">
+        <a href="https://wa.me/5512991145743?text=Olá%20Lauri!%20Tenho%20interesse%20em%20um%20ensaio%20de%2015%20Anos!"
+           class="btn btn-wa" target="_blank" rel="noopener">
+          <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Agendar sessão de 15 Anos
+        </a>
+      </div>
+    </div>
+
+    <!-- Infantil — 2 imagens únicas -->
+    <div class="tab-panel" id="panel-t2" role="tabpanel">
+      <div class="photo-grid layout-2">
+        <div class="photo-cell">
+          <img src="assets/imagery/aniversario-infantil.jpg" alt="Aniversário infantil" loading="lazy" />
+          <div class="photo-scrim"></div>
+        </div>
+        <div class="photo-cell">
+          <img src="assets/imagery/aniversario-infantil-2.jpg" alt="Aniversário infantil – retrato" loading="lazy" />
+          <div class="photo-scrim"></div>
+        </div>
+      </div>
+      <div class="grid-cta">
+        <a href="https://wa.me/5512991145743?text=Olá%20Lauri!%20Tenho%20interesse%20em%20um%20ensaio%20de%20Aniversário%20Infantil!"
+           class="btn btn-wa" target="_blank" rel="noopener">
+          <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Agendar sessão Infantil
+        </a>
+      </div>
+    </div>
+
+    <!-- Chá de Bebê — 1 imagem -->
+    <div class="tab-panel" id="panel-t3" role="tabpanel">
+      <div class="photo-grid layout-1">
+        <div class="photo-cell">
+          <img src="assets/imagery/cha-de-bebe.jpg" alt="Chá de bebê" loading="lazy" />
+          <div class="photo-scrim"></div>
+        </div>
+      </div>
+      <p class="gallery-note">Galeria em crescimento — mais fotos em breve</p>
+      <div class="grid-cta">
+        <a href="https://wa.me/5512991145743?text=Olá%20Lauri!%20Tenho%20interesse%20em%20um%20ensaio%20de%20Chá%20de%20Bebê!"
+           class="btn btn-wa" target="_blank" rel="noopener">
+          <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Agendar sessão Chá de Bebê
+        </a>
+      </div>
+    </div>
+
+    <!-- Ensaio Externo — 1 imagem -->
+    <div class="tab-panel" id="panel-t4" role="tabpanel">
+      <div class="photo-grid layout-1">
+        <div class="photo-cell">
+          <img src="assets/imagery/ensaio-externo.jpg" alt="Ensaio externo – luz natural" loading="lazy" />
+          <div class="photo-scrim"></div>
+        </div>
+      </div>
+      <p class="gallery-note">Galeria em crescimento — mais fotos em breve</p>
+      <div class="grid-cta">
+        <a href="https://wa.me/5512991145743?text=Olá%20Lauri!%20Tenho%20interesse%20em%20um%20Ensaio%20Externo!"
+           class="btn btn-wa" target="_blank" rel="noopener">
+          <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Agendar Ensaio Externo
+        </a>
+      </div>
+    </div>
+
+    <!-- Estúdio — 2 imagens únicas -->
+    <div class="tab-panel" id="panel-t5" role="tabpanel">
+      <div class="photo-grid layout-2">
+        <div class="photo-cell">
+          <img src="assets/imagery/estudio.jpg" alt="Estúdio – luz contínua" loading="lazy" />
+          <div class="photo-scrim"></div>
+        </div>
+        <div class="photo-cell">
+          <img src="assets/imagery/estudio-2.jpg" alt="Estúdio – retrato" loading="lazy" />
+          <div class="photo-scrim"></div>
+        </div>
+      </div>
+      <div class="grid-cta">
+        <a href="https://wa.me/5512991145743?text=Olá%20Lauri!%20Tenho%20interesse%20em%20uma%20sessão%20de%20Estúdio!"
+           class="btn btn-wa" target="_blank" rel="noopener">
+          <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Agendar sessão de Estúdio
+        </a>
+      </div>
+    </div>
+
+    <!-- Newborn — 2 imagens únicas -->
+    <div class="tab-panel" id="panel-t6" role="tabpanel">
+      <div class="photo-grid layout-2">
+        <div class="photo-cell">
+          <img src="assets/imagery/newborn.jpg" alt="Newborn – recém-nascido" loading="lazy" />
+          <div class="photo-scrim"></div>
+        </div>
+        <div class="photo-cell">
+          <img src="assets/imagery/newborn-2.jpg" alt="Newborn – mãe e bebê" loading="lazy" />
+          <div class="photo-scrim"></div>
+        </div>
+      </div>
+      <div class="grid-cta">
+        <a href="https://wa.me/5512991145743?text=Olá%20Lauri!%20Tenho%20interesse%20em%20uma%20sessão%20Newborn%20Lifestyle!"
+           class="btn btn-wa" target="_blank" rel="noopener">
+          <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Agendar sessão Newborn
+        </a>
+      </div>
+    </div>
+
+    <!-- Casamento -->
+    <div class="tab-panel" id="panel-t7" role="tabpanel">
+      <div class="casamento-msg">
+        <span class="badge badge-gold">Em breve</span>
+        <h3>Casamento &amp; Bodas</h3>
+        <p>Estamos preparando uma galeria especial com os registros mais bonitos desses momentos únicos. Enquanto isso, entre em contato e vamos conversar sobre a sua história.</p>
+        <a href="https://wa.me/5512991145743?text=Olá%20Lauri!%20Tenho%20interesse%20em%20fotografia%20de%20Casamento!"
+           class="btn btn-gold" target="_blank" rel="noopener">
+          <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Falar sobre casamento
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ BENTO ══════════════ -->
+<section class="bento-section" aria-labelledby="bento-h">
+  <div class="container">
+    <div class="bento-header">
+      <div class="reveal">
+        <p class="eyebrow">Destaques</p>
+        <h2 id="bento-h">Algumas das histórias<br>que mais ficaram.</h2>
+      </div>
+      <a href="#portfolio" class="btn btn-outline reveal reveal-d1">Ver portfólio completo</a>
+    </div>
+    <div class="bento-grid">
+      <div class="bento-cell bc-1">
+        <img src="assets/imagery/15-anos.jpg" alt="Ensaio 15 anos" loading="lazy" />
+        <div class="bento-scrim"></div>
+        <span class="bento-lbl">15 Anos</span>
+      </div>
+      <div class="bento-cell bc-2">
+        <img src="assets/imagery/aniversario-infantil.jpg" alt="Aniversário infantil" loading="lazy" />
+        <div class="bento-scrim"></div>
+        <span class="bento-lbl">Aniversário Infantil</span>
+      </div>
+      <div class="bento-cell bc-3">
+        <img src="assets/imagery/ensaio-externo.jpg" alt="Ensaio externo" loading="lazy" />
+        <div class="bento-scrim"></div>
+        <span class="bento-lbl">Ensaio Externo</span>
+      </div>
+      <div class="bento-cell bc-4">
+        <img src="assets/imagery/newborn-2.jpg" alt="Newborn lifestyle" loading="lazy" />
+        <div class="bento-scrim"></div>
+        <span class="bento-lbl">Newborn</span>
+      </div>
+      <div class="bento-cell bc-5">
+        <img src="assets/imagery/newborn.jpg" alt="Newborn – bebê" loading="lazy" />
+        <div class="bento-scrim"></div>
+        <span class="bento-lbl">Newborn</span>
+      </div>
+      <div class="bento-cell bc-6">
+        <img src="assets/imagery/cha-de-bebe.jpg" alt="Chá de bebê" loading="lazy" />
+        <div class="bento-scrim"></div>
+        <span class="bento-lbl">Chá de Bebê</span>
+      </div>
+      <div class="bento-cell bc-7">
+        <img src="assets/imagery/estudio.jpg" alt="Estúdio" loading="lazy" />
+        <div class="bento-scrim"></div>
+        <span class="bento-lbl">Estúdio</span>
+      </div>
+      <div class="bento-cell bc-8">
+        <img src="assets/imagery/15-anos-2.jpg" alt="15 anos" loading="lazy" />
+        <div class="bento-scrim"></div>
+        <span class="bento-lbl">15 Anos</span>
+      </div>
+      <div class="bento-cell bc-9">
+        <img src="assets/imagery/estudio-2.jpg" alt="Estúdio" loading="lazy" />
+        <div class="bento-scrim"></div>
+        <span class="bento-lbl">Estúdio</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FULL-BLEED ══════════════ -->
+<div class="fullbleed" aria-label="Ensaios externos em Caçapava">
+  <div class="fullbleed-bg">
+    <img src="assets/imagery/ensaio-externo.jpg" alt="Ensaio externo – luz natural em Caçapava" loading="lazy" />
+  </div>
+  <div class="fullbleed-ov" aria-hidden="true"></div>
+  <div class="fullbleed-ct reveal">
+    <p class="eyebrow">Ensaio externo</p>
+    <h2>Luz natural,<br>cenário aberto,<br>você sendo você.</h2>
+    <p>Ensaios ao ar livre na região de Caçapava e Vale do Paraíba — com toda a luz e espaço que a sua história merece.</p>
+    <a href="https://wa.me/5512991145743?text=Olá%20Lauri!%20Tenho%20interesse%20em%20um%20Ensaio%20Externo!"
+       class="btn btn-ghost-light" target="_blank" rel="noopener">
+      Agendar ensaio externo
+    </a>
+  </div>
+</div>
+
+<!-- ══════════════ DIFERENCIAIS ══════════════ -->
+<section class="dif-section" id="diferenciais" aria-labelledby="dif-h">
+  <div class="container">
+    <p class="eyebrow">Por que a Lauri</p>
+    <h2 id="dif-h" class="reveal">A foto bonita qualquer câmera tira.<br>A experiência, só eu ofereço.</h2>
+    <div class="dif-grid">
+      <div class="dif-card reveal">
+        <div class="dif-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <h3>Especialista com crianças</h3>
+        <p>Paciente, brincalhona e com jogo de cintura — as crianças mais agitadas relaxam e sorriem de verdade.</p>
+      </div>
+      <div class="dif-card reveal reveal-d1">
+        <div class="dif-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3>Newborn no seu lar</h3>
+        <p>Nada de estúdio frio para recém-nascidos. A sessão acontece em casa, no ritmo do bebê e da família.</p>
+      </div>
+      <div class="dif-card reveal reveal-d2">
+        <div class="dif-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <h3>Caçapava e região</h3>
+        <p>Atendo em estúdio e em locações externas em toda a região do Vale do Paraíba.</p>
+      </div>
+      <div class="dif-card reveal">
+        <div class="dif-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>Experiência pensada</h3>
+        <p>Do agendamento à entrega, cada etapa é cuidada para que você só precise aparecer e aproveitar.</p>
+      </div>
+      <div class="dif-card reveal reveal-d1">
+        <div class="dif-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <h3>Galeria online exclusiva</h3>
+        <p>As fotos editadas são entregues em galeria privada, prontas para salvar, imprimir e guardar para sempre.</p>
+      </div>
+      <div class="dif-card reveal reveal-d2">
+        <div class="dif-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        </div>
+        <h3>Atendimento próximo</h3>
+        <p>Tudo começa por uma conversa no WhatsApp — sem formulários, sem burocracia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ PROCESSO ══════════════ -->
+<section class="processo-section" id="processo" aria-labelledby="processo-h">
+  <div class="proc-img-col" aria-hidden="true">
+    <img src="assets/imagery/newborn.jpg" alt="" />
+    <div class="proc-img-fade"></div>
+  </div>
+  <div class="proc-scroll-col">
+    <div class="proc-sticky-hd">
+      <p class="eyebrow" style="margin-bottom:0">O processo</p>
+    </div>
+    <div class="proc-step" style="padding-top:var(--sp-8)">
+      <h2 id="processo-h" style="font-size:clamp(1.5rem,2.8vw,var(--t-display-sm));margin-bottom:0">
+        Da conversa à lembrança, com cuidado em cada etapa.
+      </h2>
+    </div>
+    <div class="proc-step reveal">
+      <div class="step-num">01</div>
+      <h3>Conversa inicial</h3>
+      <p>Tudo começa pelo WhatsApp. Você conta o que imagina, eu conto o que posso criar — e juntos encontramos o melhor caminho para a sua sessão.</p>
+    </div>
+    <div class="proc-step reveal">
+      <div class="step-num">02</div>
+      <h3>Planejamento</h3>
+      <p>Data, local, look, clima. Cuido de cada detalhe com você antes do dia — para que na hora da sessão o único trabalho seja aparecer e aproveitar.</p>
+    </div>
+    <div class="proc-step reveal">
+      <div class="step-num">03</div>
+      <h3>A sessão</h3>
+      <p>Ambiente leve, sem pressa e com muita cumplicidade. Você não vai sentir que está "posando" — vai sentir que está vivendo um momento bonito.</p>
+    </div>
+    <div class="proc-step reveal">
+      <div class="step-num">04</div>
+      <h3>Entrega</h3>
+      <p>Fotos editadas em galeria online exclusiva. Prontas para salvar, imprimir e passar de geração em geração.</p>
+      <div style="margin-top:var(--sp-6)">
+        <a href="https://wa.me/5512991145743?text=Olá%20Lauri!%20Gostaria%20de%20agendar%20minha%20sessão%20fotográfica!"
+           class="btn btn-gold" target="_blank" rel="noopener">
+          Agendar minha sessão
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ QUOTE ══════════════ -->
+<section class="quote-section" aria-label="Frase de impacto">
+  <div class="quote-pattern" aria-hidden="true"></div>
+  <div class="quote-inner reveal">
+    <span class="quote-mark" aria-hidden="true">"</span>
+    <p class="quote-text">
+      Momentos simples que, registrados, se tornam extraordinários.
+      Para mim, a fotografia é a forma mais bela de contar uma história —
+      ela exige que momentos sejam vividos.
+    </p>
+    <p class="quote-author">— Lauriane Reis</p>
+  </div>
+</section>
+
+<!-- ══════════════ CTA ══════════════ -->
+<section class="cta-section" id="contato" aria-labelledby="cta-h">
+  <div class="cta-inner">
+    <span class="badge badge-gold reveal" style="margin-bottom:var(--sp-5)">Vamos conversar?</span>
+    <h2 id="cta-h" class="reveal">Pronta para criar<br>a sua lembrança?</h2>
+    <p class="reveal">
+      Entre em contato pelo WhatsApp e vamos conversar sobre a sua sessão.
+      Sem compromisso — só uma boa conversa.
+    </p>
+    <a href="https://wa.me/5512991145743?text=Olá%20Lauri!%20Gostaria%20de%20agendar%20minha%20sessão%20fotográfica!"
+       class="btn btn-gold reveal" target="_blank" rel="noopener">
+      <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Falar no WhatsApp
+    </a>
+    <div class="cta-info reveal">
+      <span>(12) 99114-5743</span>
+      <span>Caçapava, SP</span>
+      <span>Seg–Sex 08h–18h · Sáb 08h–11h</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer class="site-footer" aria-label="Rodapé">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">
+        <img src="assets/logo/lr-logo-white.svg" alt="Lauri Reis Fotografia" />
+      </div>
+      <p class="footer-desc">Fotógrafa em Caçapava, SP. Mais de 6 anos registrando histórias com sensibilidade e cuidado.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="#" aria-label="Facebook" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-lbl">Navegação</span>
+      <ul>
+        <li><a href="#portfolio">Portfólio</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#diferenciais">Diferenciais</a></li>
+        <li><a href="#processo">Como Funciona</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-lbl">Categorias</span>
+      <ul>
+        <li>15 Anos</li>
+        <li>Aniversário Infantil</li>
+        <li>Newborn Lifestyle</li>
+        <li>Casamento &amp; Bodas</li>
+        <li>Ensaio Externo</li>
+        <li>Estúdio</li>
+        <li>Chá de Bebê</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-lbl">Endereço</span>
+      <address class="footer-addr">
+        R. Dom Pedro II, 170 Sala 6<br>
+        Vila Resende<br>
+        Caçapava – SP<br><br>
+        (12) 99114-5743
+      </address>
+    </div>
+  </div>
+  <div class="footer-btm">
+    <span>© 2026 Lauri Reis Fotografia · Todos os direitos reservados</span>
+    <span><a href="#hero" style="color:inherit">Voltar ao topo ↑</a></span>
+  </div>
+</footer>
+
+<!-- ══════════════ LIGHTBOX ══════════════ -->
+<div class="lbx-overlay" id="lbxOverlay" role="dialog" aria-modal="true" aria-label="Visualizar foto" aria-hidden="true">
+  <div class="lbx-stage" id="lbxStage">
+    <img class="lbx-img" id="lbxImg" src="" alt="" draggable="false" />
+  </div>
+  <button class="lbx-close" id="lbxClose" aria-label="Fechar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+  <button class="lbx-arrow lbx-prev" id="lbxPrev" aria-label="Foto anterior">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+  </button>
+  <button class="lbx-arrow lbx-next" id="lbxNext" aria-label="Próxima foto">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="9 18 15 12 9 6"/>
+    </svg>
+  </button>
+  <div class="lbx-footer" aria-hidden="true">
+    <p class="lbx-caption" id="lbxCaption"></p>
+    <p class="lbx-counter" id="lbxCounter"></p>
+  </div>
+  <p class="lbx-zoom-tip" id="lbxZoomTip">Scroll para ampliar · Duplo clique para zoom · Esc para fechar</p>
+</div>
+
+<script>
+  /* ── Nav scroll + progress bar ── */
+  const nav        = document.getElementById('siteNav');
+  const progress   = document.getElementById('navProgress');
+
+  function updateNav() {
+    const scrollY  = window.scrollY;
+    const docH     = document.documentElement.scrollHeight - window.innerHeight;
+    const pct      = docH > 0 ? (scrollY / docH) * 100 : 0;
+
+    nav.classList.toggle('scrolled', scrollY > 60);
+    if (progress) progress.style.width = pct + '%';
+  }
+
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
+
+  /* ── Hamburger / mobile overlay ── */
+  const hamburger = document.getElementById('navHamburger');
+  const overlay   = document.getElementById('navOverlay');
+
+  function toggleMenu(open) {
+    hamburger.classList.toggle('open', open);
+    overlay.classList.toggle('open', open);
+    overlay.setAttribute('aria-hidden', !open);
+    hamburger.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = overlay.classList.contains('open');
+    toggleMenu(!isOpen);
+  });
+
+  // Close overlay when a link is clicked
+  document.querySelectorAll('.nav-overlay-link').forEach(link => {
+    link.addEventListener('click', () => toggleMenu(false));
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) toggleMenu(false);
+  });
+
+  /* ── Active section tracking ── */
+  const navAnchors = document.querySelectorAll('.nav-links a[data-section]');
+  const sectionIds = ['portfolio','sobre','diferenciais','processo'];
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navAnchors.forEach(a => {
+          a.classList.toggle('active', a.dataset.section === id);
+        });
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-72px 0px -30% 0px' });
+
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) sectionObserver.observe(el);
+  });
+
+  /* Tab switching */
+  const tabBtns     = document.querySelectorAll('.tab-btn');
+  const tabPanels   = document.querySelectorAll('.tab-panel');
+  const tabIndicator = document.querySelector('.tab-indicator');
+
+  function moveIndicator(btn) {
+    if (!tabIndicator || !btn) return;
+    tabIndicator.style.left  = btn.offsetLeft + 'px';
+    tabIndicator.style.width = btn.offsetWidth + 'px';
+  }
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+      tabPanels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected','true');
+      document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+      moveIndicator(btn);
+    });
+  });
+
+  const firstActiveTab = document.querySelector('.tab-btn.active');
+  if (firstActiveTab) setTimeout(() => moveIndicator(firstActiveTab), 0);
+
+  /* ── Hero Slideshow ── */
+  (function () {
+    const slides      = Array.from(document.querySelectorAll('.hero-slide'));
+    const catEl       = document.getElementById('heroCat');
+    const fill        = document.getElementById('heroProgressFill');
+    const countLabel  = document.getElementById('heroCountLabel');
+    const INTERVAL    = 5500;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    let current = 0;
+    let timer   = null;
+
+    if (!slides.length) return;
+
+    const total = slides.length;
+    const pad   = n => String(n + 1).padStart(2, '0');
+
+    /* Animated gold progress bar */
+    function startFill() {
+      if (reducedMotion || !fill) return;
+      fill.style.transition = 'none';
+      fill.style.width = '0%';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        fill.style.transition = 'width ' + INTERVAL + 'ms linear';
+        fill.style.width = '100%';
+      }));
+    }
+
+    /* Update "01 / 06" label */
+    function updateLabel() {
+      if (!countLabel) return;
+      countLabel.innerHTML = '<span>' + pad(current) + '</span> / ' + pad(total - 1);
+    }
+
+    /* Fade category label */
+    function updateCat() {
+      if (!catEl) return;
+      catEl.classList.remove('visible');
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        catEl.textContent = slides[current].dataset.cat || '';
+        catEl.classList.add('visible');
+      }));
+    }
+
+    function goTo(idx, userAction) {
+      if (idx === current) return;
+      slides[current].classList.remove('active');
+      current = (idx + total) % total;
+      slides[current].classList.add('active');
+      updateLabel();
+      updateCat();
+      startFill();
+      if (userAction) resetTimer();
+    }
+
+    function advance() { goTo(current + 1, false); }
+
+    function resetTimer() {
+      if (reducedMotion) return;
+      clearInterval(timer);
+      timer = setInterval(advance, INTERVAL);
+    }
+
+    /* Init — show first slide data after entrance animations settle */
+    updateLabel();
+    setTimeout(() => {
+      catEl.textContent = slides[0].dataset.cat || '';
+      catEl.classList.add('visible');
+      startFill();
+    }, 950);
+
+    /* Touch / swipe */
+    let touchStartX = 0;
+    const heroEl = document.getElementById('hero');
+    heroEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    heroEl.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 50) goTo(current + (dx < 0 ? 1 : -1), true);
+    }, { passive: true });
+
+    if (!reducedMotion) timer = setInterval(advance, INTERVAL);
+  })();
+
+  /* Scroll reveal */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* ── Lightbox ─────────────────────────────────────────── */
+  (function () {
+    const overlay  = document.getElementById('lbxOverlay');
+    const stage    = document.getElementById('lbxStage');
+    const img      = document.getElementById('lbxImg');
+    const closeBtn = document.getElementById('lbxClose');
+    const prevBtn  = document.getElementById('lbxPrev');
+    const nextBtn  = document.getElementById('lbxNext');
+    const caption  = document.getElementById('lbxCaption');
+    const counter  = document.getElementById('lbxCounter');
+    const zoomTip  = document.getElementById('lbxZoomTip');
+
+    let images  = [];
+    let current = 0;
+    let zoom    = 1;
+    let panX    = 0;
+    let panY    = 0;
+
+    /* Drag state */
+    let isDragging = false;
+    let dragSX = 0, dragSY = 0, panSX = 0, panSY = 0;
+
+    /* Pinch state */
+    let pinchDist0 = null, zoom0 = 1;
+
+    /* Touch swipe state */
+    let touchSX = 0, touchSY = 0;
+
+    const MIN_ZOOM = 1, MAX_ZOOM = 5;
+    const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+    const pad   = (n, t)      => String(n).padStart(String(t).length, '0');
+
+    function applyTransform(animated) {
+      img.style.transition = animated
+        ? 'transform 260ms var(--ease-out)'
+        : 'none';
+      img.style.transform = `translate(${panX}px,${panY}px) scale(${zoom})`;
+    }
+
+    function resetZoom(animated) {
+      zoom = 1; panX = 0; panY = 0;
+      stage.classList.remove('zoomed');
+      applyTransform(animated !== false);
+    }
+
+    /* Zoom centered at a screen point (cx, cy) */
+    function zoomAt(factor, cx, cy) {
+      const rect = img.getBoundingClientRect();
+      const icx  = rect.left + rect.width  / 2;
+      const icy  = rect.top  + rect.height / 2;
+      const newZ = clamp(zoom * factor, MIN_ZOOM, MAX_ZOOM);
+      if (newZ === zoom) return;
+      const r = newZ / zoom;
+      panX = (cx - icx) * (1 - r) + panX * r;
+      panY = (cy - icy) * (1 - r) + panY * r;
+      zoom = newZ;
+      stage.classList.toggle('zoomed', zoom > 1.01);
+      applyTransform(false);
+    }
+
+    function showImg(entry) {
+      img.style.transition = 'none';
+      img.style.opacity    = '0';
+      img.style.transform  = `translate(${panX}px,${panY}px) scale(${zoom * 0.96})`;
+      caption.textContent  = entry.alt;
+      const n = images.length;
+      counter.textContent  = pad(current + 1, n) + ' / ' + pad(n, n);
+      prevBtn.hidden = nextBtn.hidden = n < 2;
+
+      const reveal = () => {
+        requestAnimationFrame(() => {
+          img.style.transition = 'opacity 240ms var(--ease-out), transform 240ms var(--ease-out)';
+          img.style.opacity    = '1';
+          img.style.transform  = `translate(${panX}px,${panY}px) scale(${zoom})`;
+        });
+      };
+      img.onload = reveal;
+      img.src    = entry.src;
+      img.alt    = entry.alt;
+      if (img.complete && img.naturalWidth) reveal();
+    }
+
+    function open(imgList, idx) {
+      images  = imgList;
+      current = idx;
+      zoom = 1; panX = 0; panY = 0;
+      overlay.removeAttribute('aria-hidden');
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      showImg(images[current]);
+      /* Hide tip after 3s */
+      if (zoomTip) {
+        zoomTip.classList.remove('hide');
+        setTimeout(() => zoomTip.classList.add('hide'), 3000);
+      }
+    }
+
+    function close() {
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      isDragging = false;
+      setTimeout(() => { img.src = ''; img.style.transform = ''; }, 320);
+    }
+
+    function navigate(dir) {
+      current = (current + dir + images.length) % images.length;
+      resetZoom(false);
+      showImg(images[current]);
+    }
+
+    /* Build image list from a grid container */
+    function cellsOf(container, selector) {
+      return Array.from(container.querySelectorAll(selector)).map(c => {
+        const el = c.querySelector('img');
+        return el ? { src: el.src, alt: el.alt || '' } : null;
+      }).filter(Boolean);
+    }
+
+    /* Attach click to all photo-cells and bento-cells */
+    document.querySelectorAll('.photo-cell, .bento-cell').forEach(cell => {
+      cell.addEventListener('click', () => {
+        const isPhoto = cell.classList.contains('photo-cell');
+        const gridSel = isPhoto ? '.photo-grid'  : '.bento-grid';
+        const cellSel = isPhoto ? '.photo-cell'  : '.bento-cell';
+        const grid    = cell.closest(gridSel);
+        const list    = grid ? cellsOf(grid, cellSel) : [{ src: cell.querySelector('img')?.src || '', alt: cell.querySelector('img')?.alt || '' }];
+        const allInGrid = grid ? Array.from(grid.querySelectorAll(cellSel)) : [cell];
+        const idx = allInGrid.indexOf(cell);
+        open(list, Math.max(0, idx));
+      });
+    });
+
+    /* Close */
+    closeBtn.addEventListener('click', close);
+    stage.addEventListener('click', e => {
+      if (!e.target.closest('.lbx-img') && zoom <= 1.01) close();
+    });
+    document.addEventListener('keydown', e => {
+      if (!overlay.classList.contains('open')) return;
+      if (e.key === 'Escape')                close();
+      if (e.key === 'ArrowLeft')             navigate(-1);
+      if (e.key === 'ArrowRight')            navigate(1);
+      if (e.key === '+' || e.key === '=')    zoomAt(1.25, window.innerWidth / 2, window.innerHeight / 2);
+      if (e.key === '-')                     zoomAt(0.8,  window.innerWidth / 2, window.innerHeight / 2);
+    });
+
+    prevBtn.addEventListener('click', e => { e.stopPropagation(); navigate(-1); });
+    nextBtn.addEventListener('click', e => { e.stopPropagation(); navigate(1); });
+
+    /* Mouse wheel zoom */
+    stage.addEventListener('wheel', e => {
+      e.preventDefault();
+      zoomAt(e.deltaY < 0 ? 1.14 : 0.88, e.clientX, e.clientY);
+    }, { passive: false });
+
+    /* Double-click toggle zoom */
+    stage.addEventListener('dblclick', e => {
+      if (!e.target.closest('.lbx-img')) return;
+      if (zoom > 1.01) resetZoom();
+      else zoomAt(2.5, e.clientX, e.clientY);
+    });
+
+    /* Mouse pan */
+    stage.addEventListener('mousedown', e => {
+      if (zoom <= 1.01 || !e.target.closest('.lbx-img')) return;
+      isDragging = true;
+      dragSX = e.clientX; dragSY = e.clientY;
+      panSX  = panX;     panSY  = panY;
+      e.preventDefault();
+    });
+    window.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      panX = panSX + (e.clientX - dragSX);
+      panY = panSY + (e.clientY - dragSY);
+      applyTransform(false);
+    });
+    window.addEventListener('mouseup', () => { isDragging = false; });
+
+    /* Touch: swipe navigation + pinch zoom + pan */
+    stage.addEventListener('touchstart', e => {
+      if (e.touches.length === 2) {
+        pinchDist0 = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        zoom0 = zoom;
+      } else if (e.touches.length === 1) {
+        touchSX = e.touches[0].clientX;
+        touchSY = e.touches[0].clientY;
+        if (zoom > 1.01) {
+          isDragging = true;
+          dragSX = touchSX; dragSY = touchSY;
+          panSX  = panX;    panSY  = panY;
+        }
+      }
+    }, { passive: true });
+
+    stage.addEventListener('touchmove', e => {
+      if (e.touches.length === 2 && pinchDist0 !== null) {
+        e.preventDefault();
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+        const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+        const rect = img.getBoundingClientRect();
+        const icx  = rect.left + rect.width  / 2;
+        const icy  = rect.top  + rect.height / 2;
+        const newZ = clamp(zoom0 * (dist / pinchDist0), MIN_ZOOM, MAX_ZOOM);
+        const r    = newZ / zoom;
+        panX = (cx - icx) * (1 - r) + panX * r;
+        panY = (cy - icy) * (1 - r) + panY * r;
+        zoom = newZ;
+        stage.classList.toggle('zoomed', zoom > 1.01);
+        applyTransform(false);
+      } else if (e.touches.length === 1 && isDragging) {
+        e.preventDefault();
+        panX = panSX + (e.touches[0].clientX - dragSX);
+        panY = panSY + (e.touches[0].clientY - dragSY);
+        applyTransform(false);
+      }
+    }, { passive: false });
+
+    stage.addEventListener('touchend', e => {
+      pinchDist0 = null;
+      if (isDragging) { isDragging = false; return; }
+      if (zoom > 1.01) return;
+      const dx = (e.changedTouches[0]?.clientX ?? 0) - touchSX;
+      const dy = (e.changedTouches[0]?.clientY ?? 0) - touchSY;
+      if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        navigate(dx < 0 ? 1 : -1);
+      }
+    }, { passive: true });
+  })();
+</script>
+</body>
+</html>

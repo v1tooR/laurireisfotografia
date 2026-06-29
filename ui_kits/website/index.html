@@ -1,0 +1,40 @@
+<!-- @dsCard group="Website" viewport="1280x720" name="Site — Lauri Reis Fotografia" subtitle="Marketing site: hero, services, portfolio, contact" -->
+<!-- @startingPoint section="Website" subtitle="Full photography marketing site" viewport="1280x800" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lauri Reis Fotografia</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; background: var(--lr-navy-deep); }
+  * { box-sizing: border-box; }
+</style>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="../../_ds_bundle.js"></script>
+  <script>
+    // Safely locate the bundled namespace (avoids cross-origin window props).
+    function lrNS(test) {
+      for (const k of Object.getOwnPropertyNames(window)) {
+        let v; try { v = window[k]; } catch (e) { continue; }
+        if (v && typeof v === "object" && test(v)) return v;
+      }
+      return null;
+    }
+    const NS = lrNS(v => v.Site && v.Button) || lrNS(v => v.Button) || {};
+    if (NS.Site) {
+      ReactDOM.createRoot(document.getElementById("app")).render(
+        React.createElement(NS.Site, { ui: NS })
+      );
+    } else {
+      document.getElementById("app").innerHTML =
+        '<div style="font-family:system-ui;color:#A8BECE;background:#0F2030;padding:64px;text-align:center">Carregando componentes do design system…</div>';
+    }
+  </script>
+</body>
+</html>

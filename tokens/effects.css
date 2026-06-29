@@ -1,0 +1,22 @@
+/* Effects — shadows, borders, transitions. */
+:root {
+  /* Shadows — soft, low, photographic (no harsh drop shadows) */
+  --shadow-sm: 0 1px 3px rgba(15, 32, 48, 0.08);
+  --shadow-md: 0 8px 24px rgba(15, 32, 48, 0.10);
+  --shadow-lg: 0 24px 60px rgba(15, 32, 48, 0.16);
+  --shadow-gold: 0 8px 28px rgba(200, 168, 75, 0.28);
+
+  /* Image protection gradient (for text over photos) */
+  --scrim-bottom: linear-gradient(to top, rgba(15,32,48,0.82) 0%, rgba(15,32,48,0) 60%);
+  --scrim-full: linear-gradient(to top, rgba(15,32,48,0.78) 0%, rgba(15,32,48,0.15) 55%, rgba(15,32,48,0.35) 100%);
+
+  /* Borders */
+  --border-thin: 1px solid var(--border-on-light);
+  --border-gold: 1px solid var(--hairline-gold);
+
+  /* Motion — calm, refined; ease-out, never bouncy */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-fast: 160ms;
+  --dur: 280ms;
+  --dur-slow: 520ms;
+}

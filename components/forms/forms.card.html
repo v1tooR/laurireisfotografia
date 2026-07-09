@@ -1,0 +1,33 @@
+<!-- @dsCard group="Components" viewport="700x280" name="Form Fields" subtitle="Underline inputs with gold focus" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-body); background: var(--lr-paper-card); padding: 30px 34px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; max-width: 620px; }
+  .full { grid-column: 1 / -1; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div id="f1"></div>
+    <div id="f2"></div>
+    <div class="full" id="f3"></div>
+  </div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+  function lrNS(test){for(const k of Object.getOwnPropertyNames(window)){let v;try{v=window[k];}catch(e){continue;}if(v&&typeof v==="object"&&test(v))return v;}return {};}
+  const NS = lrNS(v => v.Field);
+  const { Field } = NS;
+  const e = React.createElement;
+  ReactDOM.createRoot(document.getElementById("f1")).render(e(Field,{label:"Nome",placeholder:"Seu nome completo",required:true}));
+  ReactDOM.createRoot(document.getElementById("f2")).render(e(Field,{label:"Tipo de ensaio",placeholder:"15 anos, newborn…"}));
+  ReactDOM.createRoot(document.getElementById("f3")).render(e(Field,{label:"Mensagem",textarea:true,placeholder:"Conte sobre o momento que deseja registrar"}));
+</script>
+</body>
+</html>

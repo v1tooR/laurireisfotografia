@@ -1,0 +1,25 @@
+<!-- @dsCard group="Brand" viewport="700x260" name="Logo Lockups" subtitle="Primary wordmark & monogram across surfaces" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-body); display:grid; grid-template-columns: 1fr 1fr; }
+  .cell { height: 130px; display:flex; align-items:center; justify-content:center; gap: 18px; position:relative; }
+  .dark { background: var(--lr-navy-deep); }
+  .light { background: var(--lr-paper); }
+  .tag { position:absolute; bottom:8px; left:12px; font-size:9px; letter-spacing:.16em; text-transform:uppercase; }
+  .tag.on-dark { color: var(--lr-ink-200); }
+  .tag.on-light { color: var(--lr-ink-400); }
+  img.word { height: 30px; }
+  img.sym { height: 56px; }
+</style>
+</head>
+<body>
+  <div class="cell dark"><img class="word" src="../assets/logo/lr-logo-white.svg" alt="Lauri Reis"><span class="tag on-dark">Wordmark · branco / navy</span></div>
+  <div class="cell light"><img class="word" src="../assets/logo/lr-logo-navy.svg" alt="Lauri Reis"><span class="tag on-light">Wordmark · navy / paper</span></div>
+  <div class="cell dark"><img class="sym" src="../assets/logo/lr-symbol-white.svg" alt="LR"><span class="tag on-dark">Monograma · branco</span></div>
+  <div class="cell light"><img class="sym" src="../assets/logo/lr-symbol-gold.svg" alt="LR"><span class="tag on-light">Monograma · ouro</span></div>
+</body>
+</html>

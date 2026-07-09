@@ -1,0 +1,30 @@
+<!-- @dsCard group="Colors" viewport="700x170" name="Gold Gradient & Neutrals" subtitle="Signature gradient and the cool, navy-tinted neutral ramp" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-body); background: var(--lr-paper); padding: 24px; }
+  .grad { height: 56px; border-radius: var(--radius-md); background: var(--lr-gradient-gold); box-shadow: var(--shadow-sm); }
+  .glabel { font-size: 11px; color: var(--lr-ink-400); margin: 8px 0 20px; letter-spacing:.04em; }
+  .ramp { display: flex; gap: 8px; }
+  .n { flex: 1; }
+  .nc { height: 44px; border-radius: var(--radius-sm); }
+  .nl { font-size: 10px; color: var(--lr-ink-400); margin-top: 6px; font-variant-numeric: tabular-nums; text-align:center; }
+</style>
+</head>
+<body>
+  <div class="grad"></div>
+  <div class="glabel">--lr-gradient-gold &nbsp;·&nbsp; #C8A84B → #625225</div>
+  <div class="ramp">
+    <div class="n"><div class="nc" style="background:#0F2030"></div><div class="nl">900</div></div>
+    <div class="n"><div class="nc" style="background:#1E3448"></div><div class="nl">800</div></div>
+    <div class="n"><div class="nc" style="background:#3C5168"></div><div class="nl">600</div></div>
+    <div class="n"><div class="nc" style="background:#6B7E91"></div><div class="nl">400</div></div>
+    <div class="n"><div class="nc" style="background:#A8BECE"></div><div class="nl">200</div></div>
+    <div class="n"><div class="nc" style="background:#D5DEE5"></div><div class="nl">100</div></div>
+    <div class="n"><div class="nc" style="background:#F4F1EA;border:1px solid #e3ddd0"></div><div class="nl">paper</div></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!-- @dsCard group="Spacing" viewport="700x160" name="Radii & Shadows" subtitle="Restrained corners, soft photographic shadows" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-body); background: var(--lr-paper); padding: 26px 32px; display:flex; gap: 40px; align-items:center; }
+  .group { display:flex; gap: 18px; }
+  .box { width: 64px; height: 64px; background: var(--lr-paper-card); display:flex; align-items:flex-end; justify-content:center; padding-bottom:6px; }
+  .box span { font-size: 10px; color: var(--lr-ink-400); }
+  .sh { width: 64px; height: 64px; background:#fff; border-radius: var(--radius-md); display:flex; align-items:flex-end; justify-content:center; padding-bottom:6px; }
+  .sh span { font-size:10px; color: var(--lr-ink-400); }
+  .divider { width:1px; align-self:stretch; background: var(--border-on-light); }
+</style>
+</head>
+<body>
+  <div class="group">
+    <div class="box" style="border-radius:2px;border:1px solid var(--border-on-light)"><span>2</span></div>
+    <div class="box" style="border-radius:4px;border:1px solid var(--border-on-light)"><span>4</span></div>
+    <div class="box" style="border-radius:8px;border:1px solid var(--border-on-light)"><span>8</span></div>
+    <div class="box" style="border-radius:999px;border:1px solid var(--border-on-light)"><span>pill</span></div>
+  </div>
+  <div class="divider"></div>
+  <div class="group">
+    <div class="sh" style="box-shadow:var(--shadow-sm)"><span>sm</span></div>
+    <div class="sh" style="box-shadow:var(--shadow-md)"><span>md</span></div>
+    <div class="sh" style="box-shadow:var(--shadow-lg)"><span>lg</span></div>
+    <div class="sh" style="box-shadow:var(--shadow-gold)"><span>gold</span></div>
+  </div>
+</body>
+</html>

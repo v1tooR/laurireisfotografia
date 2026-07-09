@@ -2020,7 +2020,13 @@
       'Agendar ' + (meta.label || cat) + '</a>';
   }
 
-  function appendItems(paths, from, count) {
+  function loadImgNow(img, src) {
+    img.src = src;
+    img.addEventListener('load',  function() { img.classList.add('gal-loaded'); }, { once: true });
+    img.addEventListener('error', function() { img.classList.add('gal-loaded'); }, { once: true });
+  }
+
+  function appendItems(paths, from, count, lazy) {
     if (!galGrid || !paths) return;
     var frag = document.createDocumentFragment();
     var end  = Math.min(from + count, paths.length);
@@ -2029,7 +2035,6 @@
       wrap.className = 'gal-item';
       wrap.setAttribute('role', 'listitem');
       var img   = document.createElement('img');
-      img.setAttribute('data-src', paths[i]);
       img.alt = 'Fotografia — Lauri Reis, Caçapava SP';
       img.setAttribute('decoding', 'async');
       var scrim = document.createElement('div');
@@ -2037,8 +2042,12 @@
       wrap.appendChild(img);
       wrap.appendChild(scrim);
       frag.appendChild(wrap);
-      if (imgObserver) imgObserver.observe(img);
-      else { img.src = paths[i]; img.classList.add('gal-loaded'); }
+      if (lazy && imgObserver) {
+        img.setAttribute('data-src', paths[i]);
+        imgObserver.observe(img);
+      } else {
+        loadImgNow(img, paths[i]);
+      }
     }
     galGrid.appendChild(frag);
   }
@@ -2052,7 +2061,7 @@
     var total = paths.length;
     var meta  = GALLERY_META[cat] || {};
     if (galCountEl) galCountEl.textContent = total + ' foto' + (total !== 1 ? 's' : '') + ' · ' + (meta.label || cat);
-    appendItems(paths, 0, PAGE_SIZE);
+    appendItems(paths, 0, PAGE_SIZE, false);
     galState.page = 1;
     if (loadMoreWrap) loadMoreWrap.hidden = total <= PAGE_SIZE;
     if (galCtaEl) galCtaEl.innerHTML = buildWaHtml(cat);
@@ -2061,7 +2070,7 @@
   function loadMore() {
     var paths = (typeof GALLERY !== 'undefined' && GALLERY[galState.cat]) ? GALLERY[galState.cat] : [];
     var from  = galState.page * PAGE_SIZE;
-    appendItems(paths, from, PAGE_SIZE);
+    appendItems(paths, from, PAGE_SIZE, true);
     galState.page++;
     if (loadMoreWrap && galState.page * PAGE_SIZE >= paths.length) loadMoreWrap.hidden = true;
   }

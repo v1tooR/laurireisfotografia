@@ -79,6 +79,8 @@
   }
   </script>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="styles.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -723,15 +725,39 @@
     }
 
     /* Tabs */
+    .tab-nav-wrap {
+      position: relative;
+      margin-bottom: var(--sp-5);
+    }
     .tab-nav {
       display: flex;
       position: relative;
       border-bottom: 1px solid var(--border-on-light);
-      margin-bottom: var(--sp-5);
+      margin-bottom: 0;
       overflow-x: auto;
       scrollbar-width: none;
     }
     .tab-nav::-webkit-scrollbar { display: none; }
+    /* ── Tab arrows – visible only on pointer:fine (mouse/trackpad) ── */
+    .tab-arrow {
+      position: absolute; top: 0; bottom: 1px;
+      z-index: 3; width: 48px;
+      display: none; align-items: center; justify-content: center;
+      border: none; padding: 0; cursor: pointer;
+      color: var(--lr-ink-400);
+      transition: color 200ms, opacity 180ms;
+    }
+    .tab-arrow-l {
+      left: 0;
+      background: linear-gradient(to right, var(--lr-paper-card) 55%, transparent);
+    }
+    .tab-arrow-r {
+      right: 0;
+      background: linear-gradient(to left, var(--lr-paper-card) 55%, transparent);
+    }
+    .tab-arrow:hover { color: var(--lr-gold); }
+    .tab-arrow.is-hidden { opacity: 0; pointer-events: none; }
+    @media (pointer: fine) { .tab-arrow { display: flex; } }
     .tab-indicator {
       position: absolute;
       bottom: -1px;
@@ -1533,22 +1559,34 @@
   <!-- Slideshow background -->
   <div class="hero-slides" aria-hidden="true">
     <div class="hero-slide active" data-cat="15 Anos">
-      <img src="assets/imagery/15-anos.webp" alt="" style="object-position:center 30%" />
+      <img src="assets/imagery/responsive/15-anos-1280.webp"
+           srcset="assets/imagery/responsive/15-anos-1280.webp 1280w, assets/imagery/responsive/15-anos-1920.webp 1920w, assets/imagery/15-anos.webp 2560w"
+           sizes="100vw" alt="" width="2560" height="1707"
+           fetchpriority="high" decoding="async" style="object-position:center 30%" />
     </div>
     <div class="hero-slide" data-cat="Aniversário Infantil">
-      <img src="assets/imagery/aniversario-infantil.webp" alt="" style="object-position:center 40%" />
+      <img data-src="assets/imagery/responsive/aniversario-infantil-1280.webp"
+           data-srcset="assets/imagery/responsive/aniversario-infantil-1280.webp 1280w, assets/imagery/responsive/aniversario-infantil-1920.webp 1920w, assets/imagery/aniversario-infantil.webp 2560w"
+           sizes="100vw" alt="" width="2560" height="1707" decoding="async" style="object-position:center 40%" />
     </div>
     <div class="hero-slide" data-cat="Ensaio Externo">
-      <img src="assets/imagery/ensaio-externo.webp" alt="" style="object-position:center 25%" />
+      <img data-src="assets/imagery/responsive/ensaio-externo-1280.webp"
+           data-srcset="assets/imagery/responsive/ensaio-externo-1280.webp 1280w, assets/imagery/responsive/ensaio-externo-1920.webp 1920w, assets/imagery/ensaio-externo.webp 2560w"
+           sizes="100vw" alt="" width="2560" height="1707" decoding="async" style="object-position:center 25%" />
     </div>
     <div class="hero-slide" data-cat="Newborn">
-      <img src="assets/imagery/newborn.webp" alt="" style="object-position:center 35%" />
+      <img data-src="assets/imagery/responsive/newborn-1280.webp"
+           data-srcset="assets/imagery/responsive/newborn-1280.webp 1280w, assets/imagery/newborn.webp 1707w"
+           sizes="100vw" alt="" width="1707" height="2560" decoding="async" style="object-position:center 35%" />
     </div>
     <div class="hero-slide" data-cat="Chá de Bebê">
-      <img src="assets/imagery/cha-de-bebe.webp" alt="" style="object-position:center 30%" />
+      <img data-src="assets/imagery/responsive/cha-de-bebe-1280.webp"
+           data-srcset="assets/imagery/responsive/cha-de-bebe-1280.webp 1280w, assets/imagery/responsive/cha-de-bebe-1920.webp 1920w, assets/imagery/cha-de-bebe.webp 2560w"
+           sizes="100vw" alt="" width="2560" height="1706" decoding="async" style="object-position:center 30%" />
     </div>
     <div class="hero-slide" data-cat="Estúdio">
-      <img src="assets/imagery/estudio-2.webp" alt="" style="object-position:center 20%" />
+      <img data-src="assets/imagery/foto_familia_capa2_1.webp"
+           alt="" width="1055" height="703" decoding="async" style="object-position:center 20%" />
     </div>
   </div>
 
@@ -1589,29 +1627,29 @@
 <!-- ══════════════ MARQUEE ══════════════ -->
 <div class="marquee-section" aria-hidden="true">
   <div class="marquee-track">
-    <div class="marquee-thumb"><img src="assets/imagery/15-anos.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/aniversario-infantil.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/cha-de-bebe.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/ensaio-externo.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/estudio.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/newborn.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/15-anos-2.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/estudio-2.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/newborn-2.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/15-anos-3.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/aniversario-infantil-2.webp" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/15-anos.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/aniversario-infantil.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/cha-de-bebe.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/ensaio-externo.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/foto_familia_capa1_1.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/newborn.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/15-anos-2.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/foto_familia_capa2_1.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/newborn-2.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/15-anos-3.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/aniversario-infantil-2.webp" alt="" loading="lazy" decoding="async" /></div>
     <!-- duplicates for seamless loop -->
-    <div class="marquee-thumb"><img src="assets/imagery/15-anos.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/aniversario-infantil.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/cha-de-bebe.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/ensaio-externo.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/estudio.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/newborn.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/15-anos-2.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/estudio-2.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/newborn-2.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/15-anos-3.webp" alt="" /></div>
-    <div class="marquee-thumb"><img src="assets/imagery/aniversario-infantil-2.webp" alt="" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/15-anos.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/aniversario-infantil.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/cha-de-bebe.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/ensaio-externo.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/foto_familia_capa1_1.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/newborn.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/15-anos-2.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/foto_familia_capa2_1.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/newborn-2.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/15-anos-3.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="marquee-thumb"><img src="assets/thumbnails/marquee/aniversario-infantil-2.webp" alt="" loading="lazy" decoding="async" /></div>
   </div>
 </div>
 
@@ -1622,7 +1660,8 @@
       <div class="sobre-img-wrap reveal">
         <img class="sobre-img"
              src="assets/imagery/lauri.webp"
-             alt="Lauriane Reis, fotógrafa em Caçapava SP" />
+             alt="Lauriane Reis, fotógrafa em Caçapava SP"
+             loading="lazy" decoding="async" />
         <div class="sobre-badge" aria-label="Mais de 8 anos de experiência">
           <strong>8+</strong>
           <small>anos de<br>histórias</small>
@@ -1665,19 +1704,26 @@
       <p class="portfolio-sub">535 fotos de sessões reais em Caçapava e Vale do Paraíba. Escolha uma categoria e explore.</p>
     </div>
 
-    <div class="tab-nav" role="tablist" aria-label="Categorias do portfólio">
-      <button class="tab-btn active" role="tab" data-cat="quinze"      aria-selected="true">15 Anos</button>
-      <button class="tab-btn"        role="tab" data-cat="infantil"    aria-selected="false">Aniversário Infantil</button>
-      <button class="tab-btn"        role="tab" data-cat="adulto"      aria-selected="false">Aniversário Adulto</button>
-      <button class="tab-btn"        role="tab" data-cat="bebe"        aria-selected="false">Chá de Bebê</button>
-      <button class="tab-btn"        role="tab" data-cat="newborn"     aria-selected="false">Newborn</button>
-      <button class="tab-btn"        role="tab" data-cat="gestante"    aria-selected="false">Gestante</button>
-      <button class="tab-btn"        role="tab" data-cat="externo"     aria-selected="false">Ensaio Externo</button>
-      <button class="tab-btn"        role="tab" data-cat="estudio"     aria-selected="false">Estúdio</button>
-      <button class="tab-btn"        role="tab" data-cat="casamento"   aria-selected="false">Casamento &amp; Bodas</button>
-      <button class="tab-btn"        role="tab" data-cat="prewedding"  aria-selected="false">Pré-Wedding</button>
-      <button class="tab-btn"        role="tab" data-cat="corporativo" aria-selected="false">Corporativo</button>
-      <div class="tab-indicator" aria-hidden="true"></div>
+    <div class="tab-nav-wrap">
+      <button class="tab-arrow tab-arrow-l is-hidden" id="tabArrowL" aria-label="Ver categorias anteriores" tabindex="-1">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="tab-nav" role="tablist" aria-label="Categorias do portfólio">
+        <button class="tab-btn active" role="tab" data-cat="quinze"      aria-selected="true">15 Anos</button>
+        <button class="tab-btn"        role="tab" data-cat="infantil"    aria-selected="false">Aniversário Infantil</button>
+        <button class="tab-btn"        role="tab" data-cat="adulto"      aria-selected="false">Aniversário Adulto</button>
+        <button class="tab-btn"        role="tab" data-cat="bebe"        aria-selected="false">Newborn &amp; Chá de Bebê</button>
+        <button class="tab-btn"        role="tab" data-cat="gestante"    aria-selected="false">Gestante</button>
+        <button class="tab-btn"        role="tab" data-cat="externo"     aria-selected="false">Ensaio Externo</button>
+        <button class="tab-btn"        role="tab" data-cat="estudio"     aria-selected="false">Estúdio</button>
+        <button class="tab-btn"        role="tab" data-cat="casamento"   aria-selected="false">Casamento &amp; Bodas</button>
+        <button class="tab-btn"        role="tab" data-cat="prewedding"  aria-selected="false">Pré-Wedding</button>
+        <button class="tab-btn"        role="tab" data-cat="corporativo" aria-selected="false">Corporativo</button>
+        <div class="tab-indicator" aria-hidden="true"></div>
+      </div>
+      <button class="tab-arrow tab-arrow-r" id="tabArrowR" aria-label="Ver mais categorias" tabindex="-1">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
     </div>
 
     <p class="gal-count-bar" id="galCount"></p>
@@ -1826,7 +1872,7 @@
 <!-- ══════════════ PROCESSO ══════════════ -->
 <section class="processo-section" id="processo" aria-labelledby="processo-h">
   <div class="proc-img-col" aria-hidden="true">
-    <img src="assets/imagery/newborn.webp" alt="" />
+    <img src="assets/imagery/newborn.webp" alt="" loading="lazy" decoding="async" />
     <div class="proc-img-fade"></div>
   </div>
   <div class="proc-scroll-col">
@@ -2105,8 +2151,7 @@
     quinze:      { label: '15 Anos',             wa: 'ensaio de 15 Anos' },
     infantil:    { label: 'Aniversário Infantil', wa: 'Aniversário Infantil' },
     adulto:      { label: 'Aniversário Adulto',  wa: 'Aniversário Adulto' },
-    bebe:        { label: 'Chá de Bebê',         wa: 'Chá de Bebê' },
-    newborn:     { label: 'Newborn',             wa: 'sessão Newborn Lifestyle' },
+    bebe:        { label: 'Newborn & Chá de Bebê', wa: 'sessão Newborn ou Chá de Bebê' },
     gestante:    { label: 'Gestante',            wa: 'ensaio Gestante' },
     externo:     { label: 'Ensaio Externo',      wa: 'Ensaio Externo' },
     estudio:     { label: 'Estúdio',             wa: 'sessão de Estúdio' },
@@ -2180,31 +2225,8 @@
   }
 
   /* ── Project helpers ── */
-  /* Renderiza a capa do projeto em canvas 640×427 (3:2 @ 2× retina) antes
-     de exibir no card — evita que o browser faça downscale de 4000px → 400px
-     em tempo real, o que causa borramento ou pixelização. */
-  function loadCoverThumb(imgEl, src) {
-    var TW = 640, TH = 427;
-    var loader = new Image();
-    loader.onload = function() {
-      try {
-        var canvas = document.createElement('canvas');
-        canvas.width = TW; canvas.height = TH;
-        var ctx = canvas.getContext('2d');
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = 'high';
-        var iw = loader.naturalWidth, ih = loader.naturalHeight;
-        var scale = Math.max(TW / iw, TH / ih);
-        var sw = TW / scale, sh = TH / scale;
-        var sx = (iw - sw) / 2, sy = (ih - sh) / 2;
-        ctx.drawImage(loader, sx, sy, sw, sh, 0, 0, TW, TH);
-        imgEl.src = canvas.toDataURL('image/webp', 0.82);
-      } catch (e) {
-        imgEl.src = src; // fallback se canvas falhar (CORS etc.)
-      }
-    };
-    loader.onerror = function() { imgEl.src = src; };
-    loader.src = src;
+  function getCoverThumbPath(src) {
+    return src.replace('assets/Gallery/', 'assets/thumbnails/projects/');
   }
 
   function getProjName(path) {
@@ -2234,7 +2256,11 @@
     galGrid.className = 'proj-grid';
     if (loadMoreWrap) loadMoreWrap.hidden = true;
 
-    var paths    = (typeof GALLERY !== 'undefined' && GALLERY[cat]) ? GALLERY[cat] : [];
+    var paths = (typeof GALLERY !== 'undefined')
+      ? (cat === 'bebe'
+          ? (GALLERY.bebe || []).concat(GALLERY.newborn || [])
+          : (GALLERY[cat] || []))
+      : [];
     var projects = buildProjects(paths);
     var meta     = GALLERY_META[cat] || {};
 
@@ -2252,6 +2278,7 @@
       var img = document.createElement('img');
       img.alt = proj.name + ' · Lauri Reis Fotografia';
       img.setAttribute('decoding', 'async');
+      img.setAttribute('loading', 'lazy');
 
       var ov     = document.createElement('div');
       ov.className = 'proj-card-overlay';
@@ -2265,7 +2292,7 @@
       card.appendChild(img); card.appendChild(ov);
       frag.appendChild(card);
 
-      loadCoverThumb(img, proj.cover);
+      img.src = getCoverThumbPath(proj.cover);
 
       (function(p) {
         function openProj() { openProjectModal(p); }
@@ -2299,6 +2326,7 @@
       var img   = document.createElement('img');
       img.alt   = proj.name + ' · foto ' + (i + 1) + ' — Lauri Reis';
       img.setAttribute('decoding', 'async');
+      img.setAttribute('loading', 'lazy');
       var scrim = document.createElement('div');
       scrim.className = 'gal-scrim';
       wrap.appendChild(img); wrap.appendChild(scrim);
@@ -2344,7 +2372,26 @@
     tabIndicator.style.width = btn.offsetWidth + 'px';
   }
 
-  var tabNav = document.querySelector('.tab-nav');
+  var tabNav    = document.querySelector('.tab-nav');
+  var tabArrowL = document.getElementById('tabArrowL');
+  var tabArrowR = document.getElementById('tabArrowR');
+
+  function updateTabArrows() {
+    if (!tabNav || !tabArrowL || !tabArrowR) return;
+    var s = tabNav.scrollLeft;
+    var maxS = tabNav.scrollWidth - tabNav.clientWidth;
+    tabArrowL.classList.toggle('is-hidden', s <= 2);
+    tabArrowR.classList.toggle('is-hidden', s >= maxS - 2);
+  }
+
+  if (tabArrowL) tabArrowL.addEventListener('click', function() {
+    tabNav.scrollBy({ left: -220, behavior: 'smooth' });
+  });
+  if (tabArrowR) tabArrowR.addEventListener('click', function() {
+    tabNav.scrollBy({ left: 220, behavior: 'smooth' });
+  });
+  if (tabNav) tabNav.addEventListener('scroll', updateTabArrows, { passive: true });
+  updateTabArrows();
 
   tabBtns.forEach(function(btn) {
     btn.addEventListener('click', function() {
@@ -2384,11 +2431,30 @@
     const reducedMotion = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
     let current = 0;
     let timer   = null;
+    let preloadTimer = null;
 
     if (!slides.length) return;
 
     const total = slides.length;
     const pad   = n => String(n + 1).padStart(2, '0');
+
+    function ensureSlideLoaded(idx) {
+      const image = slides[idx] && slides[idx].querySelector('img');
+      if (!image || !image.dataset.src) return;
+      if (image.dataset.srcset) {
+        image.srcset = image.dataset.srcset;
+        image.removeAttribute('data-srcset');
+      }
+      image.fetchPriority = 'low';
+      image.src = image.dataset.src;
+      image.removeAttribute('data-src');
+    }
+
+    function scheduleNextLoad() {
+      clearTimeout(preloadTimer);
+      if (reducedMotion) return;
+      preloadTimer = setTimeout(() => ensureSlideLoaded((current + 1) % total), INTERVAL - 1800);
+    }
 
     /* Animated gold progress bar */
     function startFill() {
@@ -2419,12 +2485,15 @@
 
     function goTo(idx, userAction) {
       if (idx === current) return;
+      const next = (idx + total) % total;
+      ensureSlideLoaded(next);
       slides[current].classList.remove('active');
-      current = (idx + total) % total;
+      current = next;
       slides[current].classList.add('active');
       updateLabel();
       updateCat();
       startFill();
+      scheduleNextLoad();
       if (userAction) resetTimer();
     }
 
@@ -2443,6 +2512,7 @@
       catEl.classList.add('visible');
       startFill();
     }, 950);
+    scheduleNextLoad();
 
     /* Touch / swipe */
     let touchStartX = 0;

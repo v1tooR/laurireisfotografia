@@ -814,6 +814,109 @@
       border-top: var(--border-gold);
     }
 
+    /* ── Project card grid ── */
+    .proj-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      min-height: 320px;
+    }
+    .proj-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      aspect-ratio: 3/2;
+      background: var(--lr-paper-card);
+    }
+    .proj-card img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: transform 700ms var(--ease-out);
+      /* Força compositing layer antes do hover — GPU textura criada na resolução
+         correta e não pixeliza quando scale(1.06) é aplicado no hover */
+      will-change: transform;
+      transform: translateZ(0) scale(1);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+    .proj-card:hover img { transform: translateZ(0) scale(1.06); }
+    .proj-card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(15,32,48,.80) 0%, rgba(15,32,48,.04) 55%);
+      display: flex; flex-direction: column;
+      align-items: flex-start; justify-content: flex-end;
+      padding: 14px 16px;
+      transition: background 300ms;
+    }
+    .proj-card:hover .proj-card-overlay {
+      background: linear-gradient(to top, rgba(15,32,48,.92) 0%, rgba(15,32,48,.20) 55%);
+    }
+    .proj-card-name {
+      font-family: var(--font-body);
+      font-size: .875rem; font-weight: 600;
+      color: var(--lr-white);
+      line-height: 1.3; letter-spacing: .02em;
+    }
+    .proj-card-count {
+      font-family: var(--font-body);
+      font-size: .7rem;
+      color: var(--lr-gold);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ── Project modal ── */
+    .proj-modal {
+      position: fixed; inset: 0; z-index: 8500;
+      background: var(--lr-navy-deep);
+      display: flex; flex-direction: column;
+      opacity: 0; pointer-events: none;
+      transition: opacity 280ms var(--ease-out);
+      overflow: hidden;
+    }
+    .proj-modal.open { opacity: 1; pointer-events: auto; }
+    .proj-modal-head {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--border-on-dark);
+      flex-shrink: 0;
+      background: var(--lr-navy);
+    }
+    .proj-modal-back {
+      display: flex; align-items: center; gap: 7px;
+      font-family: var(--font-body);
+      font-size: .73rem; letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--lr-gold);
+      cursor: pointer;
+      background: none; border: none; padding: 6px 0;
+      transition: color 200ms; flex-shrink: 0;
+    }
+    .proj-modal-back:hover { color: var(--lr-white); }
+    .proj-modal-sep {
+      width: 1px; height: 18px;
+      background: var(--border-on-dark); flex-shrink: 0;
+    }
+    .proj-modal-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem; font-style: italic; font-weight: 400;
+      color: var(--lr-white);
+    }
+    .proj-modal-cnt {
+      margin-left: auto;
+      font-family: var(--font-body);
+      font-size: .7rem; letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--lr-ink-400); flex-shrink: 0;
+    }
+    .proj-modal-body {
+      flex: 1; overflow-y: auto;
+      padding: 20px 24px 48px;
+    }
+    .proj-modal-body .gallery-masonry { columns: 3; min-height: 0; }
+
     /* cursor hint for lightbox-enabled cells */
     .photo-cell { cursor: zoom-in; }
     .bento-cell { cursor: zoom-in; }
@@ -1270,6 +1373,8 @@
       .nav-hamburger { display:flex; }
       .portfolio-header { grid-template-columns:1fr; }
       .gallery-masonry { columns: 2; }
+      .proj-grid { grid-template-columns: repeat(2, 1fr); }
+      .proj-modal-body .gallery-masonry { columns: 2; }
       .span-wide { grid-column:span 1; }
       .dif-grid { grid-template-columns:1fr; }
       .footer-grid { grid-template-columns:1fr; }
@@ -1354,6 +1459,12 @@
       .fullbleed-bg img { object-position:52% center; }
       .fullbleed-inner { max-width:none; }
       .gallery-masonry { columns: 1; }
+      .proj-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+      .proj-modal-body .gallery-masonry { columns: 2; }
+      .proj-modal-head { padding: 12px 16px; }
+      .proj-modal-body { padding: 14px 16px 32px; }
+      .proj-modal-title { font-size: .92rem; }
+      .proj-card-name { font-size: .78rem; }
       .span-tall { grid-row:span 1; }
       .marquee-thumb { width:160px; height:110px; }
       /* Float CTA: hide logo on tiny screens */
@@ -1590,12 +1701,12 @@
     </div>
     <div class="bento-grid">
       <div class="bento-cell bc-1">
-        <img src="assets/Gallery/15 Anos-20260709T012442Z-3-001/15 Anos/15 anos Jheniffer/IMG_2808.webp" alt="Ensaio fotográfico de 15 anos em Caçapava – retrato artístico" loading="lazy" />
+        <img src="assets/Gallery/15 Anos-20260709T012442Z-3-001/15 Anos/15 anos Jheniffer/14 IMG_2808.webp" alt="Ensaio fotográfico de 15 anos em Caçapava – retrato artístico" loading="lazy" />
         <div class="bento-scrim"></div>
         <span class="bento-lbl">15 Anos</span>
       </div>
       <div class="bento-cell bc-2">
-        <img src="assets/Gallery/Aniversário Infantil-20260709T012539Z-3-001/Aniversário Infantil/1 Aninho Helena/IMG_8068.webp" alt="Fotografia de aniversário infantil em Caçapava" loading="lazy" />
+        <img src="assets/Gallery/Aniversário Infantil-20260709T012539Z-3-001/Aniversário Infantil/1 Aninho Helena/19 IMG_8068.webp" alt="Fotografia de aniversário infantil em Caçapava" loading="lazy" />
         <div class="bento-scrim"></div>
         <span class="bento-lbl">Aniversário Infantil</span>
       </div>
@@ -1615,7 +1726,7 @@
         <span class="bento-lbl">Newborn</span>
       </div>
       <div class="bento-cell bc-6">
-        <img src="assets/Gallery/Cha de Bebe-20260709T012924Z-3-001/Cha de Bebe/Malena e Thiago/IMG_1919.webp" alt="Fotografia de chá de bebê em Caçapava" loading="lazy" />
+        <img src="assets/Gallery/Cha de Bebe-20260709T012924Z-3-001/Cha de Bebe/Malena e Thiago/02 IMG_1919.webp" alt="Fotografia de chá de bebê em Caçapava" loading="lazy" />
         <div class="bento-scrim"></div>
         <span class="bento-lbl">Chá de Bebê</span>
       </div>
@@ -1625,7 +1736,7 @@
         <span class="bento-lbl">Estúdio</span>
       </div>
       <div class="bento-cell bc-8">
-        <img src="assets/Gallery/15 Anos-20260709T012442Z-3-001/15 Anos/15 anos Jheniffer/IMG_3338.webp" alt="Ensaio de 15 anos em Caçapava – fotografia artística" loading="lazy" />
+        <img src="assets/Gallery/15 Anos-20260709T012442Z-3-001/15 Anos/15 anos Jheniffer/15 IMG_3338.webp" alt="Ensaio de 15 anos em Caçapava – fotografia artística" loading="lazy" />
         <div class="bento-scrim"></div>
         <span class="bento-lbl">15 Anos</span>
       </div>
@@ -1874,6 +1985,22 @@
   <p class="lbx-zoom-tip" id="lbxZoomTip">Scroll para ampliar · Duplo clique para zoom · Esc para fechar</p>
 </div>
 
+<!-- ══════════════ PROJECT MODAL ══════════════ -->
+<div class="proj-modal" id="projModal" role="dialog" aria-modal="true" aria-label="Fotos do projeto" aria-hidden="true">
+  <header class="proj-modal-head">
+    <button class="proj-modal-back" id="projModalBack" aria-label="Voltar à galeria">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Voltar
+    </button>
+    <span class="proj-modal-sep" aria-hidden="true"></span>
+    <span class="proj-modal-title" id="projModalTitle"></span>
+    <span class="proj-modal-cnt" id="projModalCnt"></span>
+  </header>
+  <div class="proj-modal-body">
+    <div id="projModalGrid" class="gallery-masonry" role="list" aria-label="Fotos do projeto"></div>
+  </div>
+</div>
+
 <!-- ══════════════ BOTÃO FLUTUANTE ══════════════ -->
 <div class="float-cta" id="floatCta" aria-hidden="true">
   <img src="assets/logo/lr-symbol-gold.svg" class="float-logo" alt="" aria-hidden="true" />
@@ -2052,30 +2179,160 @@
     galGrid.appendChild(frag);
   }
 
-  function renderGallery(cat) {
+  /* ── Project helpers ── */
+  /* Renderiza a capa do projeto em canvas 640×427 (3:2 @ 2× retina) antes
+     de exibir no card — evita que o browser faça downscale de 4000px → 400px
+     em tempo real, o que causa borramento ou pixelização. */
+  function loadCoverThumb(imgEl, src) {
+    var TW = 640, TH = 427;
+    var loader = new Image();
+    loader.onload = function() {
+      try {
+        var canvas = document.createElement('canvas');
+        canvas.width = TW; canvas.height = TH;
+        var ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        var iw = loader.naturalWidth, ih = loader.naturalHeight;
+        var scale = Math.max(TW / iw, TH / ih);
+        var sw = TW / scale, sh = TH / scale;
+        var sx = (iw - sw) / 2, sy = (ih - sh) / 2;
+        ctx.drawImage(loader, sx, sy, sw, sh, 0, 0, TW, TH);
+        imgEl.src = canvas.toDataURL('image/webp', 0.82);
+      } catch (e) {
+        imgEl.src = src; // fallback se canvas falhar (CORS etc.)
+      }
+    };
+    loader.onerror = function() { imgEl.src = src; };
+    loader.src = src;
+  }
+
+  function getProjName(path) {
+    var p = path.split('/');
+    return p[p.length - 2];
+  }
+  function naturalSortPaths(a, b) {
+    return a.split('/').pop().localeCompare(b.split('/').pop(), 'pt-BR', { numeric: true, sensitivity: 'base' });
+  }
+  function buildProjects(paths) {
+    var map = Object.create(null), order = [];
+    paths.forEach(function(p) {
+      var n = getProjName(p);
+      if (!map[n]) { map[n] = []; order.push(n); }
+      map[n].push(p);
+    });
+    return order.map(function(n) {
+      var photos = map[n].slice().sort(naturalSortPaths);
+      return { name: n, cover: photos[0], photos: photos, count: photos.length };
+    });
+  }
+
+  function renderProjects(cat) {
     if (!galGrid) return;
-    galState.cat  = cat;
-    galState.page = 0;
+    galState.cat = cat;
     galGrid.innerHTML = '';
-    var paths = (typeof GALLERY !== 'undefined' && GALLERY[cat]) ? GALLERY[cat] : [];
-    var total = paths.length;
-    var meta  = GALLERY_META[cat] || {};
-    if (galCountEl) galCountEl.textContent = total + ' foto' + (total !== 1 ? 's' : '') + ' · ' + (meta.label || cat);
-    appendItems(paths, 0, PAGE_SIZE, false);
-    galState.page = 1;
-    if (loadMoreWrap) loadMoreWrap.hidden = total <= PAGE_SIZE;
-    if (galCtaEl) galCtaEl.innerHTML = buildWaHtml(cat);
+    galGrid.className = 'proj-grid';
+    if (loadMoreWrap) loadMoreWrap.hidden = true;
+
+    var paths    = (typeof GALLERY !== 'undefined' && GALLERY[cat]) ? GALLERY[cat] : [];
+    var projects = buildProjects(paths);
+    var meta     = GALLERY_META[cat] || {};
+
+    if (galCountEl) galCountEl.textContent = projects.length + ' projeto' + (projects.length !== 1 ? 's' : '') + ' · ' + (meta.label || cat);
+    if (galCtaEl)   galCtaEl.innerHTML = buildWaHtml(cat);
+
+    var frag = document.createDocumentFragment();
+    projects.forEach(function(proj) {
+      var card = document.createElement('div');
+      card.className = 'proj-card';
+      card.setAttribute('role', 'button');
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('aria-label', 'Ver ' + proj.name + ' · ' + proj.count + ' fotos');
+
+      var img = document.createElement('img');
+      img.alt = proj.name + ' · Lauri Reis Fotografia';
+      img.setAttribute('decoding', 'async');
+
+      var ov     = document.createElement('div');
+      ov.className = 'proj-card-overlay';
+      var nameEl = document.createElement('p');
+      nameEl.className = 'proj-card-name';
+      nameEl.textContent = proj.name;
+      var cntEl  = document.createElement('p');
+      cntEl.className = 'proj-card-count';
+      cntEl.textContent = proj.count + ' foto' + (proj.count !== 1 ? 's' : '');
+      ov.appendChild(nameEl); ov.appendChild(cntEl);
+      card.appendChild(img); card.appendChild(ov);
+      frag.appendChild(card);
+
+      loadCoverThumb(img, proj.cover);
+
+      (function(p) {
+        function openProj() { openProjectModal(p); }
+        card.addEventListener('click', openProj);
+        card.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openProj(); }
+        });
+      })(proj);
+    });
+    galGrid.appendChild(frag);
   }
 
-  function loadMore() {
-    var paths = (typeof GALLERY !== 'undefined' && GALLERY[galState.cat]) ? GALLERY[galState.cat] : [];
-    var from  = galState.page * PAGE_SIZE;
-    appendItems(paths, from, PAGE_SIZE, true);
-    galState.page++;
-    if (loadMoreWrap && galState.page * PAGE_SIZE >= paths.length) loadMoreWrap.hidden = true;
+  /* ── Project modal ── */
+  var projModal      = document.getElementById('projModal');
+  var projModalGrid  = document.getElementById('projModalGrid');
+  var projModalTitle = document.getElementById('projModalTitle');
+  var projModalCnt   = document.getElementById('projModalCnt');
+  var projModalBack  = document.getElementById('projModalBack');
+
+  function openProjectModal(proj) {
+    if (!projModal || !projModalGrid) return;
+    if (projModalTitle) projModalTitle.textContent = proj.name;
+    if (projModalCnt)   projModalCnt.textContent   = proj.count + ' foto' + (proj.count !== 1 ? 's' : '');
+    projModalGrid.innerHTML = '';
+
+    var frag = document.createDocumentFragment();
+    proj.photos.forEach(function(path, i) {
+      var wrap  = document.createElement('div');
+      wrap.className = 'gal-item';
+      wrap.setAttribute('role', 'listitem');
+      var img   = document.createElement('img');
+      img.alt   = proj.name + ' · foto ' + (i + 1) + ' — Lauri Reis';
+      img.setAttribute('decoding', 'async');
+      var scrim = document.createElement('div');
+      scrim.className = 'gal-scrim';
+      wrap.appendChild(img); wrap.appendChild(scrim);
+      frag.appendChild(wrap);
+      loadImgNow(img, path);
+    });
+    projModalGrid.appendChild(frag);
+
+    projModal.setAttribute('aria-hidden', 'false');
+    projModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    var body = projModal.querySelector('.proj-modal-body');
+    if (body) body.scrollTop = 0;
   }
 
-  if (loadMoreBtn) loadMoreBtn.addEventListener('click', loadMore);
+  function closeProjectModal() {
+    if (!projModal) return;
+    projModal.classList.remove('open');
+    projModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    setTimeout(function() {
+      if (!projModal.classList.contains('open') && projModalGrid) projModalGrid.innerHTML = '';
+    }, 300);
+  }
+
+  if (projModalBack) projModalBack.addEventListener('click', closeProjectModal);
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key !== 'Escape') return;
+    var lbx = document.getElementById('lbxOverlay');
+    if (projModal && projModal.classList.contains('open') && lbx && !lbx.classList.contains('open')) {
+      closeProjectModal();
+    }
+  });
 
   /* Tab switching */
   var tabBtns      = document.querySelectorAll('.tab-btn');
@@ -2095,7 +2352,7 @@
       btn.classList.add('active');
       btn.setAttribute('aria-selected','true');
       moveIndicator(btn);
-      renderGallery(btn.dataset.cat);
+      renderProjects(btn.dataset.cat);
       /* Scroll active tab into view on mobile */
       if (tabNav) {
         var btnLeft   = btn.offsetLeft;
@@ -2114,7 +2371,7 @@
   var firstActiveTab = document.querySelector('.tab-btn.active');
   if (firstActiveTab) {
     setTimeout(function() { moveIndicator(firstActiveTab); }, 0);
-    renderGallery(firstActiveTab.dataset.cat);
+    renderProjects(firstActiveTab.dataset.cat);
   }
 
   /* ── Hero Slideshow ── */
@@ -2310,7 +2567,8 @@
     function close() {
       overlay.classList.remove('open');
       overlay.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
+      var _pm = document.getElementById('projModal');
+      if (!_pm || !_pm.classList.contains('open')) document.body.style.overflow = '';
       isDragging = false;
       setTimeout(() => { img.src = ''; img.style.transform = ''; }, 320);
     }
@@ -2352,6 +2610,22 @@
         });
         var clickedImg = item.querySelector('img');
         var idx = allImgs.indexOf(clickedImg);
+        open(list, Math.max(0, idx));
+      });
+    }
+
+    /* Project modal photo clicks → lightbox */
+    var projGridEl = document.getElementById('projModalGrid');
+    if (projGridEl) {
+      projGridEl.addEventListener('click', function(e) {
+        var item = e.target.closest('.gal-item');
+        if (!item) return;
+        var allImgs = Array.from(projGridEl.querySelectorAll('.gal-item img'));
+        var list    = allImgs.map(function(img) {
+          return { src: img.getAttribute('data-src') || img.src, alt: img.alt || '' };
+        });
+        var clickedImg = item.querySelector('img');
+        var idx        = allImgs.indexOf(clickedImg);
         open(list, Math.max(0, idx));
       });
     }

@@ -1375,6 +1375,18 @@
       display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:var(--sp-3);
     }
     .footer-btm span { font-size:var(--t-caption); color:var(--lr-ink-400); letter-spacing:.05em; }
+    .footer-credit {
+      max-width:var(--container-max); margin:var(--sp-4) auto 0;
+      text-align:center;
+      font-size:.65rem; letter-spacing:.08em;
+      color:var(--lr-ink-600);
+    }
+    .footer-credit a {
+      color:var(--lr-ink-400);
+      text-decoration:none;
+      transition:color 200ms;
+    }
+    .footer-credit a:hover { color:var(--lr-gold); }
 
     /* ── Responsive ──────────────────────────────────────── */
     @media (max-width:1024px) {
@@ -2002,6 +2014,7 @@
     <span>© 2026 Lauri Reis Fotografia · Todos os direitos reservados · <a href="politica-de-privacidade.html" style="color:inherit;opacity:.7">Política de Privacidade</a></span>
     <span><a href="#hero" style="color:inherit">Voltar ao topo ↑</a></span>
   </div>
+  <p class="footer-credit">Uma nova experiência criada por <a href="https://vsexperience.com.br/" target="_blank" rel="noopener">VS EXPERIENCE</a></p>
 </footer>
 
 <!-- ══════════════ LIGHTBOX ══════════════ -->

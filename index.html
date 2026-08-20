@@ -1730,16 +1730,16 @@
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="tab-nav" role="tablist" aria-label="Categorias do portfólio">
-        <button class="tab-btn active" role="tab" data-cat="quinze"      aria-selected="true">15 Anos</button>
-        <button class="tab-btn"        role="tab" data-cat="infantil"    aria-selected="false">Aniversário Infantil</button>
-        <button class="tab-btn"        role="tab" data-cat="adulto"      aria-selected="false">Aniversário Adulto</button>
-        <button class="tab-btn"        role="tab" data-cat="bebe"        aria-selected="false">Newborn &amp; Chá de Bebê</button>
-        <button class="tab-btn"        role="tab" data-cat="gestante"    aria-selected="false">Gestante</button>
-        <button class="tab-btn"        role="tab" data-cat="externo"     aria-selected="false">Ensaio Externo</button>
-        <button class="tab-btn"        role="tab" data-cat="estudio"     aria-selected="false">Estúdio</button>
-        <button class="tab-btn"        role="tab" data-cat="casamento"   aria-selected="false">Casamento &amp; Bodas</button>
-        <button class="tab-btn"        role="tab" data-cat="prewedding"  aria-selected="false">Pré-Wedding</button>
-        <button class="tab-btn"        role="tab" data-cat="corporativo" aria-selected="false">Corporativo</button>
+        <button class="tab-btn active" id="tab-quinze"      role="tab" data-cat="quinze"      aria-selected="true">15 Anos</button>
+        <button class="tab-btn"        id="tab-infantil"    role="tab" data-cat="infantil"    aria-selected="false">Aniversário Infantil</button>
+        <button class="tab-btn"        id="tab-adulto"      role="tab" data-cat="adulto"      aria-selected="false">Aniversário Adulto</button>
+        <button class="tab-btn"        id="tab-bebe"        role="tab" data-cat="bebe"        aria-selected="false">Newborn &amp; Chá de Bebê</button>
+        <button class="tab-btn"        id="tab-gestante"    role="tab" data-cat="gestante"    aria-selected="false">Gestante</button>
+        <button class="tab-btn"        id="tab-externo"     role="tab" data-cat="externo"     aria-selected="false">Ensaio Externo</button>
+        <button class="tab-btn"        id="tab-estudio"     role="tab" data-cat="estudio"     aria-selected="false">Estúdio</button>
+        <button class="tab-btn"        id="tab-casamento"   role="tab" data-cat="casamento"   aria-selected="false">Casamento &amp; Bodas</button>
+        <button class="tab-btn"        id="tab-prewedding"  role="tab" data-cat="prewedding"  aria-selected="false">Pré-Wedding</button>
+        <button class="tab-btn"        id="tab-corporativo" role="tab" data-cat="corporativo" aria-selected="false">Corporativo</button>
         <div class="tab-indicator" aria-hidden="true"></div>
       </div>
       <button class="tab-arrow tab-arrow-r" id="tabArrowR" aria-label="Ver mais categorias" tabindex="-1">
@@ -2427,13 +2427,33 @@
   if (tabNav) tabNav.addEventListener('scroll', updateTabArrows, { passive: true });
   updateTabArrows();
 
+  function activateTab(btn, opts) {
+    if (!btn) return;
+    opts = opts || {};
+    tabBtns.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected','true');
+    moveIndicator(btn);
+    renderProjects(btn.dataset.cat);
+    if (opts.updateHash && btn.id && history.replaceState) {
+      history.replaceState(null, '', '#' + btn.id);
+    }
+    if (opts.scroll) {
+      var scrollToPortfolio = function() {
+        var portfolioSection = document.getElementById('portfolio');
+        if (portfolioSection) portfolioSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+      scrollToPortfolio();
+      /* The browser's own scroll-to-fragment (from the #tab-xxx id) can
+         fire late and fight this scroll on a fresh page load, so
+         re-assert once it has settled. */
+      setTimeout(scrollToPortfolio, 900);
+    }
+  }
+
   tabBtns.forEach(function(btn) {
     btn.addEventListener('click', function() {
-      tabBtns.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
-      btn.classList.add('active');
-      btn.setAttribute('aria-selected','true');
-      moveIndicator(btn);
-      renderProjects(btn.dataset.cat);
+      activateTab(btn, { updateHash: true });
       /* Scroll active tab into view on mobile */
       if (tabNav) {
         var btnLeft   = btn.offsetLeft;
@@ -2449,11 +2469,23 @@
     });
   });
 
-  var firstActiveTab = document.querySelector('.tab-btn.active');
+  function tabFromHash(hash) {
+    if (!hash || hash.length < 2) return null;
+    var id = hash.charAt(0) === '#' ? hash.slice(1) : hash;
+    return document.getElementById(id);
+  }
+
+  var hashTab = tabFromHash(window.location.hash);
+  var firstActiveTab = (hashTab && hashTab.classList.contains('tab-btn')) ? hashTab : document.querySelector('.tab-btn.active');
   if (firstActiveTab) {
     setTimeout(function() { moveIndicator(firstActiveTab); }, 0);
-    renderProjects(firstActiveTab.dataset.cat);
+    activateTab(firstActiveTab, { scroll: firstActiveTab === hashTab });
   }
+
+  window.addEventListener('hashchange', function() {
+    var btn = tabFromHash(window.location.hash);
+    if (btn && btn.classList.contains('tab-btn')) activateTab(btn, { scroll: true, updateHash: true });
+  });
 
   /* ── Hero Slideshow ── */
   (function () {
